@@ -3,4 +3,4 @@ project(DoodleJump)
 
 set(CMAKE_CXX_STANDARD 14)
 
-add_executable(DoodleJump Sources/main.cpp Sources/GameObject.cpp Headers/GameObject.h Sources/Moving.cpp Headers/Moving.h Sources/Platform.cpp Headers/Platform.h Sources/Bonus.cpp Headers/Bonus.h Sources/Hurts.cpp Headers/Hurts.h Sources/Bomb.cpp Headers/Bomb.h Sources/Monster.cpp Headers/Monster.h Sources/Player.cpp Headers/Player.h Sources/MovingPlatorm.cpp Headers/MovingPlatorm.h Sources/BasicPlatform.cpp Headers/BasicPlatform.h Sources/BreakingPlatform.cpp Headers/BreakingPlatform.h Sources/ExplodingPlatform.cpp Headers/ExplodingPlatform.h Sources/DisappearingPlatform.cpp Headers/DisappearingPlatform.h)
+add_executable(DoodleJump main.cpp GameObject.cpp GameObject.h Moving.cpp Moving.h Platform.cpp Platform.h Bonus.cpp Bonus.h Hurts.cpp Hurts.h Bomb.cpp Bomb.h Monster.cpp Monster.h Player.cpp Player.h MovingPlatform.cpp MovingPlatform.h BasicPlatform.cpp BasicPlatform.h BreakingPlatform.cpp BreakingPlatform.h ExplodingPlatform.cpp ExplodingPlatform.h DisappearingPlatform.cpp DisappearingPlatform.h)
