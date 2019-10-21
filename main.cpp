@@ -5,7 +5,6 @@
 #include <iostream>
 
 #include "Player.h"
-#include "Bullet.h"
 
 using namespace std;
 
@@ -14,10 +13,20 @@ int main(int argv, char **args) {
     QApplication app(argv, args);
 
     QGraphicsScene * scene = new QGraphicsScene();
-    scene->setBackgroundBrush(QBrush(QPixmap(QApplication::applicationDirPath() + "/images/background.png")));
-    Player * player = new Player();
+    QPixmap backgroundPixmap = QPixmap();
+    bool backgroundLoaded = backgroundPixmap.load(QApplication::applicationDirPath() + "/images/background.png");
+    if(!backgroundLoaded) {
+        qDebug() << "Error loading : " + QApplication::applicationDirPath() + "/images/background.png";
+    }
+    scene->setBackgroundBrush(QBrush(backgroundPixmap));
 
-    player->setPixmap(QPixmap(QApplication::applicationDirPath() + "/images/doodle.png"));
+    Player * player = new Player();
+    QPixmap doodlePixmap = QPixmap();
+    bool doodleLoaded = doodlePixmap.load(QApplication::applicationDirPath() + "/images/doodle.png");
+    if(!doodleLoaded) {
+        qDebug() << "Error loading : " + QApplication::applicationDirPath() + "/images/doodle.png";
+    }
+    player->setPixmap(doodlePixmap);
 
     scene->addItem(player);
 
@@ -28,4 +37,5 @@ int main(int argv, char **args) {
     view->show();
 
     return app.exec();
+
 }

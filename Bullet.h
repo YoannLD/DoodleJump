@@ -2,9 +2,9 @@
 #define DOODLEJUMP_BULLET_H
 
 #include <QObject>
-#include <QGraphicsRectItem>
+#include "GameObject.h"
 
-class Bullet : public QObject, public QGraphicsRectItem {
+class Bullet : public QObject, public GameObject {
     Q_OBJECT
 public:
     Bullet();

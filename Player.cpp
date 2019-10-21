@@ -3,7 +3,6 @@
 #include <QGraphicsScene>
 #include <QDebug>
 #include <QKeyEvent>
-#include <QGraphicsScene>
 
 void Player::keyPressEvent(QKeyEvent *event) {
     if(event->key() == Qt::Key_Left || event->key() == Qt::Key_Q){
@@ -13,9 +12,9 @@ void Player::keyPressEvent(QKeyEvent *event) {
         setPos(x()+15,y());
     }
     else if(event->key() == Qt::Key_Space || event->key() == Qt::Key_Up || event->key() == Qt::Key_Z){
-     /**   Bullet * bullet = new Bullet();
+        Bullet * bullet = new Bullet();
         bullet->setPos(x(),y());
-        scene()->addItem(bullet);*/
+        scene()->addItem(bullet);
     }
 
 }

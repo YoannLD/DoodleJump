@@ -5,7 +5,7 @@
 #include <QKeyEvent>
 #include <QGraphicsRectItem>
 
-class Player : public QGraphicsRectItem{
+class Player : public Moving{
 
 public:
     void keyPressEvent(QKeyEvent * event) override;

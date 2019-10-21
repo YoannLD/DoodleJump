@@ -9,15 +9,14 @@
 
 Bullet::Bullet() {
     setPixmap(QPixmap("images/bullet.png"));
-    move();
+    //move();
 
-    auto * timer = new QTimer();
-    connect(timer,SIGNAL(timeout()),this,SLOT(Bullet::move()));
+    QTimer * timer = new QTimer();
+    connect(timer,SIGNAL(timeout()),this,SLOT(move()));
 
     timer->start(50);
 }
 
 void Bullet::move(){
-    qDebug() << "test";
     setPos(x(),y()-10);
 }
