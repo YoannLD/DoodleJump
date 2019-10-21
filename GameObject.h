@@ -1,7 +1,10 @@
 #ifndef DOODLEJUMP_GAMEOBJECT_H
 #define DOODLEJUMP_GAMEOBJECT_H
 
-class GameObject {
+
+#include <QGraphicsRectItem>
+
+class GameObject : public QGraphicsRectItem {
 
 };
 

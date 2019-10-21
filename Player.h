@@ -3,7 +3,7 @@
 
 #include "Moving.h"
 
-class Player : public Moving {
+class Player : public Moving{
 
 };
 
