@@ -2,6 +2,7 @@
 #include "Bullet.h"
 #include <QDebug>
 #include <QKeyEvent>
+#include <QGraphicsScene>
 
 void Player::keyPressEvent(QKeyEvent *event) {
     if(event->key() == Qt::Key_Left || event->key() == Qt::Key_Q){

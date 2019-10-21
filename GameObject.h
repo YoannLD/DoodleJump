@@ -2,9 +2,10 @@
 #define DOODLEJUMP_GAMEOBJECT_H
 
 
-#include <QGraphicsRectItem>
+//#include <QGraphicsRectItem>
+#include <QGraphicsPixmapItem>
 
-class GameObject : public QGraphicsRectItem {
+class GameObject : public QGraphicsPixmapItem {
 
 };
 

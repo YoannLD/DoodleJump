@@ -1,7 +1,7 @@
 #ifndef DOODLEJUMP_BOMB_H
 #define DOODLEJUMP_BOMB_H
 
-#include "Hurts.h";
+#include "Hurts.h"
 
 class Bomb : public Hurts {
 

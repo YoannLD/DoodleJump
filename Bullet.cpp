@@ -6,5 +6,5 @@
 
 
 Bullet::Bullet() {
-    setRect(0,0,10,30);
+    setPixmap(QPixmap("images/bullet.png"));
 }
