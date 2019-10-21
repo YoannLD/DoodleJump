@@ -1,6 +1,10 @@
-# cmake_minimum_required(VERSION <specify CMake version here>)
+cmake_minimum_required(VERSION 3.14)
 project(DoodleJump)
 
 set(CMAKE_CXX_STANDARD 14)
+set(CMAKE_PREFIX_PATH D:/Qt/5.13.1/mingw73_64)
+find_package(Qt5Widgets REQUIRED)
 
 add_executable(DoodleJump main.cpp GameObject.cpp GameObject.h Moving.cpp Moving.h Platform.cpp Platform.h Bonus.cpp Bonus.h Hurts.cpp Hurts.h Bomb.cpp Bomb.h Monster.cpp Monster.h Player.cpp Player.h MovingPlatform.cpp MovingPlatform.h BasicPlatform.cpp BasicPlatform.h BreakingPlatform.cpp BreakingPlatform.h ExplodingPlatform.cpp ExplodingPlatform.h DisappearingPlatform.cpp DisappearingPlatform.h)
+
+target_link_libraries(DoodleJump Qt5::Widgets)

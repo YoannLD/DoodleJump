@@ -2,4 +2,4 @@
 // Created by yoann on 16/10/2019.
 //
 
-#include "../Headers/Bomb.h"
+#include "Bomb.h"

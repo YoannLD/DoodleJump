@@ -1,6 +1,9 @@
-#include <iostream>
+#include <QApplication>
+#include <QDebug>
+
+using namespace std;
 
 int main() {
-    std::cout << "Hello, World!" << std::endl;
-    return 0;
+    qDebug() << QT_VERSION_STR;
+    return 1;
 }
