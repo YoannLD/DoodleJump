@@ -5,6 +5,7 @@
 #include <iostream>
 
 #include "Player.h"
+#include "Bullet.h"
 
 using namespace std;
 
@@ -26,8 +27,5 @@ int main(int argv, char **args) {
     QGraphicsView *view = new QGraphicsView(scene);
     view->show();
 
-
-
     return app.exec();
-
 }

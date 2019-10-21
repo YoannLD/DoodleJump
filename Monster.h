@@ -5,6 +5,7 @@
 #include "Moving.h"
 
 class Monster : public Hurts, public Moving {
+public:
 
 };
 

@@ -15,7 +15,7 @@ DEFINES += QT_DEPRECATED_WARNINGS
 # You can also select to disable deprecated APIs only up to a certain version of Qt.
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
-SOURCES += \
+SOURCES +=
     main.cpp \
     basicplatform.cpp \
     bomb.cpp \
@@ -30,8 +30,9 @@ SOURCES += \
     movingplatform.cpp \
     platform.cpp \
     player.cpp \
+    bullet.cpp \
 
-HEADERS += \
+HEADERS +=
     basicplatform.h \
     bomb.h \
     bonus.h \
@@ -45,6 +46,7 @@ HEADERS += \
     movingplatform.h \
     platform.h \
     player.h \
+    bullet.h \
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin
