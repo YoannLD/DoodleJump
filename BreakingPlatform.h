@@ -1,8 +1,10 @@
-//
-// Created by yoann on 16/10/2019.
-//
-
 #ifndef DOODLEJUMP_BREAKINGPLATFORM_H
 #define DOODLEJUMP_BREAKINGPLATFORM_H
+
+#include "Platform.h"
+
+class BreakingPlatform : public Platform {
+
+};
 
 #endif //DOODLEJUMP_BREAKINGPLATFORM_H
