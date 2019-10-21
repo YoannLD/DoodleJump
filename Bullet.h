@@ -2,14 +2,14 @@
 #define DOODLEJUMP_BULLET_H
 
 #include <QObject>
-#include "GameObject.h"
+#include "Moving.h"
 
-class Bullet : public QObject, public GameObject {
+class Bullet : public QObject, public Moving {
     Q_OBJECT
 public:
     Bullet();
 public slots:
-    void move();
+    void move() override ;
 };
 
 #endif //DOODLEJUMP_BULLET_H
