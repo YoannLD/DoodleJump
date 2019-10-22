@@ -1,8 +1,10 @@
 #include "Player.h"
 #include "Bullet.h"
+#include "consts.h"
 #include <QGraphicsScene>
 #include <QDebug>
 #include <QKeyEvent>
+
 
 void Player::keyPressEvent(QKeyEvent *event) {
     if(event->key() == Qt::Key_Left || event->key() == Qt::Key_Q){
@@ -25,6 +27,37 @@ void Player::keyPressEvent(QKeyEvent *event) {
 
 }
 
-void Player::move(){
+
+void Player::updatePosition(float deltaTime) {
+    /**setHorizontalPosition(MOVE_SPEED,deltaTime);
+    updateTimeAccumulators(deltaTime);
+    sf::Vector2f nextPosition = {pos().x(),getNextY()};
+    setFallingState(nextPosition.y);
+    setPos(nextPosition);*/
+}
+
+void Player::setHorizontalPosition(float nextX, float deltaTime) {
 
 }
+
+void Player::setFallingState(float nextY) {
+
+}
+
+float Player::getNextY() const {
+    return 0;
+}
+
+void Player::setNextY(float nextY) {
+
+}
+
+void Player::resetTimeAccumulators() {
+
+}
+
+void Player::updateTimeAccumulators(float deltaTime) {
+
+}
+
+

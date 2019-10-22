@@ -4,8 +4,10 @@
 #include "GameObject.h"
 
 class Moving : public GameObject {
-public slots:
-    virtual void move() = 0;
+public:
+    virtual void updatePosition(float deltaTime){
+        (void) &deltaTime;
+    }
 };
 
 #endif //DOODLEJUMP_MOVING_H

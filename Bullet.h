@@ -9,7 +9,7 @@ class Bullet : public QObject, public Moving {
 public:
     Bullet();
 public slots:
-    void move() override ;
+    void move();
 };
 
 #endif //DOODLEJUMP_BULLET_H
