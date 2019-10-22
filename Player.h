@@ -12,6 +12,7 @@ public:
     void keyPressEvent(QKeyEvent * event) override;
     void updatePosition(float deltaTime) override;
 private:
+    bool m_facingLeft = true;
     bool m_isFalling = false;
     float m_speed = DOODLER_SPEED;
 

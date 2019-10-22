@@ -12,16 +12,26 @@ void Player::keyPressEvent(QKeyEvent *event) {
             setPos(x()-15,y());
         else
             setPos(scene()->width()-(pixmap().width()/2),y());
+
+        if(!m_facingLeft) {
+            m_facingLeft = true;
+            setPixmap(pixmap().transformed(QTransform().scale(-1,1)));
+        }
     }
     else if(event->key() == Qt::Key_Right || event->key() == Qt::Key_D){
         if(pos().x()+(pixmap().width()/2) < scene()->width())
             setPos(x()+15,y());
         else
             setPos(-pixmap().width()/2,y());
+
+        if(m_facingLeft) {
+            m_facingLeft = false;
+            setPixmap(pixmap().transformed(QTransform().scale(-1,1)));
+        }
     }
     else if(event->key() == Qt::Key_Space || event->key() == Qt::Key_Up || event->key() == Qt::Key_Z){
         auto * bullet = new Bullet();
-        bullet->setPos(x(),y());
+        bullet->setPos(x()+pixmap().width()/2,y());
         scene()->addItem(bullet);
     }
 
