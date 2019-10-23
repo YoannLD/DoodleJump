@@ -39,7 +39,7 @@ void Player::move() {
             case Qt::Key_Left :
             case Qt::Key_Q :
                 if (pos().x() + (pixmap().width() / 2) > 0)
-                    setPos(x() - 15, y());
+                    setPos(x() - 1, y());
                 else
                     setPos(scene()->width() - (pixmap().width() / 2), y());
 
@@ -51,7 +51,7 @@ void Player::move() {
             case Qt::Key_Right :
             case Qt::Key_D :
                 if (pos().x() + (pixmap().width() / 2) < scene()->width()) {
-                    setPos(x() + 15, y());
+                    setPos(x() + 1, y());
                 }
                 else {
                     setPos(-pixmap().width() / 2, y());
