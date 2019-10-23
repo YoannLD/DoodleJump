@@ -13,16 +13,21 @@ Bullet::Bullet() {
 
     setPixmap(QPixmap("images/bullet.png"));
 
-    auto * timer = new QTimer();
-    connect(timer,SIGNAL(timeout()),this,SLOT(move()));
+    m_timer = new QTimer();
+    connect(m_timer,SIGNAL(timeout()),this,SLOT(move()));
 
-    timer->start(BULLET_SPEED);
+    m_timer->start(BULLET_SPEED);
 }
 
 void Bullet::move(){
     setPos(x(),y()-1);
     if(pos().y()+pixmap().height() < 0){
         scene()->removeItem(this);
+        m_timer->stop();
         delete this;
     }
 }
+
+Bullet::~Bullet() {
+    delete m_timer;
+};

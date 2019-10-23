@@ -8,6 +8,9 @@ class Bullet : public QObject, public Moving {
     Q_OBJECT
 public:
     Bullet();
+    ~Bullet();
+private:
+    QTimer* m_timer;
 public slots:
     void move();
 };

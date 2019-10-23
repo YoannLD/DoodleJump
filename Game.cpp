@@ -28,7 +28,7 @@ Game::Game() {
 
 
     // create a player
-    Player * player = new Player();
+    auto * player = new Player();
 
     player->setPos(scene->width()/2,scene->height()-player->pixmap().height());
 

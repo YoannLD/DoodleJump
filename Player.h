@@ -33,6 +33,7 @@ public:
 private:
     bool m_facingLeft = true;
     bool m_hasShot = false;
+    int m_currentJumpHeight = 0;
     bool m_isFalling = false;
     QTimer* m_shootingPixmapTimer;
     QPixmap m_pixmap;

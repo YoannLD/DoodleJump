@@ -9,6 +9,7 @@
 
 Player::Player() {
 
+    // --------- Loading pixmaps ---------
     m_pixmap = QPixmap();
     bool doodleLoaded = m_pixmap.load(QApplication::applicationDirPath() + "/images/doodle.png");
     if(!doodleLoaded) {
@@ -22,10 +23,9 @@ Player::Player() {
     }
     setPixmap(m_pixmap);
 
-
+    // --------- Creating timers ---------
     auto * timer = new QTimer();
     m_shootingPixmapTimer = new QTimer();
-    m_shootingPixmapTimer->setSingleShot(true);
     connect(timer,SIGNAL(timeout()),this,SLOT(move()));
     connect(m_shootingPixmapTimer,SIGNAL(timeout()),this,SLOT(updatePixmap()));
 
@@ -98,6 +98,24 @@ void Player::move() {
                 break;
         }
     }
+    if(!m_isFalling) {
+        if(m_currentJumpHeight >= JUMP_HEIGHT) {
+            m_isFalling = true;
+        }
+        else {
+            setPos(x(), y() - 1);
+            m_currentJumpHeight++;
+        }
+    }
+    else {
+        if(m_currentJumpHeight <= 0) {
+            m_isFalling = false;
+        }
+        else {
+            setPos(x(), y() + 1);
+            m_currentJumpHeight--;
+        }
+    }
 }
 
 void Player::updatePosition(float deltaTime) {
@@ -133,6 +151,7 @@ void Player::updateTimeAccumulators(float deltaTime) {
 }
 
 void Player::updatePixmap() {
+    m_shootingPixmapTimer->stop();
     setPixmap(m_pixmap);
     if(!m_facingLeft) {
         setPixmap(pixmap().transformed(QTransform().scale(-1, 1)));
