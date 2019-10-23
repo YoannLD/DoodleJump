@@ -4,19 +4,21 @@
 #include "Moving.h"
 #include <QKeyEvent>
 #include <QGraphicsRectItem>
+#include <QList>
 #include "consts.h"
 
-class Player : public Moving{
-
+class Player : public QObject, public Moving {
+Q_OBJECT
 public:
-    void keyPressEvent(QKeyEvent * event) override;
-    void updatePosition(float deltaTime) override;
-private:
-    bool m_facingLeft = true;
-    bool m_isFalling = false;
-    float m_speed = DOODLER_SPEED;
+    Player();
 
-    void setHorizontalPosition(float nextX,float deltaTime);
+    void keyPressEvent(QKeyEvent *event) override;
+
+    void keyReleaseEvent(QKeyEvent *event) override;
+
+    void updatePosition(float deltaTime) override;
+
+    void setHorizontalPosition(float nextX, float deltaTime);
 
     void setFallingState(float nextY);
 
@@ -27,6 +29,15 @@ private:
     void resetTimeAccumulators();
 
     void updateTimeAccumulators(float deltaTime);
+
+private:
+    bool m_facingLeft = true;
+    bool m_isFalling = false;
+    float m_speed = DOODLER_SPEED;
+    std::vector<int> m_events;
+public slots:
+
+    void move();
 
 
 };
