@@ -32,6 +32,7 @@ public:
 
 private:
     bool m_facingLeft = true;
+    bool m_hasShot = false;
     bool m_isFalling = false;
     float m_speed = DOODLER_SPEED;
     std::vector<int> m_events;

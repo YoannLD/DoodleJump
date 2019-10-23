@@ -15,7 +15,6 @@ Player::Player() {
 
 void Player::keyPressEvent(QKeyEvent *event) {
     if(!(event->isAutoRepeat())) {
-
         // If the key isn't already in the vector
         if (std::find(m_events.begin(), m_events.end(), event->key()) == m_events.end()) {
 
@@ -30,6 +29,9 @@ void Player::keyReleaseEvent(QKeyEvent *event) {
     if(!(event->isAutoRepeat())) {
         // Remove from the vector
         m_events.erase(std::remove(m_events.begin(), m_events.end(), event->key()), m_events.end());
+       if(event->key() == Qt::Key_Space || event->key() == Qt::Key_Up || event->key() == Qt::Key_Z) {
+           m_hasShot = false;
+       }
     }
 }
 
@@ -65,9 +67,12 @@ void Player::move() {
             case Qt::Key_Space:
             case Qt::Key_Up:
             case Qt::Key_Z :
-                auto *bullet = new Bullet();
-                bullet->setPos(x() + pixmap().width() / 2, y());
-                scene()->addItem(bullet);
+                if(!m_hasShot) {
+                    m_hasShot = true;
+                    auto *bullet = new Bullet();
+                    bullet->setPos(x() + pixmap().width() / 2, y());
+                    scene()->addItem(bullet);
+                }
                 break;
         }
     }
