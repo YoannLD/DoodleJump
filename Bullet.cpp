@@ -20,7 +20,7 @@ Bullet::Bullet() {
 }
 
 void Bullet::move(){
-    setPos(x(),y()-1);
+    setPos(x(),y()-3);
     if(pos().y()+pixmap().height() < 0){
         scene()->removeItem(this);
         m_timer->stop();

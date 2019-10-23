@@ -15,9 +15,9 @@ static const unsigned MAX_FPS = 60;
 static const float G = 9.8f;
 static const float TIME_ACCELERATOR = 10.f;
 static const float MOVE_SPEED = 500.f;
-static const int DOODLER_SPEED = 3;
+static const int DOODLER_SPEED = 4;
 static const int JUMP_HEIGHT = 100;
-static const int BULLET_SPEED = 1;
+static const int BULLET_SPEED = 3;
 static const unsigned MAX_PRECISION_COUNT = 16;
 
 

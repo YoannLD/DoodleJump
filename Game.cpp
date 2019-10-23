@@ -4,6 +4,7 @@
 
 #include "Game.h"
 #include "Player.h"
+#include "BasicPlatform.h"
 #include <QGraphicsScene>
 #include <QDebug>
 #include <QApplication>
@@ -30,7 +31,14 @@ Game::Game() {
     // create a player
     auto * player = new Player();
 
-    player->setPos(scene->width()/2,scene->height()-player->pixmap().height());
+    player->setPos(scene->width()/2,scene->height()-player->pixmap().height()-10);
+
+    // create a platform
+    auto * platform1 = new BasicPlatform();
+    auto * platform2 = new BasicPlatform();
+
+    platform1->setPos(scene->width()/2-100,scene->height()-player->pixmap().height()-30);
+    platform2->setPos(scene->width()/2,scene->height()-platform2->pixmap().height());
 
 
 
@@ -38,6 +46,8 @@ Game::Game() {
     player->setFocus();
 
     scene->addItem(player);
+    scene->addItem(platform1);
+    scene->addItem(platform2);
 
 
 }

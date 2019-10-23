@@ -4,7 +4,8 @@
 #include "Platform.h"
 
 class BasicPlatform : public Platform {
-
+public:
+    BasicPlatform();
 };
 
 

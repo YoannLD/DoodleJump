@@ -1,5 +1,6 @@
 #include "Player.h"
 #include "Bullet.h"
+#include "BasicPlatform.h"
 #include "consts.h"
 #include <QGraphicsScene>
 #include <QDebug>
@@ -98,20 +99,30 @@ void Player::move() {
                 break;
         }
     }
-    if(!m_isFalling) {
-        if(m_currentJumpHeight >= JUMP_HEIGHT) {
+
+    for(auto element : scene()->collidingItems(this)) {
+        //Check if one is hurting
+    }
+    if (!m_isFalling) {
+        if (m_currentJumpHeight >= JUMP_HEIGHT) {
             m_isFalling = true;
-        }
-        else {
+        } else {
             setPos(x(), y() - 1);
             m_currentJumpHeight++;
         }
-    }
-    else {
-        if(m_currentJumpHeight <= 0) {
-            m_isFalling = false;
+    } else {
+
+        for(auto element : scene()->collidingItems(this)) {
+            BasicPlatform* platform = dynamic_cast<BasicPlatform*>(element);
+            if(platform) {
+                m_isFalling = false;
+                m_currentJumpHeight = 0;
+            }
         }
-        else {
+
+        if (pos().y() + pixmap().height() >= WINDOW_HEIGHT) {
+            qDebug() << "PERDU";
+        } else {
             setPos(x(), y() + 1);
             m_currentJumpHeight--;
         }
