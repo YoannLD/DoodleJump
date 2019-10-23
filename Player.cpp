@@ -35,30 +35,40 @@ void Player::keyReleaseEvent(QKeyEvent *event) {
 
 void Player::move() {
     for (int key : m_events) {
-        if (key == Qt::Key_Left || key == Qt::Key_Q) {
-            if (pos().x() + (pixmap().width() / 2) > 0)
-                setPos(x() - 15, y());
-            else
-                setPos(scene()->width() - (pixmap().width() / 2), y());
+        switch(key) {
+            case Qt::Key_Left :
+            case Qt::Key_Q :
+                if (pos().x() + (pixmap().width() / 2) > 0)
+                    setPos(x() - 15, y());
+                else
+                    setPos(scene()->width() - (pixmap().width() / 2), y());
 
-            if (!m_facingLeft) {
-                m_facingLeft = true;
-                setPixmap(pixmap().transformed(QTransform().scale(-1, 1)));
-            }
-        } else if (key == Qt::Key_Right || key == Qt::Key_D) {
-            if (pos().x() + (pixmap().width() / 2) < scene()->width())
-                setPos(x() + 15, y());
-            else
-                setPos(-pixmap().width() / 2, y());
+                if (!m_facingLeft) {
+                    m_facingLeft = true;
+                    setPixmap(pixmap().transformed(QTransform().scale(-1, 1)));
+                }
+                break;
+            case Qt::Key_Right :
+            case Qt::Key_D :
+                if (pos().x() + (pixmap().width() / 2) < scene()->width()) {
+                    setPos(x() + 15, y());
+                }
+                else {
+                    setPos(-pixmap().width() / 2, y());
+                }
 
-            if (m_facingLeft) {
-                m_facingLeft = false;
-                setPixmap(pixmap().transformed(QTransform().scale(-1, 1)));
-            }
-        } else if (key == Qt::Key_Space || key == Qt::Key_Up || key == Qt::Key_Z) {
-            auto *bullet = new Bullet();
-            bullet->setPos(x() + pixmap().width() / 2, y());
-            scene()->addItem(bullet);
+                if (m_facingLeft) {
+                    m_facingLeft = false;
+                    setPixmap(pixmap().transformed(QTransform().scale(-1, 1)));
+                }
+                break;
+            case Qt::Key_Space:
+            case Qt::Key_Up:
+            case Qt::Key_Z :
+                auto *bullet = new Bullet();
+                bullet->setPos(x() + pixmap().width() / 2, y());
+                scene()->addItem(bullet);
+                break;
         }
     }
 }
