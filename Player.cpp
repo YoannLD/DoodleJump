@@ -5,12 +5,31 @@
 #include <QDebug>
 #include <QKeyEvent>
 #include <QTimer>
+#include <QApplication>
 
 Player::Player() {
-    auto * timer = new QTimer();
-    connect(timer,SIGNAL(timeout()),this,SLOT(move()));
 
-    timer->start((int) m_speed);
+    m_pixmap = QPixmap();
+    bool doodleLoaded = m_pixmap.load(QApplication::applicationDirPath() + "/images/doodle.png");
+    if(!doodleLoaded) {
+        qDebug() << "Error loading : " + QApplication::applicationDirPath() + "/images/doodle.png";
+    }
+
+    m_shootingPixmap = QPixmap();
+    bool shootingLoaded = m_shootingPixmap.load(QApplication::applicationDirPath() + "/images/doodleShoot.png");
+    if(!shootingLoaded) {
+        qDebug() << "Error loading : " + QApplication::applicationDirPath() + "/images/doodleShoot.png";
+    }
+    setPixmap(m_pixmap);
+
+
+    auto * timer = new QTimer();
+    m_shootingPixmapTimer = new QTimer();
+    m_shootingPixmapTimer->setSingleShot(true);
+    connect(timer,SIGNAL(timeout()),this,SLOT(move()));
+    connect(m_shootingPixmapTimer,SIGNAL(timeout()),this,SLOT(updatePixmap()));
+
+    timer->start(DOODLER_SPEED);
 }
 
 void Player::keyPressEvent(QKeyEvent *event) {
@@ -72,6 +91,9 @@ void Player::move() {
                     auto *bullet = new Bullet();
                     bullet->setPos(x() + pixmap().width() / 2, y());
                     scene()->addItem(bullet);
+
+                    setPixmap(m_shootingPixmap);
+                    m_shootingPixmapTimer->start(300);
                 }
                 break;
         }
@@ -108,6 +130,13 @@ void Player::resetTimeAccumulators() {
 
 void Player::updateTimeAccumulators(float deltaTime) {
 
+}
+
+void Player::updatePixmap() {
+    setPixmap(m_pixmap);
+    if(!m_facingLeft) {
+        setPixmap(pixmap().transformed(QTransform().scale(-1, 1)));
+    }
 }
 
 

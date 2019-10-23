@@ -5,7 +5,7 @@
 #include <QKeyEvent>
 #include <QGraphicsRectItem>
 #include <QList>
-#include "consts.h"
+#include <QTimer>
 
 class Player : public QObject, public Moving {
 Q_OBJECT
@@ -34,11 +34,14 @@ private:
     bool m_facingLeft = true;
     bool m_hasShot = false;
     bool m_isFalling = false;
-    float m_speed = DOODLER_SPEED;
+    QTimer* m_shootingPixmapTimer;
+    QPixmap m_pixmap;
+    QPixmap m_shootingPixmap;
     std::vector<int> m_events;
 public slots:
 
     void move();
+    void updatePixmap();
 
 
 };
