@@ -26,11 +26,15 @@ Player::Player() {
 
     // --------- Creating timers ---------
     auto * timer = new QTimer();
+    m_jumpTimer = new QTimer();
+    m_jumpTimer->setSingleShot(true);
     m_shootingPixmapTimer = new QTimer();
     connect(timer,SIGNAL(timeout()),this,SLOT(move()));
+    connect(m_jumpTimer,SIGNAL(timeout()),this,SLOT(moveJump()));
     connect(m_shootingPixmapTimer,SIGNAL(timeout()),this,SLOT(updatePixmap()));
 
-    timer->start(DOODLER_SPEED);
+    timer->start(m_speed);
+    m_jumpTimer->start(m_velocityY);
 }
 
 void Player::keyPressEvent(QKeyEvent *event) {
@@ -103,30 +107,43 @@ void Player::move() {
     for(auto element : scene()->collidingItems(this)) {
         //Check if one is hurting
     }
+}
+
+void Player::moveJump() {
     if (!m_isFalling) {
+        // Si on a atteint 80% du saut, on commence à ralentir
+        if(JUMP_HEIGHT - m_currentJumpHeight < (20/100)*JUMP_HEIGHT) {
+            m_velocityY*=1.05;
+        }
+        // Quand on atteint la hauter de saut max, on commence à tomber
         if (m_currentJumpHeight >= JUMP_HEIGHT) {
             m_isFalling = true;
+            m_velocityY = MIN_SPEED_JUMP;
         } else {
             setPos(x(), y() - 1);
             m_currentJumpHeight++;
         }
     } else {
-
+        // La chute accélère jusqu'à la vitesse max
+        if(m_velocityY > MAX_SPEED_JUMP) m_velocityY/=1.05;
+        // On vérifie si on touche une plateforme
         for(auto element : scene()->collidingItems(this)) {
             BasicPlatform* platform = dynamic_cast<BasicPlatform*>(element);
             if(platform) {
                 m_isFalling = false;
                 m_currentJumpHeight = 0;
+                m_velocityY = JUMP_SPEED;
             }
         }
 
         if (pos().y() + pixmap().height() >= WINDOW_HEIGHT) {
-            qDebug() << "PERDU";
         } else {
             setPos(x(), y() + 1);
             m_currentJumpHeight--;
         }
+
     }
+    m_jumpTimer->start((int) m_velocityY);
 }
 
 void Player::updatePosition(float deltaTime) {
@@ -167,6 +184,11 @@ void Player::updatePixmap() {
     if(!m_facingLeft) {
         setPixmap(pixmap().transformed(QTransform().scale(-1, 1)));
     }
+}
+
+Player::~Player() {
+    delete m_shootingPixmapTimer;
+    delete m_jumpTimer;
 }
 
 
