@@ -5,7 +5,8 @@
         <file>images/bullet.png</file>
         <file>images/doodle.png</file>
         <file>images/doodleShoot.png</file>
-        <file>sounds/jump.caf</file>
-        <file>sounds/test.mp3</file>
+        <file>sounds/jump.mp3</file>
+        <file>sounds/fall.mp3</file>
+        <file>sounds/shoot.mp3</file>
     </qresource>
 </RCC>

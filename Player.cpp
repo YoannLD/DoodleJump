@@ -26,10 +26,12 @@ Player::Player(Game* game) : m_game(game){
     setPixmap(m_pixmap);
 
     // --------- Setting up sound effects -------------
-
-
     bounceSound = new QMediaPlayer();
-    bounceSound->setMedia(QUrl(":/sounds/test.mp3"));
+    fallSound = new QMediaPlayer();
+    shootSound = new QMediaPlayer();
+    bounceSound->setMedia(QUrl("qrc:/sounds/jump.mp3"));
+    fallSound->setMedia(QUrl("qrc:/sounds/fall.mp3"));
+    shootSound->setMedia(QUrl("qrc:/sounds/shoot.mp3"));
 
     // --------- Creating timers ---------
     auto * timer = new QTimer();
@@ -104,6 +106,13 @@ void Player::move() {
                     scene()->addItem(bullet);
 
                     setPixmap(m_shootingPixmap);
+                    // Si le son est déjà lancé, remet à 0
+                    if(shootSound->state() == QMediaPlayer::PlayingState) {
+                        shootSound->setPosition(0);
+                    }
+                    else if(shootSound->state() == QMediaPlayer::StoppedState) {
+                        shootSound->play();
+                    }
                     m_shootingPixmapTimer->start(300);
                 }
                 break;
@@ -116,6 +125,13 @@ void Player::moveJump() {
     m_velocityY += gravity;
     if (y() + pixmap().height()>= WINDOW_HEIGHT) { // (Perdu)
         setY(WINDOW_HEIGHT - pixmap().height());
+        // Si le son est déjà lancé, remet à 0
+        if(fallSound->state() == QMediaPlayer::PlayingState) {
+            fallSound->setPosition(0);
+        }
+        else if(fallSound->state() == QMediaPlayer::StoppedState) {
+            fallSound->play();
+        }
     } else {
         if(y() < hauteurMax) { // Hauteur max, scroll
             if(abs(m_velocityY) > 0.21) m_game->increaseScore();
@@ -140,7 +156,14 @@ void Player::moveJump() {
             if(platform) { // Rebond
                 m_velocityY = -7;
                 setY(platform->y()-pixmap().height());
-                bounceSound->play();
+
+                // Si le son est déjà lancé, remet à 0
+                if(bounceSound->state() == QMediaPlayer::PlayingState) {
+                    bounceSound->setPosition(0);
+                }
+                else if(bounceSound->state() == QMediaPlayer::StoppedState) {
+                    bounceSound->play();
+                }
             }
         }
     }

@@ -50,6 +50,8 @@ private:
     QPixmap m_shootingPixmap;
     std::vector<int> m_events;
     QMediaPlayer* bounceSound ;
+    QMediaPlayer* shootSound ;
+    QMediaPlayer* fallSound ;
 public slots:
 
     void move();
