@@ -8,12 +8,9 @@
 // Windows params
 static const unsigned WINDOW_WIDTH = 400;
 static const unsigned WINDOW_HEIGHT = 600;
-static const unsigned ANTIALIASING_LEVEL = 8;
-static const unsigned MAX_FPS = 60;
 
 // Game param
-static const float G = 9.8f;
-static const float TIME_ACCELERATOR = 10.f;
+
 static const float MOVE_SPEED = 500.f;
 static const int DOODLER_SPEED = 4;
 static const float JUMP_SPEED = 3.f;

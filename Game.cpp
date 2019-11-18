@@ -33,21 +33,19 @@ Game::Game() {
 
     player->setPos(scene->width()/2,scene->height()-player->pixmap().height()-10);
 
-    // create a platform
-    auto * platform1 = new BasicPlatform();
-    auto * platform2 = new BasicPlatform();
-
-    platform1->setPos(scene->width()/2-100,scene->height()-player->pixmap().height()-30);
-    platform2->setPos(scene->width()/2,scene->height()-platform2->pixmap().height());
-
-
 
     player->setFlag(QGraphicsItem::ItemIsFocusable);
     player->setFocus();
 
     scene->addItem(player);
-    scene->addItem(platform1);
-    scene->addItem(platform2);
+    // create a platform
+    for(int i=0; i < 18; i++){
+        BasicPlatform* platform = new BasicPlatform();
+        if(scene->collidingItems(platform).size() == 0)
+            scene->addItem(new BasicPlatform());
+        else
+            i--;
+    }
 
 
 }

@@ -110,7 +110,6 @@ void Player::moveJump() {
     if (y() + pixmap().height()>= WINDOW_HEIGHT) {
         qDebug() << y();
         setY(WINDOW_HEIGHT - pixmap().height());
-        qDebug() << "Perdu";
     } else {
         setY(y() + m_velocityY);
     }
@@ -121,9 +120,7 @@ void Player::moveJump() {
             auto* platform = dynamic_cast<BasicPlatform*>(element);
             if(platform) {
                 m_velocityY = -7;
-                qDebug() << "Avant rebond : " << y();
                 setY(platform->y()-pixmap().height());
-                qDebug() << "Après rebond : " << y();
             }
         }
     }
