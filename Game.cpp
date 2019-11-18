@@ -39,7 +39,9 @@ Game::Game() {
 
     scene->addItem(player);
 
-    scene->addSimpleText(QString(m_score));
+    text = scene->addText(QString::number(m_score),QFont("Al Seana"));
+    text->setPos(10, 10);
+
     // create a platform
     for(int i=0; i < 18; i++){
         BasicPlatform* platform = new BasicPlatform();
@@ -54,4 +56,5 @@ Game::Game() {
 
 void Game::increaseScore() {
     m_score++;
+    text->setPlainText(QString::number(m_score));
 }

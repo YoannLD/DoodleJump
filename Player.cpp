@@ -114,7 +114,8 @@ void Player::moveJump() {
             m_game->increaseScore();
             setY(hauteurMax);
             for(auto element : scene()->items()) {
-                if(element != this) {
+                auto* platform = dynamic_cast<BasicPlatform*>(element);
+                if(platform) {
                     element->setY(element->y() - m_velocityY);
                     if (element->y() > WINDOW_HEIGHT) {
                         scene()->removeItem(element);

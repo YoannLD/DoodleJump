@@ -19,6 +19,7 @@ public:
 
 private:
     int m_score = 0;
+    QGraphicsTextItem *text;
 };
 
 #endif //DOODLEJUMP_GAME_H
