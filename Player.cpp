@@ -108,9 +108,19 @@ void Player::moveJump() {
 
     m_velocityY += gravity;
     if (y() + pixmap().height()>= WINDOW_HEIGHT) {
-        qDebug() << y();
         setY(WINDOW_HEIGHT - pixmap().height());
     } else {
+        if(y() < hauteurMax) {
+            setY(hauteurMax);
+            for(auto element : scene()->items()) {
+                if(element != this) {
+                    element->setY(element->y() - m_velocityY);
+                    if (element->y() > WINDOW_HEIGHT) {
+                        scene()->removeItem(element);
+                    }
+                }
+            }
+        }
         setY(y() + m_velocityY);
     }
 

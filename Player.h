@@ -37,6 +37,7 @@ private:
     bool m_hasShot = false;
     int m_currentJumpHeight = 0;
     float m_velocityX = 0;
+    int hauteurMax = 2*WINDOW_HEIGHT/3;
     float gravity = 0.2;
     float m_velocityY = 0;
     bool m_isFalling = false;

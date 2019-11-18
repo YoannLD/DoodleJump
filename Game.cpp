@@ -42,7 +42,7 @@ Game::Game() {
     for(int i=0; i < 18; i++){
         BasicPlatform* platform = new BasicPlatform();
         if(scene->collidingItems(platform).size() == 0)
-            scene->addItem(new BasicPlatform());
+            scene->addItem(platform);
         else
             i--;
     }
