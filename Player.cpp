@@ -107,17 +107,17 @@ void Player::move() {
 void Player::moveJump() {
 
     m_velocityY += gravity;
-    if (y() + pixmap().height()>= WINDOW_HEIGHT) {
+    if (y() + pixmap().height()>= WINDOW_HEIGHT) { // (Perdu)
         setY(WINDOW_HEIGHT - pixmap().height());
     } else {
-        if(y() < hauteurMax) {
-            m_game->increaseScore();
+        if(y() < hauteurMax) { // Hauteur max, scroll
+            if(abs(m_velocityY) > 0.21) m_game->increaseScore();
             setY(hauteurMax);
             for(auto element : scene()->items()) {
                 auto* platform = dynamic_cast<BasicPlatform*>(element);
                 if(platform) {
                     element->setY(element->y() - m_velocityY);
-                    if (element->y() > WINDOW_HEIGHT) {
+                    if (element->y() > WINDOW_HEIGHT) { // Si plateforme en dessous de l'écran
                         scene()->removeItem(element);
                     }
                 }
@@ -155,7 +155,7 @@ void Player::setFallingState(float nextY) {
 }
 
 float Player::getNextY() const {
-    return y()+m_velocityY;
+    return 0;
 }
 
 void Player::setNextY(float nextY) {
