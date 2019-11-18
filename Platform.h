@@ -6,10 +6,8 @@
 class Platform : public GameObject {
 
 public:
-    static void incrementMultiplier();
-    static void resetMultiplier();
 
-protected:
+
     static float multiplier;
 };
 

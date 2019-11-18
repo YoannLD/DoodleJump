@@ -11,6 +11,9 @@
 #include "consts.h"
 
 Game::Game() {
+
+    nb_platform = 18;
+
     // create a scene
     scene = new QGraphicsScene(this);
     scene->setSceneRect(0,0,WINDOW_WIDTH,WINDOW_HEIGHT);
@@ -43,10 +46,36 @@ Game::Game() {
     text->setPos(10, 10);
 
     // create a platform
-    for(int i=0; i < 18; i++){
+    addPlatform();
+
+}
+
+void Game::addPlatform() {
+
+    int nb_actual_platform = 0;
+    int platform_y_min = WINDOW_HEIGHT;
+    for(auto element : scene->items()) {
+        if(Platform* platform = dynamic_cast<Platform*>(element)){
+            nb_actual_platform++;
+            if(element->y() < platform_y_min){
+                platform_y_min = element->y();
+            }
+        }
+    }
+
+
+
+    for(int i=0; i < nb_platform-nb_actual_platform; i++){
         BasicPlatform* platform = new BasicPlatform();
-        if(scene->collidingItems(platform).size() == 0)
+
+        platform = new BasicPlatform();
+
+        if(scene->collidingItems(platform).size() == 0){
+
+            //platform->setY(platform->y()-30);
             scene->addItem(platform);
+        }
+
         else
             i--;
     }

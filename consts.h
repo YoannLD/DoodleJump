@@ -21,4 +21,5 @@ static const int BULLET_SPEED = 3;
 static const unsigned MAX_PRECISION_COUNT = 16;
 
 
+
 #endif //DOODLEJUMP_CONSTS_H

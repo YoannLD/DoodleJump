@@ -13,11 +13,12 @@ BasicPlatform::BasicPlatform() {
     setPixmap(*pixmap);
 
     const float minX = pixmap->width() / 2;
-    const float maxX = WINDOW_WIDTH - pixmap->width() / 2;
+    const float maxX = WINDOW_WIDTH - pixmap->width() ;
     setX(minX + (rand()% static_cast<int>(maxX-minX+1)));
 
-    const float minY = WINDOW_HEIGHT - Platform::multiplier * WINDOW_HEIGHT;
-    const float maxY = -Platform::multiplier * WINDOW_HEIGHT;
+    const float minY = -200.f;
+    const float maxY = Platform::multiplier;
+    qDebug() << minY << maxY;
     setY(minY+ (rand() % static_cast<int>(maxY-minY+1)));
 
 }

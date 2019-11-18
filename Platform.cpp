@@ -1,11 +1,5 @@
 #include "Platform.h"
+#include "consts.h"
 
-float Platform::multiplier = 1.f;
+float Platform::multiplier = WINDOW_HEIGHT;
 
-void Platform::incrementMultiplier() {
-    ++multiplier;
-}
-
-void Platform::resetMultiplier() {
-    multiplier = 1.f;
-}

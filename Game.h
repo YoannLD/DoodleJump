@@ -15,9 +15,11 @@ public:
     // member attributes
     QGraphicsScene * scene;
 
+    void addPlatform();
     void increaseScore();
 
 private:
+    int nb_platform;
     int m_score = 0;
     QGraphicsTextItem *text;
 };

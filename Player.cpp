@@ -141,6 +141,8 @@ void Player::moveJump() {
                 if(platform) {
                     element->setY(element->y() - m_velocityY);
                     if (element->y() > WINDOW_HEIGHT) { // Si plateforme en dessous de l'écran
+                        Platform::multiplier = 0.f;
+                        m_game->addPlatform();
                         scene()->removeItem(element);
                     }
                 }
