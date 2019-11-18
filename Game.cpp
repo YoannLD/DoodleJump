@@ -16,9 +16,9 @@ Game::Game() {
     scene->setSceneRect(0,0,WINDOW_WIDTH,WINDOW_HEIGHT);
 
     QPixmap backgroundPixmap = QPixmap();
-    bool backgroundLoaded = backgroundPixmap.load(QApplication::applicationDirPath() + "/images/background.png");
+    bool backgroundLoaded = backgroundPixmap.load(":/images/background.png");
     if(!backgroundLoaded) {
-        qDebug() << "Error loading : " + QApplication::applicationDirPath() + "/images/background.png";
+        qDebug() << "Error loading : :/images/background.png";
     }
     scene->setBackgroundBrush(QBrush(backgroundPixmap));
 

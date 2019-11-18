@@ -7,22 +7,29 @@
 #include <QKeyEvent>
 #include <QTimer>
 #include <QApplication>
+#include <QMediaPlayer>
 
 Player::Player(Game* game) : m_game(game){
 
     // --------- Loading pixmaps ---------
     m_pixmap = QPixmap();
-    bool doodleLoaded = m_pixmap.load(QApplication::applicationDirPath() + "/images/doodle.png");
+    bool doodleLoaded = m_pixmap.load(":/images/doodle.png");
     if(!doodleLoaded) {
-        qDebug() << "Error loading : " + QApplication::applicationDirPath() + "/images/doodle.png";
+        qDebug() << "Error loading : :/images/doodle.png";
     }
 
     m_shootingPixmap = QPixmap();
-    bool shootingLoaded = m_shootingPixmap.load(QApplication::applicationDirPath() + "/images/doodleShoot.png");
+    bool shootingLoaded = m_shootingPixmap.load(":/images/doodleShoot.png");
     if(!shootingLoaded) {
-        qDebug() << "Error loading : " + QApplication::applicationDirPath() + "/images/doodleShoot.png";
+        qDebug() << "Error loading : :/images/doodleShoot.png";
     }
     setPixmap(m_pixmap);
+
+    // --------- Setting up sound effects -------------
+
+
+    bounceSound = new QMediaPlayer();
+    bounceSound->setMedia(QUrl(":/sounds/test.mp3"));
 
     // --------- Creating timers ---------
     auto * timer = new QTimer();
@@ -130,9 +137,10 @@ void Player::moveJump() {
         // On vérifie si on touche une plateforme
         for(auto element : scene()->collidingItems(this)) {
             auto* platform = dynamic_cast<BasicPlatform*>(element);
-            if(platform) {
+            if(platform) { // Rebond
                 m_velocityY = -7;
                 setY(platform->y()-pixmap().height());
+                bounceSound->play();
             }
         }
     }

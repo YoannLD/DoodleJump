@@ -6,6 +6,7 @@
 #include "Game.h"
 #include <QKeyEvent>
 #include <QGraphicsRectItem>
+#include <QMediaPlayer>
 #include <QList>
 #include <QTimer>
 
@@ -48,6 +49,7 @@ private:
     QPixmap m_pixmap;
     QPixmap m_shootingPixmap;
     std::vector<int> m_events;
+    QMediaPlayer* bounceSound ;
 public slots:
 
     void move();

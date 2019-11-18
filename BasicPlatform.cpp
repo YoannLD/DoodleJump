@@ -6,9 +6,9 @@
 BasicPlatform::BasicPlatform() {
     // --------- Loading pixmaps ---------
     auto* pixmap = new QPixmap();
-    bool loaded = pixmap->load(QApplication::applicationDirPath() + "/images/basicPlatform.png");
+    bool loaded = pixmap->load(":/images/basicPlatform.png");
     if(!loaded) {
-        qDebug() << "Error loading : " + QApplication::applicationDirPath() + "/images/basicPlatform.png";
+        qDebug() << "Error loading : :/images/basicPlatform.png";
     }
     setPixmap(*pixmap);
 
