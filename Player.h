@@ -36,9 +36,9 @@ private:
     bool m_facingLeft = true;
     bool m_hasShot = false;
     int m_currentJumpHeight = 0;
-    int m_velocityX = 0;
-    int gravity = 1;
-    int m_velocityY = 0;
+    float m_velocityX = 0;
+    float gravity = 0.2;
+    float m_velocityY = 0;
     bool m_isFalling = false;
     QTimer* m_shootingPixmapTimer;
     QTimer* m_jumpTimer;

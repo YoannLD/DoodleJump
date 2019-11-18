@@ -33,7 +33,7 @@ Player::Player() {
     connect(m_shootingPixmapTimer,SIGNAL(timeout()),this,SLOT(updatePixmap()));
 
     timer->start(5);
-    m_jumpTimer->start(25);
+    m_jumpTimer->start(10);
 }
 
 void Player::keyPressEvent(QKeyEvent *event) {
@@ -120,7 +120,7 @@ void Player::moveJump() {
         for(auto element : scene()->collidingItems(this)) {
             auto* platform = dynamic_cast<BasicPlatform*>(element);
             if(platform) {
-                m_velocityY = -20;
+                m_velocityY = -7;
                 qDebug() << "Avant rebond : " << y();
                 setY(platform->y()-pixmap().height());
                 qDebug() << "Après rebond : " << y();
