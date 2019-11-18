@@ -8,7 +8,7 @@
 #include <QTimer>
 #include <QApplication>
 
-Player::Player() {
+Player::Player(Game* game) : m_game(game){
 
     // --------- Loading pixmaps ---------
     m_pixmap = QPixmap();
@@ -111,6 +111,7 @@ void Player::moveJump() {
         setY(WINDOW_HEIGHT - pixmap().height());
     } else {
         if(y() < hauteurMax) {
+            m_game->increaseScore();
             setY(hauteurMax);
             for(auto element : scene()->items()) {
                 if(element != this) {

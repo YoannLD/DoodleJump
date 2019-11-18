@@ -14,6 +14,11 @@ public:
 
     // member attributes
     QGraphicsScene * scene;
+
+    void increaseScore();
+
+private:
+    int m_score = 0;
 };
 
 #endif //DOODLEJUMP_GAME_H

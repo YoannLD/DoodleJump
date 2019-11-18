@@ -3,6 +3,7 @@
 
 #include "Moving.h"
 #include "consts.h"
+#include "Game.h"
 #include <QKeyEvent>
 #include <QGraphicsRectItem>
 #include <QList>
@@ -11,7 +12,7 @@
 class Player : public QObject, public Moving {
 Q_OBJECT
 public:
-    Player();
+    Player(Game* game);
     ~Player();
 
     void keyPressEvent(QKeyEvent *event) override;
@@ -33,6 +34,7 @@ public:
     void updateTimeAccumulators(float deltaTime);
 
 private:
+    Game* m_game;
     bool m_facingLeft = true;
     bool m_hasShot = false;
     int m_currentJumpHeight = 0;

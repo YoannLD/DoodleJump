@@ -29,7 +29,7 @@ Game::Game() {
 
 
     // create a player
-    auto * player = new Player();
+    auto * player = new Player(this);
 
     player->setPos(scene->width()/2,scene->height()-player->pixmap().height()-10);
 
@@ -38,6 +38,8 @@ Game::Game() {
     player->setFocus();
 
     scene->addItem(player);
+
+    scene->addSimpleText(QString(m_score));
     // create a platform
     for(int i=0; i < 18; i++){
         BasicPlatform* platform = new BasicPlatform();
@@ -50,3 +52,6 @@ Game::Game() {
 
 }
 
+void Game::increaseScore() {
+    m_score++;
+}
