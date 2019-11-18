@@ -36,8 +36,9 @@ private:
     bool m_facingLeft = true;
     bool m_hasShot = false;
     int m_currentJumpHeight = 0;
-    int m_speed = DOODLER_SPEED;
-    float m_velocityY = JUMP_SPEED;
+    int m_velocityX = 0;
+    int gravity = 1;
+    int m_velocityY = 0;
     bool m_isFalling = false;
     QTimer* m_shootingPixmapTimer;
     QTimer* m_jumpTimer;

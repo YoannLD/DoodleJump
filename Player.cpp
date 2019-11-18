@@ -27,14 +27,13 @@ Player::Player() {
     // --------- Creating timers ---------
     auto * timer = new QTimer();
     m_jumpTimer = new QTimer();
-    m_jumpTimer->setSingleShot(true);
     m_shootingPixmapTimer = new QTimer();
     connect(timer,SIGNAL(timeout()),this,SLOT(move()));
     connect(m_jumpTimer,SIGNAL(timeout()),this,SLOT(moveJump()));
     connect(m_shootingPixmapTimer,SIGNAL(timeout()),this,SLOT(updatePixmap()));
 
-    timer->start(m_speed);
-    m_jumpTimer->start(m_velocityY);
+    timer->start(5);
+    m_jumpTimer->start(25);
 }
 
 void Player::keyPressEvent(QKeyEvent *event) {
@@ -103,47 +102,31 @@ void Player::move() {
                 break;
         }
     }
-
-    for(auto element : scene()->collidingItems(this)) {
-        //Check if one is hurting
-    }
 }
 
 void Player::moveJump() {
-    if (!m_isFalling) {
-        // Si on a atteint 80% du saut, on commence à ralentir
-        if(JUMP_HEIGHT - m_currentJumpHeight < (20/100)*JUMP_HEIGHT) {
-            m_velocityY*=1.05;
-        }
-        // Quand on atteint la hauter de saut max, on commence à tomber
-        if (m_currentJumpHeight >= JUMP_HEIGHT) {
-            m_isFalling = true;
-            m_velocityY = MIN_SPEED_JUMP;
-        } else {
-            setPos(x(), y() - 1);
-            m_currentJumpHeight++;
-        }
+
+    m_velocityY += gravity;
+    if (y() + pixmap().height()>= WINDOW_HEIGHT) {
+        qDebug() << y();
+        setY(WINDOW_HEIGHT - pixmap().height());
+        qDebug() << "Perdu";
     } else {
-        // La chute accélère jusqu'à la vitesse max
-        if(m_velocityY > MAX_SPEED_JUMP) m_velocityY/=1.05;
+        setY(y() + m_velocityY);
+    }
+
+    if (m_velocityY > 0) {
         // On vérifie si on touche une plateforme
         for(auto element : scene()->collidingItems(this)) {
-            BasicPlatform* platform = dynamic_cast<BasicPlatform*>(element);
+            auto* platform = dynamic_cast<BasicPlatform*>(element);
             if(platform) {
-                m_isFalling = false;
-                m_currentJumpHeight = 0;
-                m_velocityY = JUMP_SPEED;
+                m_velocityY = -20;
+                qDebug() << "Avant rebond : " << y();
+                setY(platform->y()-pixmap().height());
+                qDebug() << "Après rebond : " << y();
             }
         }
-
-        if (pos().y() + pixmap().height() >= WINDOW_HEIGHT) {
-        } else {
-            setPos(x(), y() + 1);
-            m_currentJumpHeight--;
-        }
-
     }
-    m_jumpTimer->start((int) m_velocityY);
 }
 
 void Player::updatePosition(float deltaTime) {
@@ -163,7 +146,7 @@ void Player::setFallingState(float nextY) {
 }
 
 float Player::getNextY() const {
-    return 0;
+    return y()+m_velocityY;
 }
 
 void Player::setNextY(float nextY) {
