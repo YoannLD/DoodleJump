@@ -6,8 +6,6 @@
 class Platform : public GameObject {
 
 public:
-
-
     static float multiplier;
 };
 

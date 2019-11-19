@@ -17,6 +17,9 @@ public:
 
     void addPlatform();
     void increaseScore();
+    int getNbPlateformsAllow();
+    static void quickSort(QList<QGraphicsItem *> &items, int debut, int fin);
+
 
 private:
     int nb_platform;

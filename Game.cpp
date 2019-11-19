@@ -34,11 +34,13 @@ Game::Game() {
     // create a player
     auto * player = new Player(this);
 
-    player->setPos(scene->width()/2,scene->height()-player->pixmap().height()-10);
+    //player->setPos(scene->width()/2,scene->height()-player->pixmap().height()-10);
+    player->setPos(scene->width()/2,0);
 
 
     player->setFlag(QGraphicsItem::ItemIsFocusable);
     player->setFocus();
+    player->setZValue(100);
 
     scene->addItem(player);
 
@@ -50,40 +52,81 @@ Game::Game() {
 
 }
 
+int Game::getNbPlateformsAllow(){
+
+}
+
+
 void Game::addPlatform() {
 
-    int nb_actual_platform = 0;
-    int platform_y_min = WINDOW_HEIGHT;
+    int nb_actual_platform = scene->items().size()-1;
+
+    int i = 0;
+    while(i< nb_platform-nb_actual_platform){
+        auto* platform = new BasicPlatform();
+        if(scene->collidingItems(platform).empty()){
+            scene->addItem(platform);
+            i++;
+        }
+    }
+
+    QList<QGraphicsItem *> platforms;
+
     for(auto element : scene->items()) {
-        if(Platform* platform = dynamic_cast<Platform*>(element)){
+        if(auto* platform = dynamic_cast<Platform*>(element)){
             nb_actual_platform++;
-            if(element->y() < platform_y_min){
-                platform_y_min = element->y();
+            platforms.append(platform);
+        }
+    }
+
+    if(!platforms.empty()) {
+        quickSort(platforms, 0, platforms.size() - 1);
+    }
+
+    int j = 0;
+    while(j < platforms.size()-1){
+        float dist = QLineF(0, platforms.at(j)->y(), 0, platforms.at(j+1)->y()).length();
+        if(dist > 100){
+            qDebug() << dist;
+            auto* platform = new BasicPlatform(platforms.at(j)->y(),platforms.at(j+1)->y());
+            if(scene->collidingItems(platform).empty()){
+                scene->addItem(platform);
             }
         }
+        j++;
     }
-
-
-
-    for(int i=0; i < nb_platform-nb_actual_platform; i++){
-        BasicPlatform* platform = new BasicPlatform();
-
-        platform = new BasicPlatform();
-
-        if(scene->collidingItems(platform).size() == 0){
-
-            //platform->setY(platform->y()-30);
-            scene->addItem(platform);
-        }
-
-        else
-            i--;
-    }
-
 
 }
 
 void Game::increaseScore() {
     m_score++;
     text->setPlainText(QString::number(m_score));
+}
+
+void Game::quickSort(QList<QGraphicsItem *> &items, int low, int high){
+
+    int i = low;
+    int j = high;
+    double pivot = items.at((i+j)/2)->y()+1000;
+
+    while (i <= j)
+    {
+        while (items.at(i)->y()+1000 < pivot) {
+            i++;
+        }
+        while (items.at(j)->y()+1000 > pivot) {
+            j--;
+        }
+        if (i <= j)
+        {
+            items.swapItemsAt(i,j);
+            i++;
+            j--;
+        }
+    }
+    if (j > low)
+        quickSort(items, low, j);
+    if (i < high)
+        quickSort(items, i, high);
+
 }

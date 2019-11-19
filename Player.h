@@ -41,11 +41,12 @@ private:
     int m_currentJumpHeight = 0;
     float m_velocityX = 0;
     int hauteurMax = 2*WINDOW_HEIGHT/3;
-    float gravity = 0.2;
+    float gravity = 0.1;
     float m_velocityY = 0;
     bool m_isFalling = false;
     QTimer* m_shootingPixmapTimer;
     QTimer* m_jumpTimer;
+    QTimer* m_fallTimer;
     QPixmap m_pixmap;
     QPixmap m_shootingPixmap;
     std::vector<int> m_events;
@@ -57,6 +58,7 @@ public slots:
     void move();
     void moveJump();
     void updatePixmap();
+    void fall();
 
 
 };

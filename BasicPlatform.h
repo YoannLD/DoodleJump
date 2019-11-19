@@ -6,6 +6,7 @@
 class BasicPlatform : public Platform {
 public:
     BasicPlatform();
+    BasicPlatform(float minY, float maxY);
 
 };
 

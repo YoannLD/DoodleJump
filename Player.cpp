@@ -37,9 +37,12 @@ Player::Player(Game* game) : m_game(game){
     auto * timer = new QTimer();
     m_jumpTimer = new QTimer();
     m_shootingPixmapTimer = new QTimer();
+    m_fallTimer = new QTimer();
     connect(timer,SIGNAL(timeout()),this,SLOT(move()));
     connect(m_jumpTimer,SIGNAL(timeout()),this,SLOT(moveJump()));
     connect(m_shootingPixmapTimer,SIGNAL(timeout()),this,SLOT(updatePixmap()));
+    connect(m_fallTimer,SIGNAL(timeout()), this,SLOT(fall()));
+
 
     timer->start(5);
     m_jumpTimer->start(10);
@@ -120,6 +123,10 @@ void Player::move() {
     }
 }
 
+void Player::fall(){
+
+}
+
 void Player::moveJump() {
 
     m_velocityY += gravity;
@@ -132,6 +139,8 @@ void Player::moveJump() {
         else if(fallSound->state() == QMediaPlayer::StoppedState) {
             fallSound->play();
         }
+
+
     } else {
         if(y() < hauteurMax) { // Hauteur max, scroll
             if(abs(m_velocityY) > 0.21) m_game->increaseScore();
@@ -156,15 +165,16 @@ void Player::moveJump() {
         for(auto element : scene()->collidingItems(this)) {
             auto* platform = dynamic_cast<BasicPlatform*>(element);
             if(platform) { // Rebond
-                m_velocityY = -7;
-                setY(platform->y()-pixmap().height());
+                m_velocityY = -5;
+                if(y()+boundingRect().height() < platform->y()+platform->boundingRect().height()/2) {
+                    setY(platform->y() - pixmap().height());
 
-                // Si le son est déjà lancé, remet à 0
-                if(bounceSound->state() == QMediaPlayer::PlayingState) {
-                    bounceSound->setPosition(0);
-                }
-                else if(bounceSound->state() == QMediaPlayer::StoppedState) {
-                    bounceSound->play();
+                    // Si le son est déjà lancé, remet à 0
+                    if (bounceSound->state() == QMediaPlayer::PlayingState) {
+                        bounceSound->setPosition(0);
+                    } else if (bounceSound->state() == QMediaPlayer::StoppedState) {
+                        bounceSound->play();
+                    }
                 }
             }
         }
