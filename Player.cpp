@@ -146,6 +146,15 @@ void Player::moveJump() {
                         scene()->removeItem(platform);
                     }
                 }
+                else if(dynamic_cast<QGraphicsRectItem*>(element)) {
+                    auto* platform = dynamic_cast<QGraphicsRectItem*>(element);
+                    platform->setY(platform->y() - m_velocityY);
+                    if (platform->y() > WINDOW_HEIGHT) { // Si plateforme en dessous de l'écran
+                        Platform::multiplier = 0.f;
+                        m_game->addPlatform();
+                        scene()->removeItem(platform);
+                    }
+                }
                 else if(dynamic_cast<Bullet*>(element)) {
                     auto* bullet = dynamic_cast<Bullet*>(element);
                     bullet->setY(bullet->y() - m_velocityY);

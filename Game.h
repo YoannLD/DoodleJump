@@ -6,6 +6,7 @@
 #define DOODLEJUMP_GAME_H
 
 #include <QGraphicsView>
+#include "Platform.h"
 
 class Game: public QGraphicsView{
 public:
@@ -28,6 +29,10 @@ private:
     QGraphicsTextItem *text;
 
     void calculateNumberOfPlatform();
+
+    QList<Platform *> collidingPlatforms(Platform *platform);
+
+    QList<Platform *> getAllPlatforms();
 };
 
 #endif //DOODLEJUMP_GAME_H

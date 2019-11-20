@@ -52,6 +52,34 @@ Game::Game() {
 
 }
 
+QList<Platform*> Game::collidingPlatforms(Platform* platform){
+    QList<Platform*> res;
+    QList<Platform*> platforms = getAllPlatforms();
+    int i = 0;
+    while(i < platforms.size()){
+        if(MovingPlatform* movingPlatform = dynamic_cast<MovingPlatform*>(platforms.at(i))){
+            if(platform->y()+platform->pixmap().height() < movingPlatform->Platform::y() || platform->y() > movingPlatform->Platform::y()+movingPlatform->Platform::pixmap().height()){
+            }
+            else{
+                res.append(movingPlatform);
+            }
+
+        }
+        i++;
+    }
+    return res;
+}
+
+QList<Platform*> Game::getAllPlatforms(){
+    QList<Platform*> platforms;
+    for(auto element : scene->items()) {
+        if(auto* platform = dynamic_cast<Platform*>(element)){
+            platforms.append(platform);
+        }
+    }
+    return platforms;
+}
+
 void Game::calculateNumberOfPlatform(){
     // TODO : faire une énum 1000, 2500 et >= 2500
     if(m_score < 500){
@@ -67,17 +95,10 @@ void Game::calculateNumberOfPlatform(){
 
 void Game::addPlatform() {
 
-    int nb_actual_platform = 0;
-
     calculateNumberOfPlatform();
 
-    for(auto element : scene->items()) {
-        if(dynamic_cast<Platform*>(element)){
-            nb_actual_platform++;
-        }
-    }
+    int nb_actual_platform = getAllPlatforms().size();
 
-    QList<QGraphicsItem *> rectForMovingPlatform;
     if(nb_actual_platform < nb_platform_allow) {
         int i = 0;
         while (i < nb_platform_allow - nb_actual_platform) {
@@ -91,31 +112,30 @@ void Game::addPlatform() {
             else
                 platform = new BasicPlatform();
 
-            if (scene->collidingItems(platform).empty()) {
-                if(dynamic_cast<MovingPlatform*>(platform)){
-                    QGraphicsRectItem* rect = new QGraphicsRectItem(0,platform->y(),WINDOW_WIDTH,platform->pixmap().height());
-                    rectForMovingPlatform.append(rect);
-                    scene->addItem(rect);
-
+            if(dynamic_cast<MovingPlatform*>(platform)) {
+                QGraphicsRectItem* rect = new QGraphicsRectItem(0,platform->y(),WINDOW_WIDTH,platform->pixmap().height());
+                if(scene->collidingItems(rect).empty()){
+                    scene->addItem(platform);
+                    i++;
                 }
-                scene->addItem(platform);
-                i++;
+
+            }
+            else {
+                if (scene->collidingItems(platform).empty() && collidingPlatforms(platform).empty() ) {
+                    scene->addItem(platform);
+                    i++;
+                }
             }
         }
-
-
-        i = 0;
-        while(i < rectForMovingPlatform.size()){
-            delete(rectForMovingPlatform.at(i));
-            i++;
-        }
-
 
         QList<QGraphicsItem *> platforms;
 
         for(auto element : scene->items()) {
             if(auto* platform = dynamic_cast<BasicPlatform*>(element)){
-                platforms.append(platform);
+                platforms.append(element);
+            }
+            if(auto* moving = dynamic_cast<MovingPlatform*>(element)){
+                platforms.append(element);
             }
         }
 
@@ -126,9 +146,9 @@ void Game::addPlatform() {
         int j = 0;
         while(j < platforms.size()-1){
             float dist = QLineF(0, platforms.at(j)->y(), 0, platforms.at(j+1)->y()).length();
-            if(dist > 150){
+            if(dist > 140){
                 auto* platform = new BasicPlatform(platforms.at(j)->y(), platforms.at(j + 1)->y());
-                if(scene->collidingItems(platform).empty()){
+                if(scene->collidingItems(platform).empty() && collidingPlatforms(platform).empty()){
                     scene->addItem(platform);
                 }
             }
@@ -136,9 +156,6 @@ void Game::addPlatform() {
         }
 
     }
-
-
-
 }
 
 void Game::increaseScore() {
