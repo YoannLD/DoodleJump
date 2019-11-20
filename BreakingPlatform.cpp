@@ -1,5 +1,4 @@
 #include "BreakingPlatform.h"
-#include <QDebug>
 #include <QKeyEvent>
 #include <QTimer>
 #include <QMediaPlayer>
@@ -12,6 +11,13 @@ BreakingPlatform::BreakingPlatform() : Platform(":/images/breakingPlatform/break
     connect(breakingTimer, &QTimer::timeout, this, &BreakingPlatform::breaking);
 
 }
+
+
+
+BreakingPlatform::~BreakingPlatform() {
+    delete breakingTimer;
+    delete breakSound;
+};
 
 void BreakingPlatform::launchBreak(){
     breakingTimer->start(5);

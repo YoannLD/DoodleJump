@@ -1,7 +1,3 @@
-//
-// Created by yoann on 21/10/2019.
-//
-
 #include "Bullet.h"
 #include "consts.h"
 #include <QTimer>
@@ -9,25 +5,17 @@
 #include <QGraphicsScene>
 
 
-Bullet::Bullet() {
+Bullet::Bullet(QTimer* timer) {
 
-    setPixmap(QPixmap(":/images/bullet.png"));
-
-    m_timer = new QTimer();
-    connect(m_timer,SIGNAL(timeout()),this,SLOT(move()));
-
-    m_timer->start(BULLET_SPEED);
+    auto* pixmap = new QPixmap();
+    bool bulletLoaded = pixmap->load(":/images/bullet2.png");
+    if(!bulletLoaded) {
+        qDebug() << "Error loading : :/images/bullet2.png";
+    }
+    setPixmap(*pixmap);
+    connect(timer,SIGNAL(timeout()),this,SLOT(move()));
 }
 
 void Bullet::move(){
-    setPos(x(),y()-3);
-    if(pos().y()+pixmap().height() < 0){
-        scene()->removeItem(this);
-        m_timer->stop();
-        delete this;
-    }
+    setY(y()-1);
 }
-
-Bullet::~Bullet() {
-    delete m_timer;
-};

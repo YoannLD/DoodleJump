@@ -25,14 +25,13 @@ private:
     Game* m_game;
     bool m_facingLeft = true;
     bool m_hasShot = false;
-    bool tmp = false;
-    int m_currentJumpHeight = 0;
-    float m_velocityX = 0;
+    bool isJumping = false;
     int hauteurMax = WINDOW_HEIGHT/2;
     float gravity = 0.1;
     float m_velocityY = 0;
     QTimer* m_shootingPixmapTimer;
     QTimer* m_jumpTimer;
+    QTimer* m_shootTimer;
     QPixmap* m_pixmap;
     QPixmap* m_shootingPixmap;
     std::vector<int> m_events;

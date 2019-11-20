@@ -7,6 +7,7 @@
 class BreakingPlatform : public Platform {
 public:
     BreakingPlatform();
+    ~BreakingPlatform();
     void launchBreak();
 
 private:

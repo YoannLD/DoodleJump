@@ -35,6 +35,7 @@ Player::Player(Game* game) : m_game(game){
     shootSound->setMedia(QUrl("qrc:/sounds/shoot.mp3"));
 
     // --------- Creating timers ---------
+    m_shootTimer = new QTimer();
     auto * timer = new QTimer();
     m_jumpTimer = new QTimer();
     m_shootingPixmapTimer = new QTimer();
@@ -42,7 +43,7 @@ Player::Player(Game* game) : m_game(game){
     connect(m_jumpTimer,SIGNAL(timeout()),this,SLOT(moveJump()));
     connect(m_shootingPixmapTimer,SIGNAL(timeout()),this,SLOT(updatePixmap()));
 
-
+    m_shootTimer->start(BULLET_SPEED);
     timer->start(5);
     m_jumpTimer->start(10);
 }
@@ -103,7 +104,7 @@ void Player::move() {
             case Qt::Key_Z :
                 if(!m_hasShot) {
                     m_hasShot = true;
-                    auto *bullet = new Bullet();
+                    auto *bullet = new Bullet(m_shootTimer);
                     bullet->setPos(x() + pixmap().width() / 2, y());
                     scene()->addItem(bullet);
 
@@ -132,33 +133,47 @@ void Player::moveJump() {
 
     } else {
         if(y() < hauteurMax) { // Hauteur max, scroll
-            tmp = true;
+            isJumping = true;
             m_game->increaseScore();
             setY(hauteurMax);
             for(auto element : scene()->items()) {
-                auto* platform = dynamic_cast<Platform*>(element);
-                if(platform) {
-                    element->setY(element->y() - m_velocityY);
-                    if (element->y() > WINDOW_HEIGHT) { // Si plateforme en dessous de l'écran
+                if(dynamic_cast<Platform*>(element)) {
+                    auto* platform = dynamic_cast<Platform*>(element);
+                    platform->setY(platform->y() - m_velocityY);
+                    if (platform->y() > WINDOW_HEIGHT) { // Si plateforme en dessous de l'écran
                         Platform::multiplier = 0.f;
                         m_game->addPlatform();
-                        scene()->removeItem(element);
+                        scene()->removeItem(platform);
+                    }
+                }
+                else if(dynamic_cast<Bullet*>(element)) {
+                    auto* bullet = dynamic_cast<Bullet*>(element);
+                    bullet->setY(bullet->y() - m_velocityY);
+                    if (bullet->y()+bullet->pixmap().height() < 0) { // Si bullet  au dessus de l'écran
+                        scene()->removeItem(bullet);
                     }
                 }
             }
         }
         else {
-            if(tmp) {
-                tmp = false;
+            if(isJumping) {
+                isJumping = false;
                 setY(y()+1);
                 for(auto element : scene()->items()) {
-                    auto* platform = dynamic_cast<Platform*>(element);
-                    if(platform) {
-                        element->setY(element->y() + 1);
-                        if (element->y() > WINDOW_HEIGHT) { // Si plateforme en dessous de l'écran
+                    if(dynamic_cast<Platform*>(element)) {
+                        auto* platform = dynamic_cast<Platform*>(element);
+                        platform->setY(platform->y() + 1);
+                        if (platform->y() > WINDOW_HEIGHT) { // Si plateforme en dessous de l'écran
                             Platform::multiplier = 0.f;
                             m_game->addPlatform();
-                            scene()->removeItem(element);
+                            scene()->removeItem(platform);
+                        }
+                    }
+                    else if(dynamic_cast<Bullet*>(element)) {
+                        auto* bullet = dynamic_cast<Bullet*>(element);
+                        bullet->setY(bullet->y() + 1);
+                        if (bullet->y()+bullet->pixmap().height() < 0) { // Si bullet  au dessus de l'écran
+                            scene()->removeItem(bullet);
                         }
                     }
                 }
