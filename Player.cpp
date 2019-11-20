@@ -37,11 +37,9 @@ Player::Player(Game* game) : m_game(game){
     auto * timer = new QTimer();
     m_jumpTimer = new QTimer();
     m_shootingPixmapTimer = new QTimer();
-    m_fallTimer = new QTimer();
     connect(timer,SIGNAL(timeout()),this,SLOT(move()));
     connect(m_jumpTimer,SIGNAL(timeout()),this,SLOT(moveJump()));
     connect(m_shootingPixmapTimer,SIGNAL(timeout()),this,SLOT(updatePixmap()));
-    connect(m_fallTimer,SIGNAL(timeout()), this,SLOT(fall()));
 
 
     timer->start(5);
@@ -123,10 +121,6 @@ void Player::move() {
     }
 }
 
-void Player::fall(){
-
-}
-
 void Player::moveJump() {
 
     m_velocityY += gravity;
@@ -146,7 +140,7 @@ void Player::moveJump() {
             if(abs(m_velocityY) > 0.21) m_game->increaseScore();
             setY(hauteurMax);
             for(auto element : scene()->items()) {
-                auto* platform = dynamic_cast<BasicPlatform*>(element);
+                auto* platform = dynamic_cast<Platform*>(element);
                 if(platform) {
                     element->setY(element->y() - m_velocityY);
                     if (element->y() > WINDOW_HEIGHT) { // Si plateforme en dessous de l'écran
@@ -181,37 +175,6 @@ void Player::moveJump() {
     }
 }
 
-void Player::updatePosition(float deltaTime) {
-    /**setHorizontalPosition(MOVE_SPEED,deltaTime);
-    updateTimeAccumulators(deltaTime);
-    sf::Vector2f nextPosition = {pos().x(),getNextY()};
-    setFallingState(nextPosition.y);
-    setPos(nextPosition);*/
-}
-
-void Player::setHorizontalPosition(float nextX, float deltaTime) {
-
-}
-
-void Player::setFallingState(float nextY) {
-
-}
-
-float Player::getNextY() const {
-    return 0;
-}
-
-void Player::setNextY(float nextY) {
-
-}
-
-void Player::resetTimeAccumulators() {
-
-}
-
-void Player::updateTimeAccumulators(float deltaTime) {
-
-}
 
 void Player::updatePixmap() {
     m_shootingPixmapTimer->stop();

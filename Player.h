@@ -20,19 +20,6 @@ public:
 
     void keyReleaseEvent(QKeyEvent *event) override;
 
-    void updatePosition(float deltaTime) override;
-
-    void setHorizontalPosition(float nextX, float deltaTime);
-
-    void setFallingState(float nextY);
-
-    float getNextY() const;
-
-    void setNextY(float nextY);
-
-    void resetTimeAccumulators();
-
-    void updateTimeAccumulators(float deltaTime);
 
 private:
     Game* m_game;
@@ -46,7 +33,6 @@ private:
     bool m_isFalling = false;
     QTimer* m_shootingPixmapTimer;
     QTimer* m_jumpTimer;
-    QTimer* m_fallTimer;
     QPixmap m_pixmap;
     QPixmap m_shootingPixmap;
     std::vector<int> m_events;
@@ -58,7 +44,6 @@ public slots:
     void move();
     void moveJump();
     void updatePixmap();
-    void fall();
 
 
 };

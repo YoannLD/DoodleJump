@@ -4,7 +4,8 @@
 #include "Platform.h"
 
 class BreakingPlatform : public Platform {
-
+public:
+    BreakingPlatform();
 };
 
 #endif //DOODLEJUMP_BREAKINGPLATFORM_H

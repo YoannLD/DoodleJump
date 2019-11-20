@@ -9,10 +9,9 @@
 #include <QDebug>
 #include <QApplication>
 #include "consts.h"
+#include "BreakingPlatform.h"
 
 Game::Game() {
-
-    nb_platform = 18;
 
     // create a scene
     scene = new QGraphicsScene(this);
@@ -52,49 +51,75 @@ Game::Game() {
 
 }
 
-int Game::getNbPlateformsAllow(){
-
+void Game::calculateNumberOfPlatform(){
+    // TODO : faire une énum 1000, 2500 et >= 2500
+    if(m_score < 500){
+        nb_platform_allow = nb_platform;
+    }
+    else if(m_score < 1000 ){
+        nb_platform_allow = 30;
+    }
+    else
+        nb_platform_allow = 20;
 }
 
 
 void Game::addPlatform() {
 
-    int nb_actual_platform = scene->items().size()-1;
+    int nb_actual_platform = 0;
 
-    int i = 0;
-    while(i< nb_platform-nb_actual_platform){
-        auto* platform = new BasicPlatform();
-        if(scene->collidingItems(platform).empty()){
-            scene->addItem(platform);
-            i++;
-        }
-    }
-
-    QList<QGraphicsItem *> platforms;
+    calculateNumberOfPlatform();
 
     for(auto element : scene->items()) {
         if(auto* platform = dynamic_cast<Platform*>(element)){
             nb_actual_platform++;
-            platforms.append(platform);
         }
     }
 
-    if(!platforms.empty()) {
-        quickSort(platforms, 0, platforms.size() - 1);
-    }
+    if(nb_actual_platform < nb_platform_allow) {
+        int i = 0;
+        while (i < nb_platform_allow - nb_actual_platform) {
+            int breaking = rand()% static_cast<int>(6+1);
+            Platform *platform;
+            if(breaking == 1)
+                platform = new BreakingPlatform();
+            else
+                platform = new BasicPlatform();
 
-    int j = 0;
-    while(j < platforms.size()-1){
-        float dist = QLineF(0, platforms.at(j)->y(), 0, platforms.at(j+1)->y()).length();
-        if(dist > 100){
-            qDebug() << dist;
-            auto* platform = new BasicPlatform(platforms.at(j)->y(),platforms.at(j+1)->y());
-            if(scene->collidingItems(platform).empty()){
+            if (scene->collidingItems(platform).empty()) {
                 scene->addItem(platform);
+                i++;
             }
         }
-        j++;
+
+        QList<QGraphicsItem *> platforms;
+
+        for(auto element : scene->items()) {
+            if(auto* platform = dynamic_cast<BasicPlatform*>(element)){
+                platforms.append(platform);
+            }
+        }
+
+        if(!platforms.empty()) {
+            quickSort(platforms, 0, platforms.size() - 1);
+        }
+
+        int j = 0;
+        while(j < platforms.size()-1){
+            float dist = QLineF(0, platforms.at(j)->y(), 0, platforms.at(j+1)->y()).length();
+            if(dist > 180){
+                auto* platform = new BasicPlatform(platforms.at(j)->y(), platforms.at(j + 1)->y());
+                qDebug() << platform->y();
+                if(scene->collidingItems(platform).empty()){
+                    scene->addItem(platform);
+                }
+            }
+            j++;
+        }
+
     }
+
+
 
 }
 

@@ -6,8 +6,8 @@
 #define DOODLEJUMP_CONSTS_H
 
 // Windows params
-static const unsigned WINDOW_WIDTH = 400;
-static const unsigned WINDOW_HEIGHT = 600;
+static const int WINDOW_WIDTH = 400;
+static const int WINDOW_HEIGHT = 600;
 
 // Game param
 

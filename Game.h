@@ -17,14 +17,17 @@ public:
 
     void addPlatform();
     void increaseScore();
-    int getNbPlateformsAllow();
     static void quickSort(QList<QGraphicsItem *> &items, int debut, int fin);
 
 
+
 private:
-    int nb_platform;
+    int const nb_platform = 40;
+    int nb_platform_allow;
     int m_score = 0;
     QGraphicsTextItem *text;
+
+    void calculateNumberOfPlatform();
 };
 
 #endif //DOODLEJUMP_GAME_H
