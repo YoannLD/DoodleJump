@@ -177,16 +177,15 @@ void Player::moveJump() {
         for(auto element : scene()->collidingItems(this)) {
             auto* platform = dynamic_cast<BasicPlatform*>(element);
             if(platform) { // Rebond
-                m_velocityY = -5;
-                if(y()+pixmap().height() < platform->y()) {
-                    //setY(platform->y() - pixmap().height());
+                if(y()+pixmap().height() < platform->y()+platform->pixmap().height()/2) {
+                    m_velocityY = -5;
+                }
 
-                    // Si le son est déjà lancé, remet à 0
-                    if (bounceSound->state() == QMediaPlayer::PlayingState) {
-                        bounceSound->setPosition(0);
-                    } else if (bounceSound->state() == QMediaPlayer::StoppedState) {
-                        bounceSound->play();
-                    }
+                // Si le son est déjà lancé, remet à 0
+                if (bounceSound->state() == QMediaPlayer::PlayingState) {
+                    bounceSound->setPosition(0);
+                } else if (bounceSound->state() == QMediaPlayer::StoppedState) {
+                    bounceSound->play();
                 }
             }
         }
