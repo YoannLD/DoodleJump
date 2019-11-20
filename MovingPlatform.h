@@ -6,6 +6,14 @@
 
 class MovingPlatform : public Platform, public Moving {
 public:
+    MovingPlatform();
+private:
+    QTimer * movingTimer;
+    enum direction {LEFT, RIGHT};
+    direction state = direction::LEFT;
+
+public slots:
+    void move();
 };
 
 #endif //DOODLEJUMP_MOVINGPLATFORM_H
