@@ -149,7 +149,7 @@ void Game::addPlatform() {
         int j = 0;
         while (j < platforms.size() - 1) {
             float dist = QLineF(0, platforms.at(j)->y(), 0, platforms.at(j + 1)->y()).length();
-            if (dist > 150) {
+            if (dist > 130) {
                 auto *platform = new BasicPlatform(platforms.at(j)->y(), platforms.at(j + 1)->y());
                 if (scene->collidingItems(platform).empty()) {
                     scene->addItem(platform);
