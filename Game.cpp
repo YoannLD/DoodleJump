@@ -80,6 +80,7 @@ void Game::addPlatform() {
         }
     }
 
+    QList<QGraphicsItem *> rectForMovingPlatform;
     if (nb_actual_platform < nb_platform_allow) {
         int i = 0;
         while (i < nb_platform_allow - nb_actual_platform) {
@@ -94,10 +95,24 @@ void Game::addPlatform() {
                 platform = new BasicPlatform();
 
             if (scene->collidingItems(platform).empty()) {
+                if(dynamic_cast<MovingPlatform*>(platform)){
+                    QGraphicsRectItem* rect = new QGraphicsRectItem(0,platform->y(),WINDOW_WIDTH,platform->pixmap().height());
+                    rectForMovingPlatform.append(rect);
+                    scene->addItem(rect);
+
+                }
                 scene->addItem(platform);
                 i++;
             }
         }
+
+
+        i = 0;
+        while(i < rectForMovingPlatform.size()){
+            delete(rectForMovingPlatform.at(i));
+            i++;
+        }
+
 
         QList<QGraphicsItem *> platforms;
 
@@ -135,6 +150,7 @@ void Game::addPlatform() {
     }
 
 
+
 }
 
 void Game::increaseScore() {
@@ -156,7 +172,7 @@ void Game::quickSort(QList<QGraphicsItem *> &items, int low, int high) {
             j--;
         }
         if (i <= j) {
-            items.swap(i, j);
+            items.swapItemsAt(i,j);
             i++;
             j--;
         }
