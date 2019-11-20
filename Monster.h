@@ -3,10 +3,11 @@
 
 #include "Hurts.h"
 #include "Moving.h"
+#include "BasicPlatform.h"
 
-class Monster : public Hurts, public Moving {
+class Monster : public Hurts {
 public:
-
+    Monster(BasicPlatform* p);
 };
 
 #endif //DOODLEJUMP_MONSTER_H

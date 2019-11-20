@@ -1,8 +1,6 @@
 #include "Player.h"
 #include "Bullet.h"
-#include "BasicPlatform.h"
 #include "consts.h"
-#include "BreakingPlatform.h"
 #include <QGraphicsScene>
 #include <QDebug>
 #include <QKeyEvent>
@@ -10,7 +8,7 @@
 #include <QApplication>
 #include <QMediaPlayer>
 
-Player::Player(Game* game) : m_game(game){
+Player::Player() {
 
     // --------- Loading pixmaps ---------
     m_pixmap = new QPixmap();
@@ -28,31 +26,19 @@ Player::Player(Game* game) : m_game(game){
 
     // --------- Setting up sound effects -------------
     bounceSound = new QMediaPlayer();
-    fallSound = new QMediaPlayer();
-    shootSound = new QMediaPlayer();
     bounceSound->setMedia(QUrl("qrc:/sounds/jump.mp3"));
-    fallSound->setMedia(QUrl("qrc:/sounds/fall.mp3"));
-    shootSound->setMedia(QUrl("qrc:/sounds/shoot.mp3"));
 
     // --------- Creating timers ---------
     m_shootTimer = new QTimer();
-    auto * timer = new QTimer();
-    m_jumpTimer = new QTimer();
     m_shootingPixmapTimer = new QTimer();
-    connect(timer,SIGNAL(timeout()),this,SLOT(move()));
-    connect(m_jumpTimer,SIGNAL(timeout()),this,SLOT(moveJump()));
     connect(m_shootingPixmapTimer,SIGNAL(timeout()),this,SLOT(updatePixmap()));
-
     m_shootTimer->start(BULLET_SPEED);
-    timer->start(5);
-    m_jumpTimer->start(10);
 }
 
 void Player::keyPressEvent(QKeyEvent *event) {
     if(!(event->isAutoRepeat())) {
         // If the key isn't already in the vector
         if (std::find(m_events.begin(), m_events.end(), event->key()) == m_events.end()) {
-
             m_events.push_back(event->key());
         }
     }
@@ -71,144 +57,7 @@ void Player::keyReleaseEvent(QKeyEvent *event) {
 }
 
 void Player::move() {
-    for (int key : m_events) {
-        switch(key) {
-            case Qt::Key_Left :
-            case Qt::Key_Q :
-                if (pos().x() + (pixmap().width() / 2) > 0)
-                    setPos(x() - 1, y());
-                else
-                    setPos(scene()->width() - (pixmap().width() / 2), y());
 
-                if (!m_facingLeft) {
-                    m_facingLeft = true;
-                    setPixmap(pixmap().transformed(QTransform().scale(-1, 1)));
-                }
-                break;
-            case Qt::Key_Right :
-            case Qt::Key_D :
-                if (pos().x() + (pixmap().width() / 2) < scene()->width()) {
-                    setPos(x() + 1, y());
-                }
-                else {
-                    setPos(-pixmap().width() / 2, y());
-                }
-
-                if (m_facingLeft) {
-                    m_facingLeft = false;
-                    setPixmap(pixmap().transformed(QTransform().scale(-1, 1)));
-                }
-                break;
-            case Qt::Key_Space:
-            case Qt::Key_Up:
-            case Qt::Key_Z :
-                if(!m_hasShot) {
-                    m_hasShot = true;
-                    auto *bullet = new Bullet(m_shootTimer);
-                    bullet->setPos(x() + pixmap().width() / 2, y());
-                    scene()->addItem(bullet);
-
-                    setPixmap(*m_shootingPixmap);
-                    // Si le son est déjà lancé, remet à 0
-                    if(shootSound->state() == QMediaPlayer::PlayingState) {
-                        shootSound->setPosition(0);
-                    }
-                    else if(shootSound->state() == QMediaPlayer::StoppedState) {
-                        shootSound->play();
-                    }
-                    m_shootingPixmapTimer->start(300);
-                }
-                break;
-        }
-    }
-}
-
-void Player::moveJump() {
-
-    m_velocityY += gravity;
-    if (y() + pixmap().height()>= WINDOW_HEIGHT) { // (Perdu)
-        setY(WINDOW_HEIGHT - pixmap().height());
-        fallSound->play();
-
-
-    } else {
-        if(y() < hauteurMax) { // Hauteur max, scroll
-            isJumping = true;
-            m_game->increaseScore();
-            setY(hauteurMax);
-            for(auto element : scene()->items()) {
-                if(dynamic_cast<Platform*>(element)) {
-                    auto* platform = dynamic_cast<Platform*>(element);
-                    platform->setY(platform->y() - m_velocityY);
-                    if (platform->y() > WINDOW_HEIGHT) { // Si plateforme en dessous de l'écran
-                        Platform::multiplier = 0.f;
-                        m_game->addPlatform();
-                        scene()->removeItem(platform);
-                    }
-                }
-                else if(dynamic_cast<Bullet*>(element)) {
-                    auto* bullet = dynamic_cast<Bullet*>(element);
-                    bullet->setY(bullet->y() - m_velocityY);
-                    if (bullet->y()+bullet->pixmap().height() < 0) { // Si bullet  au dessus de l'écran
-                        scene()->removeItem(bullet);
-                    }
-                }
-            }
-        }
-        else {
-            if(isJumping) {
-                isJumping = false;
-                setY(y()+1);
-                for(auto element : scene()->items()) {
-                    if(dynamic_cast<Platform*>(element)) {
-                        auto* platform = dynamic_cast<Platform*>(element);
-                        platform->setY(platform->y() + 1);
-                        if (platform->y() > WINDOW_HEIGHT) { // Si plateforme en dessous de l'écran
-                            Platform::multiplier = 0.f;
-                            m_game->addPlatform();
-                            scene()->removeItem(platform);
-                        }
-                    }
-                    else if(dynamic_cast<Bullet*>(element)) {
-                        auto* bullet = dynamic_cast<Bullet*>(element);
-                        bullet->setY(bullet->y() + 1);
-                        if (bullet->y()+bullet->pixmap().height() < 0) { // Si bullet  au dessus de l'écran
-                            scene()->removeItem(bullet);
-                        }
-                    }
-                }
-            }
-        }
-        setY(y() + m_velocityY);
-    }
-
-    if (m_velocityY > 0) {
-        // On vérifie si on touche une plateforme
-        for(auto element : scene()->collidingItems(this)) {
-            auto* platform = dynamic_cast<Platform*>(element);
-
-            if(platform) { // Rebond
-                // Si les pieds atteignent la moitié supérieure de la plateforme
-                if(y()+pixmap().height() < platform->y()+platform->pixmap().height()/2) {
-                    if(dynamic_cast<BreakingPlatform*>(platform)){
-                        auto * breaking = dynamic_cast<BreakingPlatform*>(platform);
-                        breaking->launchBreak();
-                    }
-                    else{
-                        m_velocityY = -5;
-
-                        // Si le son est déjà lancé, remet à 0
-                        if (bounceSound->state() == QMediaPlayer::PlayingState) {
-                            bounceSound->setPosition(0);
-                        } else if (bounceSound->state() == QMediaPlayer::StoppedState) {
-                            bounceSound->play();
-                        }
-                    }
-
-                }
-            }
-        }
-    }
 }
 
 
@@ -220,9 +69,19 @@ void Player::updatePixmap() {
     }
 }
 
+void Player::bounce() {
+    m_velocityY = -5;
+
+    // Si le son est déjà lancé, remet à 0
+    if (bounceSound->state() == QMediaPlayer::PlayingState) {
+        bounceSound->setPosition(0);
+    } else if (bounceSound->state() == QMediaPlayer::StoppedState) {
+        bounceSound->play();
+    }
+}
+
 Player::~Player() {
     delete m_shootingPixmapTimer;
-    delete m_jumpTimer;
 }
 
 

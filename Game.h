@@ -6,6 +6,8 @@
 #define DOODLEJUMP_GAME_H
 
 #include <QGraphicsView>
+#include <QMediaPlayer>
+#include "Player.h"
 
 class Game: public QGraphicsView{
 public:
@@ -23,11 +25,20 @@ public:
 
 private:
     int const nb_platform = 40;
-    int nb_platform_allow;
+    int nb_platform_allow = nb_platform;
+    bool isScrolling = false;
     int m_score = 0;
+    Player* player;
     QGraphicsTextItem *text;
-
+    void loose();
+    QMediaPlayer* fallSound ;
+    QMediaPlayer* shootSound ;
     void calculateNumberOfPlatform();
+    void setupPlayer();
+
+public slots:
+    void movePlayer();
+    void jumpPlayer();
 };
 
 #endif //DOODLEJUMP_GAME_H
