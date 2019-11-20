@@ -3,7 +3,6 @@
 
 #include "Moving.h"
 #include "consts.h"
-#include "Game.h"
 #include <QKeyEvent>
 #include <QGraphicsRectItem>
 #include <QMediaPlayer>
@@ -13,35 +12,28 @@
 class Player : public QObject, public Moving {
 Q_OBJECT
 public:
-    Player(Game* game);
+    Player();
     ~Player();
 
     void keyPressEvent(QKeyEvent *event) override;
 
     void keyReleaseEvent(QKeyEvent *event) override;
 
-
-private:
-    Game* m_game;
+    float m_velocityY = 0;
+    std::vector<int> m_events;
     bool m_facingLeft = true;
     bool m_hasShot = false;
-    bool isJumping = false;
-    int hauteurMax = WINDOW_HEIGHT/2;
-    float gravity = 0.1;
-    float m_velocityY = 0;
-    QTimer* m_shootingPixmapTimer;
-    QTimer* m_jumpTimer;
     QTimer* m_shootTimer;
-    QPixmap* m_pixmap;
     QPixmap* m_shootingPixmap;
-    std::vector<int> m_events;
+    QTimer* m_shootingPixmapTimer;
+
+private:
+    QPixmap* m_pixmap;
     QMediaPlayer* bounceSound ;
-    QMediaPlayer* shootSound ;
-    QMediaPlayer* fallSound ;
 public slots:
 
+    void bounce();
     void move();
-    void moveJump();
     void updatePixmap();
 
 
