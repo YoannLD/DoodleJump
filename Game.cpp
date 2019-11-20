@@ -10,6 +10,7 @@
 #include <QApplication>
 #include "consts.h"
 #include "BreakingPlatform.h"
+#include "MovingPlatform.h"
 
 Game::Game() {
 
@@ -80,9 +81,12 @@ void Game::addPlatform() {
         int i = 0;
         while (i < nb_platform_allow - nb_actual_platform) {
             int breaking = rand()% static_cast<int>(6+1);
+            int moving = rand()% static_cast<int>(6+1);
             Platform *platform;
             if(breaking == 1)
                 platform = new BreakingPlatform();
+            else if(moving == 1)
+                platform = new MovingPlatform();
             else
                 platform = new BasicPlatform();
 
