@@ -3,8 +3,8 @@
 
 #include "GameObject.h"
 
-class Platform : public GameObject {
-
+class Platform : public QObject, public GameObject {
+Q_OBJECT
 public:
     static float multiplier;
     Platform(const QString& path);

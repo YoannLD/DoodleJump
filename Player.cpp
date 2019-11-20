@@ -2,6 +2,7 @@
 #include "Bullet.h"
 #include "BasicPlatform.h"
 #include "consts.h"
+#include "BreakingPlatform.h"
 #include <QGraphicsScene>
 #include <QDebug>
 #include <QKeyEvent>
@@ -175,18 +176,26 @@ void Player::moveJump() {
     if (m_velocityY > 0) {
         // On vérifie si on touche une plateforme
         for(auto element : scene()->collidingItems(this)) {
-            auto* platform = dynamic_cast<BasicPlatform*>(element);
+            auto* platform = dynamic_cast<Platform*>(element);
+
             if(platform) { // Rebond
                 // Si les pieds atteignent la moitié supérieure de la plateforme
                 if(y()+pixmap().height() < platform->y()+platform->pixmap().height()/2) {
-                    m_velocityY = -5;
-
-                    // Si le son est déjà lancé, remet à 0
-                    if (bounceSound->state() == QMediaPlayer::PlayingState) {
-                        bounceSound->setPosition(0);
-                    } else if (bounceSound->state() == QMediaPlayer::StoppedState) {
-                        bounceSound->play();
+                    if(dynamic_cast<BreakingPlatform*>(platform)){
+                        auto * breaking = dynamic_cast<BreakingPlatform*>(platform);
+                        breaking->launchBreak();
                     }
+                    else{
+                        m_velocityY = -5;
+
+                        // Si le son est déjà lancé, remet à 0
+                        if (bounceSound->state() == QMediaPlayer::PlayingState) {
+                            bounceSound->setPosition(0);
+                        } else if (bounceSound->state() == QMediaPlayer::StoppedState) {
+                            bounceSound->play();
+                        }
+                    }
+
                 }
             }
         }
