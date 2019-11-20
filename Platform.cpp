@@ -6,15 +6,15 @@
 float Platform::multiplier = WINDOW_HEIGHT;
 
 Platform::Platform(const QString& path) {
-    pixmap = new QPixmap();
-    bool loaded = pixmap->load(path);
+    m_pixmap = new QPixmap();
+    bool loaded = m_pixmap->load(path);
     if(!loaded) {
         qDebug() << "Error loading :" << path;
     }
-    setPixmap(*pixmap);
+    setPixmap(*m_pixmap);
 
-    const float minX = pixmap->width() / 2;
-    const float maxX = WINDOW_WIDTH - pixmap->width() ;
+    const float minX = pixmap().width() / 2;
+    const float maxX = WINDOW_WIDTH - pixmap().width() ;
     setX(minX + (rand()% static_cast<int>(maxX-minX+1)));
 
     const float minY = -WINDOW_HEIGHT;
@@ -25,15 +25,15 @@ Platform::Platform(const QString& path) {
 
 Platform::Platform(const QString& path, float yMin, float yMax) : Platform(path){
 
-    pixmap = new QPixmap();
-    bool loaded = pixmap->load(path);
+    m_pixmap = new QPixmap();
+    bool loaded = m_pixmap->load(path);
     if(!loaded) {
         qDebug() << "Error loading :" << path;
     }
-    setPixmap(*pixmap);
+    setPixmap(*m_pixmap);
 
-    const float minX = pixmap->width() / 2;
-    const float maxX = WINDOW_WIDTH - pixmap->width() ;
+    const float minX = pixmap().width() / 2;
+    const float maxX = WINDOW_WIDTH - pixmap().width() ;
     setX(minX + (rand()% static_cast<int>(maxX-minX+1)));
 
     const float minY = yMin+yMin*15/100;

@@ -12,18 +12,18 @@
 Player::Player(Game* game) : m_game(game){
 
     // --------- Loading pixmaps ---------
-    m_pixmap = QPixmap();
-    bool doodleLoaded = m_pixmap.load(":/images/doodle.png");
+    m_pixmap = new QPixmap();
+    bool doodleLoaded = m_pixmap->load(":/images/doodle.png");
     if(!doodleLoaded) {
         qDebug() << "Error loading : :/images/doodle.png";
     }
 
-    m_shootingPixmap = QPixmap();
-    bool shootingLoaded = m_shootingPixmap.load(":/images/doodleShoot.png");
+    m_shootingPixmap = new QPixmap();
+    bool shootingLoaded = m_shootingPixmap->load(":/images/doodleShoot.png");
     if(!shootingLoaded) {
         qDebug() << "Error loading : :/images/doodleShoot.png";
     }
-    setPixmap(m_pixmap);
+    setPixmap(*m_pixmap);
 
     // --------- Setting up sound effects -------------
     bounceSound = new QMediaPlayer();
@@ -106,7 +106,7 @@ void Player::move() {
                     bullet->setPos(x() + pixmap().width() / 2, y());
                     scene()->addItem(bullet);
 
-                    setPixmap(m_shootingPixmap);
+                    setPixmap(*m_shootingPixmap);
                     // Si le son est déjà lancé, remet à 0
                     if(shootSound->state() == QMediaPlayer::PlayingState) {
                         shootSound->setPosition(0);
@@ -137,7 +137,8 @@ void Player::moveJump() {
 
     } else {
         if(y() < hauteurMax) { // Hauteur max, scroll
-            if(abs(m_velocityY) > 0.21) m_game->increaseScore();
+            tmp = true;
+            m_game->increaseScore();
             setY(hauteurMax);
             for(auto element : scene()->items()) {
                 auto* platform = dynamic_cast<Platform*>(element);
@@ -151,6 +152,23 @@ void Player::moveJump() {
                 }
             }
         }
+        else {
+            if(tmp) {
+                tmp = false;
+                setY(y()+1);
+                for(auto element : scene()->items()) {
+                    auto* platform = dynamic_cast<Platform*>(element);
+                    if(platform) {
+                        element->setY(element->y() + 1);
+                        if (element->y() > WINDOW_HEIGHT) { // Si plateforme en dessous de l'écran
+                            Platform::multiplier = 0.f;
+                            m_game->addPlatform();
+                            scene()->removeItem(element);
+                        }
+                    }
+                }
+            }
+        }
         setY(y() + m_velocityY);
     }
 
@@ -160,8 +178,8 @@ void Player::moveJump() {
             auto* platform = dynamic_cast<BasicPlatform*>(element);
             if(platform) { // Rebond
                 m_velocityY = -5;
-                if(y()+boundingRect().height() < platform->y()+platform->boundingRect().height()/2) {
-                    setY(platform->y() - pixmap().height());
+                if(y()+pixmap().height() < platform->y()) {
+                    //setY(platform->y() - pixmap().height());
 
                     // Si le son est déjà lancé, remet à 0
                     if (bounceSound->state() == QMediaPlayer::PlayingState) {
@@ -178,7 +196,7 @@ void Player::moveJump() {
 
 void Player::updatePixmap() {
     m_shootingPixmapTimer->stop();
-    setPixmap(m_pixmap);
+    setPixmap(*m_pixmap);
     if(!m_facingLeft) {
         setPixmap(pixmap().transformed(QTransform().scale(-1, 1)));
     }
