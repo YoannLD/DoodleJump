@@ -12,5 +12,6 @@
         <file>sounds/jump.mp3</file>
         <file>sounds/fall.mp3</file>
         <file>sounds/shoot.mp3</file>
+        <file>sounds/break.mp3</file>
     </qresource>
 </RCC>

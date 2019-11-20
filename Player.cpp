@@ -127,13 +127,7 @@ void Player::moveJump() {
     m_velocityY += gravity;
     if (y() + pixmap().height()>= WINDOW_HEIGHT) { // (Perdu)
         setY(WINDOW_HEIGHT - pixmap().height());
-        // Si le son est déjà lancé, remet à 0
-        if(fallSound->state() == QMediaPlayer::PlayingState) {
-            fallSound->setPosition(0);
-        }
-        else if(fallSound->state() == QMediaPlayer::StoppedState) {
-            fallSound->play();
-        }
+        fallSound->play();
 
 
     } else {
