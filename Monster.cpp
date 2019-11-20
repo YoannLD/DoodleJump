@@ -8,5 +8,6 @@ Monster::Monster(BasicPlatform* platform) {
         qDebug() << "Error loading : :/images/loicMonster.png";
     }
     setPixmap(*pixmap);
+    delete pixmap;
     setPos(platform->x(), platform->y() - pixmap->height());
 }

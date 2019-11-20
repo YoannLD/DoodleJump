@@ -20,23 +20,48 @@ Game::Game() {
     scene = new QGraphicsScene(this);
     scene->setSceneRect(0, 0, WINDOW_WIDTH, WINDOW_HEIGHT);
 
-    QPixmap backgroundPixmap = QPixmap();
-    bool backgroundLoaded = backgroundPixmap.load(":/images/background.png");
+    QPixmap* backgroundPixmap = new QPixmap();
+    bool backgroundLoaded = backgroundPixmap->load(":/images/background.png");
     if (!backgroundLoaded) {
         qDebug() << "Error loading : :/images/background.png";
     }
-    scene->setBackgroundBrush(QBrush(backgroundPixmap));
+    scene->setBackgroundBrush(QBrush(*backgroundPixmap));
+
+    delete backgroundPixmap;
 
     setScene(scene);
     setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
     setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
     setFixedSize(WINDOW_WIDTH, WINDOW_HEIGHT);
 
-    // create a player
-    player = new Player();
-
     text = scene->addText(QString::number(m_score), QFont("Al Seana"));
     text->setPos(10, 10);
+
+    fallSound = new QMediaPlayer();
+    shootSound = new QMediaPlayer();
+    fallSound->setMedia(QUrl("qrc:/sounds/fall.mp3"));
+    shootSound->setMedia(QUrl("qrc:/sounds/shoot.mp3"));
+    timerMove = new QTimer();
+    timerJump = new QTimer();
+    connect(timerMove, &QTimer::timeout, this, &Game::movePlayer);
+    connect(timerJump, &QTimer::timeout, this, &Game::jumpPlayer);
+
+    start();
+}
+
+void Game::start() {
+
+    // Clear scene
+    for (auto element : scene->items()) {
+        if (dynamic_cast<Platform *>(element) || dynamic_cast<Monster *>(element) || dynamic_cast<Bullet *>(element) || dynamic_cast<Player *>(element)) {
+            scene->removeItem(element);
+            delete element;
+        }
+    }
+    m_score = 0;
+    isScrolling = false;
+    nb_platform_allow = nb_platform;
+    Platform::multiplier = WINDOW_HEIGHT;
 
     // create platforms
     addPlatform();
@@ -44,17 +69,8 @@ Game::Game() {
     // initialize player on the lowest platform
     setupPlayer();
 
-    fallSound = new QMediaPlayer();
-    shootSound = new QMediaPlayer();
-    fallSound->setMedia(QUrl("qrc:/sounds/fall.mp3"));
-    shootSound->setMedia(QUrl("qrc:/sounds/shoot.mp3"));
-    auto * timerMove = new QTimer();
-    auto * timerJump = new QTimer();
-    connect(timerMove, &QTimer::timeout, this, &Game::movePlayer);
-    connect(timerJump, &QTimer::timeout, this, &Game::jumpPlayer);
     timerMove->start(4);
     timerJump->start(8);
-
 }
 
 void Game::calculateNumberOfPlatform() {
@@ -134,10 +150,7 @@ void Game::addPlatform() {
         QList<QGraphicsItem *> platforms;
 
         for(auto element : scene->items()) {
-            if(auto* platform = dynamic_cast<BasicPlatform*>(element)){
-                platforms.append(element);
-            }
-            if(auto* moving = dynamic_cast<MovingPlatform*>(element)){
+            if(dynamic_cast<BasicPlatform*>(element) || dynamic_cast<MovingPlatform*>(element)){
                 platforms.append(element);
             }
         }
@@ -254,31 +267,32 @@ void Game::movePlayer() {
         }
     }
     if (player->y() + player->pixmap().height()>= WINDOW_HEIGHT) { // (Perdu)
-        player->setY(WINDOW_HEIGHT - player->pixmap().height());
         loose();
     }
 }
 
 void Game::jumpPlayer() {
-    player->m_velocityY += GRAVITY;
+    player->setVelocityY(player->getVelocityY() + GRAVITY);
     if(player->y() < MAX_HEIGHT) { // Hauteur max, scroll
         isScrolling = true;
         increaseScore();
         player->setY(MAX_HEIGHT);
         for(auto element : scene->items()) {
             if(dynamic_cast<Platform*>(element) || dynamic_cast<Bullet*>(element) || dynamic_cast<Monster*>(element)) {
-                element->setY(element->y() - player->m_velocityY);
+                element->setY(element->y() - player->getVelocityY());
 
                 if(auto* platform = dynamic_cast<Platform*>(element)) {
                     if (platform->y() > WINDOW_HEIGHT) { // Si plateforme en dessous de l'écran
                         Platform::multiplier = 0.f;
                         addPlatform();
                         scene->removeItem(platform);
+                        delete platform;
                     }
                 }
                 else if(auto* bullet = dynamic_cast<Bullet*>(element)) {
                     if (bullet->y()+bullet->pixmap().height() < 0) { // Si bullet  au dessus de l'écran
                         scene->removeItem(bullet);
+                        delete bullet;
                     }
                 }
             }
@@ -297,20 +311,22 @@ void Game::jumpPlayer() {
                             Platform::multiplier = 0.f;
                             addPlatform();
                             scene->removeItem(platform);
+                            delete platform;
                         }
                     }
                     else if(auto* bullet = dynamic_cast<Bullet*>(element)) {
                         if (bullet->y()+bullet->pixmap().height() < 0) { // Si bullet  au dessus de l'écran
                             scene->removeItem(bullet);
+                            delete platform;
                         }
                     }
                 }
             }
         }
     }
-    player->setY(player->y() + player->m_velocityY);
+    player->setY(player->y() + player->getVelocityY());
 
-    if (player->m_velocityY > 0) {
+    if (player->getVelocityY() > 0) {
         // On vérifie si on touche une plateforme
         for(auto element : scene->collidingItems(player)) {
             auto* platform = dynamic_cast<Platform*>(element);
@@ -333,7 +349,10 @@ void Game::jumpPlayer() {
 }
 
 void Game::loose() {
+    timerMove->stop();
+    timerJump->stop();
     fallSound->play();
+    start();
 }
 
 void Game::setupPlayer() {
@@ -341,14 +360,17 @@ void Game::setupPlayer() {
     Platform* lowestPlatform;
 
     for (auto element : scene->items()) {
-        if (auto* platform = dynamic_cast<Platform *>(element)) {
-            if(platform->y() > maxY) {
+        if (auto* platform = dynamic_cast<BasicPlatform *>(element)) {
+            if(platform->y() > maxY && platform->y() < 600) {
                 maxY = platform->y();
                 lowestPlatform = platform;
             }
         }
     }
 
+    // create a player
+    player = new Player();
+    qDebug() << "Lowest plat: " << lowestPlatform->y();
     player->setPos(lowestPlatform->x(), lowestPlatform->y()-player->pixmap().height());
 
     player->setFlag(QGraphicsItem::ItemIsFocusable);

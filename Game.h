@@ -38,6 +38,9 @@ private:
     QMediaPlayer* shootSound ;
     void calculateNumberOfPlatform();
     void setupPlayer();
+    void start();
+    QTimer* timerMove;
+    QTimer* timerJump;
 
 public slots:
     void movePlayer();

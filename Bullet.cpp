@@ -13,6 +13,8 @@ Bullet::Bullet(QTimer* timer) {
         qDebug() << "Error loading : :/images/bullet2.png";
     }
     setPixmap(*pixmap);
+
+    delete pixmap;
     connect(timer,SIGNAL(timeout()),this,SLOT(move()));
 }
 

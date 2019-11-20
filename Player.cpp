@@ -56,10 +56,6 @@ void Player::keyReleaseEvent(QKeyEvent *event) {
     }
 }
 
-void Player::move() {
-
-}
-
 
 void Player::updatePixmap() {
     m_shootingPixmapTimer->stop();
@@ -82,6 +78,18 @@ void Player::bounce() {
 
 Player::~Player() {
     delete m_shootingPixmapTimer;
+    delete m_shootTimer;
+    delete m_shootingPixmap;
+    delete m_pixmap;
+    delete bounceSound;
+}
+
+float Player::getVelocityY() {
+    return m_velocityY;
+}
+
+void Player::setVelocityY(float newVelocity) {
+    m_velocityY = newVelocity;
 }
 
 

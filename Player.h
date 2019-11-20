@@ -19,21 +19,23 @@ public:
 
     void keyReleaseEvent(QKeyEvent *event) override;
 
-    float m_velocityY = 0;
     std::vector<int> m_events;
     bool m_facingLeft = true;
     bool m_hasShot = false;
     QTimer* m_shootTimer;
     QPixmap* m_shootingPixmap;
     QTimer* m_shootingPixmapTimer;
+    float getVelocityY();
+    void setVelocityY(float newVelocity);
 
 private:
+
+    float m_velocityY = 0;
     QPixmap* m_pixmap;
     QMediaPlayer* bounceSound ;
 public slots:
 
     void bounce();
-    void move();
     void updatePixmap();
 
 

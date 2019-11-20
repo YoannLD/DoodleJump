@@ -33,3 +33,7 @@ void MovingPlatform::move(){
         }
     }
 }
+
+MovingPlatform::~MovingPlatform() {
+    delete movingTimer;
+}

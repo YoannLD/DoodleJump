@@ -7,6 +7,7 @@
 class MovingPlatform : public Platform, public Moving {
 public:
     MovingPlatform();
+    ~MovingPlatform();
 private:
     QTimer * movingTimer;
     enum direction {LEFT, RIGHT};
