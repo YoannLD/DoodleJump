@@ -52,8 +52,8 @@ Game::Game() {
     auto * timerJump = new QTimer();
     connect(timerMove, &QTimer::timeout, this, &Game::movePlayer);
     connect(timerJump, &QTimer::timeout, this, &Game::jumpPlayer);
-    timerMove->start(5);
-    timerJump->start(10);
+    timerMove->start(4);
+    timerJump->start(8);
 
 }
 
@@ -189,7 +189,8 @@ void Game::quickSort(QList<QGraphicsItem *> &items, int low, int high) {
             j--;
         }
         if (i <= j) {
-            items.swapItemsAt(i,j);
+            //items.swapItemsAt(i,j);
+            items.swap(i,j);
             i++;
             j--;
         }
