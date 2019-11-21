@@ -3,6 +3,7 @@
         <file>images/background.png</file>
         <file>images/basicPlatform.png</file>
         <file>images/movingPlatform.png</file>
+        <file>images/disappearingPlatform.png</file>
         <file>images/breakingPlatform/breakingPlatform_1.png</file>
         <file>images/breakingPlatform/breakingPlatform_2.png</file>
         <file>images/breakingPlatform/breakingPlatform_3.png</file>

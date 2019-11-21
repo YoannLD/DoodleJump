@@ -30,6 +30,9 @@ private:
     int const nb_platform = 40;
     int nb_platform_allow = nb_platform;
     bool isScrolling = false;
+    bool sectionDisappearingPlatform = false;
+    int countNbDisappearingPlatform;
+    int countNbDisappearingPlatformActual;
     int m_score = 0;
     Player* player;
     QGraphicsTextItem *text;

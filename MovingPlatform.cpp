@@ -6,7 +6,6 @@
 
 MovingPlatform::MovingPlatform() : Platform(":/images/movingPlatform.png") {
 
-    // TODO : faire en sorte qu'il n'y ai pas de plateforme sur le trajet de celle ci
     movingTimer = new QTimer();
     connect(movingTimer, &QTimer::timeout, this, &MovingPlatform::move);
     movingTimer->start(15);

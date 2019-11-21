@@ -13,6 +13,7 @@ static const int WINDOW_HEIGHT = 600;
 
 static const int BULLET_SPEED = 2;
 static const int MONSTER_SPAWN_PROB = 2; // 2%
+static const int DISAPPEARING_PLATFORM_PROB = 2; // 2%
 static const int MAX_HEIGHT = WINDOW_HEIGHT/2;
 static const float GRAVITY = 0.1;
 

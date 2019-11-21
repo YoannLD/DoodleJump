@@ -5,6 +5,10 @@
 
 class DisappearingPlatform : public Platform {
 
+public:
+    DisappearingPlatform();
+    DisappearingPlatform(float yMin, float yMax);
+
 };
 
 #endif //DOODLEJUMP_DISAPPEARINGPLATFORM_H

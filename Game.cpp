@@ -13,6 +13,7 @@
 #include "MovingPlatform.h"
 #include "Monster.h"
 #include "Bullet.h"
+#include "DisappearingPlatform.h"
 
 Game::Game() {
 
@@ -115,66 +116,103 @@ QList<Platform*> Game::getAllPlatforms(){
 void Game::addPlatform() {
 
     calculateNumberOfPlatform();
-
     int nb_actual_platform = getAllPlatforms().size();
+
+    // Chance d'être sur une section disapearingPlatform
+    int probDisappearingPlatform = rand() % 100;
+    if(probDisappearingPlatform <= DISAPPEARING_PLATFORM_PROB && !sectionDisappearingPlatform){
+        sectionDisappearingPlatform = true;
+        countNbDisappearingPlatform = 2+ (rand() % static_cast<int>(4+1));
+        countNbDisappearingPlatformActual = 0;
+        qDebug() << countNbDisappearingPlatform;
+    }
+    if(countNbDisappearingPlatformActual >= countNbDisappearingPlatform)
+        sectionDisappearingPlatform = false;
 
     if(nb_actual_platform < nb_platform_allow) {
         int i = 0;
-        while (i < nb_platform_allow - nb_actual_platform) {
-            int breaking = rand() % static_cast<int>(6 + 1);
-            int moving = rand() % static_cast<int>(6 + 1);
-            Platform *platform;
-            if (breaking == 1)
-                platform = new BreakingPlatform();
-            else if (moving == 1)
-                platform = new MovingPlatform();
-            else
-                platform = new BasicPlatform();
-
-            if(dynamic_cast<MovingPlatform*>(platform)) {
-                QGraphicsRectItem* rect = new QGraphicsRectItem(0,platform->y(),WINDOW_WIDTH,platform->pixmap().height());
-                if(scene->collidingItems(rect).empty()){
+        if(sectionDisappearingPlatform){
+            while(i < nb_platform_allow - nb_actual_platform){
+                Platform *platform = new DisappearingPlatform();
+                if(scene->collidingItems(platform).empty() && collidingPlatforms(platform).empty()){
                     scene->addItem(platform);
-                    i++;
-                }
-
-            }
-            else {
-                if (scene->collidingItems(platform).empty() && collidingPlatforms(platform).empty() ) {
-                    scene->addItem(platform);
+                    countNbDisappearingPlatformActual++;
                     i++;
                 }
             }
         }
+        else{
+            while (i < nb_platform_allow - nb_actual_platform) {
+                int breaking = rand() % static_cast<int>(6 + 1);
+                int moving = rand() % static_cast<int>(6 + 1);
+                Platform *platform;
+                if (breaking == 1)
+                    platform = new BreakingPlatform();
+                else if (moving == 1)
+                    platform = new MovingPlatform();
+                else
+                    platform = new BasicPlatform();
+
+                if(dynamic_cast<MovingPlatform*>(platform)) {
+                    QGraphicsRectItem* rect = new QGraphicsRectItem(0,platform->y(),WINDOW_WIDTH,platform->pixmap().height());
+                    if(scene->collidingItems(rect).empty()){
+                        scene->addItem(platform);
+                        i++;
+                    }
+
+                }
+                else {
+                    if (scene->collidingItems(platform).empty() && collidingPlatforms(platform).empty() ) {
+                        scene->addItem(platform);
+                        i++;
+                        if(auto* element = dynamic_cast<BasicPlatform*>(platform)) {
+                            // Si - de 2%, on spawn un monstre
+                            int probMonster = rand() % 100;
+                            if (probMonster <= MONSTER_SPAWN_PROB) {
+
+                                // Recupération
+                                auto *monster = new Monster(element);
+                                scene->addItem(monster);
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
 
         QList<QGraphicsItem *> platforms;
 
+        // Répertorie toutes les plateformes on l'on peut sauter
         for(auto element : scene->items()) {
-            if(dynamic_cast<BasicPlatform*>(element) || dynamic_cast<MovingPlatform*>(element)){
+            if(dynamic_cast<BasicPlatform*>(element) || dynamic_cast<MovingPlatform*>(element) || dynamic_cast<DisappearingPlatform*>(element)){
                 platforms.append(element);
             }
         }
 
+        // Trie de haut en bas les plateformes on l'on peut sauter
         if (!platforms.empty()) {
             quickSort(platforms, 0, platforms.size() - 1);
         }
 
+        // On regarde si chaque plateforme est au plus de 130
+        float distMax = 120.f;
         int j = 0;
         while (j < platforms.size() - 1) {
             float dist = QLineF(0, platforms.at(j)->y(), 0, platforms.at(j + 1)->y()).length();
-            if (dist > 130) {
-                auto *platform = new BasicPlatform(platforms.at(j)->y(), platforms.at(j + 1)->y());
+            if (dist > distMax) {
+                Platform *platform;
+                if(sectionDisappearingPlatform){
+                    platform = new DisappearingPlatform(platforms.at(j)->y(), platforms.at(j + 1)->y());
+                    countNbDisappearingPlatformActual++;
+                }
+                else{
+                    platform = new BasicPlatform(platforms.at(j)->y(), platforms.at(j + 1)->y());
+                }
+
                 if (scene->collidingItems(platform).empty()) {
                     scene->addItem(platform);
 
-                    // Si - de 2%, on spawn un monstre
-                    int probMonster = rand() % 100;
-                    if(probMonster <= MONSTER_SPAWN_PROB) {
-
-                        // Recupération
-                        auto* monster = new Monster(platform);
-                        scene->addItem(monster);
-                    }
                 }
             }
             j++;
@@ -202,8 +240,8 @@ void Game::quickSort(QList<QGraphicsItem *> &items, int low, int high) {
             j--;
         }
         if (i <= j) {
-            //items.swapItemsAt(i,j);
-            items.swap(i,j);
+            items.swapItemsAt(i,j);
+            //items.swap(i,j);
             i++;
             j--;
         }
@@ -288,6 +326,7 @@ void Game::jumpPlayer() {
                         scene->removeItem(platform);
                         delete platform;
                     }
+
                 }
                 else if(auto* bullet = dynamic_cast<Bullet*>(element)) {
                     if (bullet->y()+bullet->pixmap().height() < 0) { // Si bullet  au dessus de l'écran
@@ -337,6 +376,11 @@ void Game::jumpPlayer() {
                     if(dynamic_cast<BreakingPlatform*>(platform)){
                         auto * breaking = dynamic_cast<BreakingPlatform*>(platform);
                         breaking->launchBreak();
+                    }
+                    else if(dynamic_cast<DisappearingPlatform*>(platform)){
+                        player->bounce();
+                        scene->removeItem(platform);
+                        delete platform;
                     }
                     else{
                         player->bounce();
