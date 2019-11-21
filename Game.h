@@ -42,7 +42,7 @@ private:
     void start();
     QTimer* timerMove;
     QTimer* timerJump;
-    static float generateRandomPourcent();
+    static float generateRandom();
     QList<Platform *> getAllJumpablePlatforms();
 
 public slots:
