@@ -7,14 +7,14 @@
 
 Bullet::Bullet(QTimer* timer) {
 
-    auto* pixmap = new QPixmap();
-    bool bulletLoaded = pixmap->load(":/images/bullet2.png");
+    auto* bulletPixmap = new QPixmap();
+    bool bulletLoaded = bulletPixmap->load(":/images/bullet2.png");
     if(!bulletLoaded) {
         qDebug() << "Error loading : :/images/bullet2.png";
     }
-    setPixmap(*pixmap);
+    setPixmap(*bulletPixmap);
 
-    delete pixmap;
+    delete bulletPixmap;
     connect(timer,SIGNAL(timeout()),this,SLOT(move()));
 }
 

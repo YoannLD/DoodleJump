@@ -10,23 +10,24 @@
 #include <QMediaPlayer>
 #include "Player.h"
 
-class Game: public QGraphicsView{
+class Game : public QGraphicsView {
 public:
-    // member functions
     Game();
 
-    // member attributes
-    QGraphicsScene * scene;
+private:
+
+    QGraphicsScene *scene;
 
     void addPlatform();
+
     void increaseScore();
+
     static void quickSort(QList<QGraphicsItem *> &items, int debut, int fin);
 
     QList<Platform *> collidingPlatforms(Platform *platform);
 
     QList<Platform *> getAllPlatforms();
 
-private:
     int const nb_platform = 40;
     int nb_platform_allow = nb_platform;
     bool isScrolling = false;
@@ -34,19 +35,27 @@ private:
     int countNbDisappearingPlatform;
     int countNbDisappearingPlatformActual;
     int m_score = 0;
-    Player* player;
+    Player *player;
     QGraphicsTextItem *text;
+
     void loose();
-    QMediaPlayer* fallSound ;
-    QMediaPlayer* shootSound ;
+
+    QMediaPlayer *fallSound;
+    QMediaPlayer *shootSound;
+
     void calculateNumberOfPlatform();
+
     void setupPlayer();
+
     void start();
-    QTimer* timerMove;
-    QTimer* timerJump;
+
+    QTimer *timerMove;
+    QTimer *timerJump;
 
 public slots:
+
     void movePlayer();
+
     void jumpPlayer();
 };
 

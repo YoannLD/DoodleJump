@@ -7,6 +7,7 @@
 #include "BasicPlatform.h"
 #include <QGraphicsScene>
 #include <QDebug>
+#include <QElapsedTimer>
 #include <QApplication>
 #include "consts.h"
 #include "BreakingPlatform.h"
@@ -17,11 +18,14 @@
 
 Game::Game() {
 
-    // create a scene
+    setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+    setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+    setFixedSize(WINDOW_WIDTH, WINDOW_HEIGHT);
+
     scene = new QGraphicsScene(this);
     scene->setSceneRect(0, 0, WINDOW_WIDTH, WINDOW_HEIGHT);
 
-    QPixmap* backgroundPixmap = new QPixmap();
+    auto* backgroundPixmap = new QPixmap();
     bool backgroundLoaded = backgroundPixmap->load(":/images/background.png");
     if (!backgroundLoaded) {
         qDebug() << "Error loading : :/images/background.png";
@@ -30,13 +34,10 @@ Game::Game() {
 
     delete backgroundPixmap;
 
-    setScene(scene);
-    setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
-    setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
-    setFixedSize(WINDOW_WIDTH, WINDOW_HEIGHT);
-
     text = scene->addText(QString::number(m_score), QFont("Al Seana"));
     text->setPos(10, 10);
+
+    setScene(scene);
 
     fallSound = new QMediaPlayer();
     shootSound = new QMediaPlayer();
@@ -52,13 +53,6 @@ Game::Game() {
 
 void Game::start() {
 
-    // Clear scene
-    for (auto element : scene->items()) {
-        if (dynamic_cast<Platform *>(element) || dynamic_cast<Monster *>(element) || dynamic_cast<Bullet *>(element) || dynamic_cast<Player *>(element)) {
-            scene->removeItem(element);
-            delete element;
-        }
-    }
     m_score = 0;
     isScrolling = false;
     nb_platform_allow = nb_platform;
@@ -89,7 +83,7 @@ QList<Platform*> Game::collidingPlatforms(Platform* platform){
     QList<Platform*> platforms = getAllPlatforms();
     int i = 0;
     while(i < platforms.size()){
-        if(MovingPlatform* movingPlatform = dynamic_cast<MovingPlatform*>(platforms.at(i))){
+        if(auto* movingPlatform = dynamic_cast<MovingPlatform*>(platforms.at(i))){
             if(platform->y()+platform->pixmap().height() < movingPlatform->Platform::y() || platform->y() > movingPlatform->Platform::y()+movingPlatform->Platform::pixmap().height()){
             }
             else{
@@ -114,7 +108,6 @@ QList<Platform*> Game::getAllPlatforms(){
 
 
 void Game::addPlatform() {
-
     calculateNumberOfPlatform();
     int nb_actual_platform = getAllPlatforms().size();
 
@@ -124,7 +117,6 @@ void Game::addPlatform() {
         sectionDisappearingPlatform = true;
         countNbDisappearingPlatform = 2+ (rand() % static_cast<int>(4+1));
         countNbDisappearingPlatformActual = 0;
-        qDebug() << countNbDisappearingPlatform;
     }
     if(countNbDisappearingPlatformActual >= countNbDisappearingPlatform)
         sectionDisappearingPlatform = false;
@@ -159,6 +151,7 @@ void Game::addPlatform() {
                         scene->addItem(platform);
                         i++;
                     }
+                    delete rect;
 
                 }
                 else {
@@ -214,6 +207,9 @@ void Game::addPlatform() {
                     scene->addItem(platform);
 
                 }
+                else {
+                    delete platform;
+                }
             }
             j++;
         }
@@ -254,6 +250,7 @@ void Game::quickSort(QList<QGraphicsItem *> &items, int low, int high) {
 }
 
 void Game::movePlayer() {
+
     for (int key : player->m_events) {
         switch(key) {
             case Qt::Key_Left :
@@ -396,6 +393,14 @@ void Game::loose() {
     timerMove->stop();
     timerJump->stop();
     fallSound->play();
+    // Clear scene
+    for (auto element : scene->items()) {
+        if (dynamic_cast<Platform *>(element) || dynamic_cast<Monster *>(element) ||
+            dynamic_cast<Bullet *>(element) || dynamic_cast<Player *>(element)) {
+            scene->removeItem(element);
+            delete element;
+        }
+    }
     start();
 }
 
@@ -414,7 +419,6 @@ void Game::setupPlayer() {
 
     // create a player
     player = new Player();
-    qDebug() << "Lowest plat: " << lowestPlatform->y();
     player->setPos(lowestPlatform->x(), lowestPlatform->y()-player->pixmap().height());
 
     player->setFlag(QGraphicsItem::ItemIsFocusable);
@@ -423,4 +427,3 @@ void Game::setupPlayer() {
 
     scene->addItem(player);
 }
-

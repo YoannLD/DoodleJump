@@ -6,17 +6,17 @@
 float Platform::multiplier = WINDOW_HEIGHT;
 
 Platform::Platform(const QString& path) {
-    auto* pixmap = new QPixmap();
-    bool loaded = pixmap->load(path);
+    auto* platformPixmap = new QPixmap();
+    bool loaded = platformPixmap->load(path);
     if(!loaded) {
         qDebug() << "Error loading :" << path;
     }
-    setPixmap(*pixmap);
+    setPixmap(*platformPixmap);
 
-    delete pixmap;
+    delete platformPixmap;
 
-    const float minX = pixmap->width() / 2;
-    const float maxX = WINDOW_WIDTH - pixmap->width() ;
+    const float minX = pixmap().width() / 2;
+    const float maxX = WINDOW_WIDTH - pixmap().width() ;
     setX(minX + (rand()% static_cast<int>(maxX-minX+1)));
 
     const float minY = -WINDOW_HEIGHT;
