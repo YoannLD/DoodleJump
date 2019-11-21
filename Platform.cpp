@@ -13,8 +13,6 @@ Platform::Platform(const QString& path) {
     }
     setPixmap(*pixmap);
 
-    delete pixmap;
-
     const float minX = pixmap->width() / 2;
     const float maxX = WINDOW_WIDTH - pixmap->width() ;
     setX(minX + (rand()% static_cast<int>(maxX-minX+1)));
@@ -22,6 +20,8 @@ Platform::Platform(const QString& path) {
     const float minY = -WINDOW_HEIGHT;
     const float maxY = Platform::multiplier;
     setY(minY+ (rand() % static_cast<int>(maxY-minY+1)));
+
+    delete pixmap;
 
 }
 
@@ -33,16 +33,19 @@ Platform::Platform(const QString& path, float yMin, float yMax) : Platform(path)
         qDebug() << "Error loading :" << path;
     }
     setPixmap(*pixmap);
-    delete pixmap;
 
     const float minX = pixmap->width() / 2;
     const float maxX = WINDOW_WIDTH - pixmap->width() ;
     setX(minX + (rand()% static_cast<int>(maxX-minX+1)));
 
-    const float minY = yMin+yMin*15/100;
-    const float maxY = yMax-yMax*15/100;
-    setY(minY+ (rand() % static_cast<int>(maxY-minY+1)));
 
+    setY(frand_a_b(yMin,yMax));
 
+    delete pixmap;
+
+}
+
+double Platform::frand_a_b(float a, float b){
+    return ( rand()/(double)RAND_MAX) * (b-a) + a;
 }
 

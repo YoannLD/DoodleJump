@@ -9,6 +9,8 @@ public:
     static float multiplier;
     Platform(const QString& path);
     Platform(const QString& path, float yMin, float yMax);
+
+    double frand_a_b(float a, float b);
 };
 
 #endif //DOODLEJUMP_PLATFORM_H

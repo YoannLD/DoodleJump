@@ -7,6 +7,9 @@
 class MovingPlatform : public Platform, public Moving {
 public:
     MovingPlatform();
+
+    MovingPlatform(float yMin, float yMax);
+
     ~MovingPlatform();
 private:
     QTimer * movingTimer;

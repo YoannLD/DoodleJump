@@ -20,7 +20,7 @@ public:
 
     void addPlatform();
     void increaseScore();
-    static void quickSort(QList<QGraphicsItem *> &items, int debut, int fin);
+    static void quickSort(QList<Platform *> &items, int debut, int fin);
 
     QList<Platform *> collidingPlatforms(Platform *platform);
 
@@ -29,6 +29,7 @@ public:
 private:
     int const nb_platform = 40;
     int nb_platform_allow = nb_platform;
+    bool firstGeneration = true;
     bool isScrolling = false;
     bool sectionDisappearingPlatform = false;
     int countNbDisappearingPlatform;
@@ -44,10 +45,14 @@ private:
     void start();
     QTimer* timerMove;
     QTimer* timerJump;
+    float generateRandomPourcent();
 
 public slots:
     void movePlayer();
     void jumpPlayer();
+
+
+    QList<Platform *> getAllJumpablePlatforms();
 };
 
 #endif //DOODLEJUMP_GAME_H
