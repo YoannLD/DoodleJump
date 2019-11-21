@@ -14,7 +14,6 @@
 #include "Monster.h"
 #include "Bullet.h"
 #include "DisappearingPlatform.h"
-#include "time.h"
 
 Game::Game() {
 
@@ -75,11 +74,23 @@ void Game::start() {
 
 void Game::calculateNumberOfPlatform() {
     if (m_score < 500) {
-
-    } else if (m_score < 1000) {
-
-    } else{
-
+        dist_min = 0;
+        dist_max = 50;
+    } else if (m_score <= 1000) {
+        dist_min = 10;
+        dist_max = 60;
+    } else if (m_score <= 2000) {
+        dist_min = 20;
+        dist_max = 60;
+    } else if (m_score <= 2500) {
+        dist_min = 40;
+        dist_max = 60;
+    } else if (m_score <= 2700) {
+        dist_min = 40;
+        dist_max = 65;
+    } else if(m_score > 3000){
+        dist_min = 80;
+        dist_max = 100;
     }
 
 }
@@ -159,20 +170,21 @@ void Game::addPlatform() {
         }
         if(sectionDisappearingPlatform) {
             if (generateRandom() <= BREAKING_PLATFORM_PROB)
-                platform = new BreakingPlatform(lastPlatform->y() - DIST_MAX + margin,
-                                                lastPlatform->y() - margin);
-            else platform = new DisappearingPlatform(lastPlatform->y() - DIST_MAX + margin, lastPlatform->y() - margin);
+                platform = new BreakingPlatform(lastPlatform->y() - dist_max + margin ,
+                                                lastPlatform->y() - margin - dist_min);
+            else platform = new DisappearingPlatform(lastPlatform->y() - dist_max + margin ,
+                                                    lastPlatform->y() - margin - dist_min);
         }
         else {
             if (generateRandom() <= BREAKING_PLATFORM_PROB)
-                platform = new BreakingPlatform(lastPlatform->y() - DIST_MAX + margin,
-                                                lastPlatform->y() - margin);
+                platform = new BreakingPlatform(lastPlatform->y() - dist_max + margin ,
+                                                lastPlatform->y() - margin - dist_min);
             else if (generateRandom() <= MOVING_PLATFORM_PROB)
-                platform = new MovingPlatform(lastPlatform->y() - DIST_MAX + lastPlatform->pixmap().height(),
-                                              lastPlatform->y() - lastPlatform->pixmap().height());
+                platform = new MovingPlatform(lastPlatform->y() - dist_max + lastPlatform->pixmap().height(),
+                                              lastPlatform->y() - lastPlatform->pixmap().height() - dist_min);
             else
-                platform = new BasicPlatform(lastPlatform->y() - DIST_MAX + margin,
-                                             lastPlatform->y() - margin);
+                platform = new BasicPlatform(lastPlatform->y() - dist_max + margin,
+                                             lastPlatform->y() - margin - dist_min);
         }
 
         if(dynamic_cast<MovingPlatform*>(platform)) {
