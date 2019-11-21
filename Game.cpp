@@ -89,14 +89,9 @@ QList<Platform*> Game::collidingPlatforms(Platform* platform){
     QList<Platform*> platforms = getAllPlatforms();
     int i = 0;
     while(i < platforms.size()){
-        if(MovingPlatform* movingPlatform = dynamic_cast<MovingPlatform*>(platforms.at(i))){
-            if(platform->y()+platform->pixmap().height() < movingPlatform->Platform::y() || platform->y() > movingPlatform->Platform::y()+movingPlatform->Platform::pixmap().height()){
-            }
-            else{
+        if(auto* movingPlatform = dynamic_cast<MovingPlatform*>(platforms.at(i)))
+            if(!((platform->y()+platform->pixmap().height() < movingPlatform->Platform::y() || platform->y() > movingPlatform->Platform::y()+movingPlatform->Platform::pixmap().height())))
                 res.append(movingPlatform);
-            }
-
-        }
         i++;
     }
     return res;
@@ -124,7 +119,6 @@ void Game::addPlatform() {
         sectionDisappearingPlatform = true;
         countNbDisappearingPlatform = 2+ (rand() % static_cast<int>(4+1));
         countNbDisappearingPlatformActual = 0;
-        qDebug() << countNbDisappearingPlatform;
     }
     if(countNbDisappearingPlatformActual >= countNbDisappearingPlatform)
         sectionDisappearingPlatform = false;
@@ -166,20 +160,14 @@ void Game::addPlatform() {
                         scene->addItem(platform);
                         i++;
                         if(auto* element = dynamic_cast<BasicPlatform*>(platform)) {
-                            // Si - de 2%, on spawn un monstre
-                            int probMonster = rand() % 100;
-                            if (probMonster <= MONSTER_SPAWN_PROB) {
-
-                                // Recupération
-                                auto *monster = new Monster(element);
-                                scene->addItem(monster);
-                            }
+                            int probMonster = rand() % 100;     // Si - de 2%, on spawn un monstre
+                            if (probMonster <= MONSTER_SPAWN_PROB)
+                                scene->addItem(new Monster(element));
                         }
                     }
                 }
             }
         }
-
 
         QList<QGraphicsItem *> platforms;
 
@@ -373,6 +361,7 @@ void Game::jumpPlayer() {
             if(platform) { // Rebond
                 // Si les pieds atteignent la moitié supérieure de la plateforme
                 if(player->y()+player->pixmap().height() < platform->y()+platform->pixmap().height()/2) {
+                    qDebug() << (scene->items().size());
                     if(dynamic_cast<BreakingPlatform*>(platform)){
                         auto * breaking = dynamic_cast<BreakingPlatform*>(platform);
                         breaking->launchBreak();
@@ -414,7 +403,6 @@ void Game::setupPlayer() {
 
     // create a player
     player = new Player();
-    qDebug() << "Lowest plat: " << lowestPlatform->y();
     player->setPos(lowestPlatform->x(), lowestPlatform->y()-player->pixmap().height());
 
     player->setFlag(QGraphicsItem::ItemIsFocusable);
