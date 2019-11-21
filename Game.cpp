@@ -14,6 +14,7 @@
 #include "Monster.h"
 #include "Bullet.h"
 #include "DisappearingPlatform.h"
+#include "ExplodingPlatform.h"
 
 Game::Game() {
 
@@ -154,13 +155,24 @@ void Game::addPlatform() {
     while (jumpablePlatforms.at(0)->y() > -WINDOW_HEIGHT) {
 
         int probDisappearingPlatform = rand() % 100;
+        int probExplodingPlatform = rand() % 100;
         if(probDisappearingPlatform < DISAPPEARING_PLATFORM_PROB && !sectionDisappearingPlatform){
             sectionDisappearingPlatform = true;
             countNbDisappearingPlatform = 2 + (rand() % static_cast<int>(4+1));
             countNbDisappearingPlatformActual = 0;
         }
+        else if (probExplodingPlatform < EXPLODING_PLATFORM_PROB && !sectionExplodingPlatform){
+                sectionExplodingPlatform = true;
+                countNbExplodingPlatform = 2 + (rand() % static_cast<int>(6+1));
+                countNbExplodingPlatformActual = 0;
+        }
+
         if(countNbDisappearingPlatformActual >= countNbDisappearingPlatform)
             sectionDisappearingPlatform = false;
+
+
+        if(countNbExplodingPlatformActual >= countNbExplodingPlatform)
+            sectionExplodingPlatform = false;
 
         auto *lastPlatform = jumpablePlatforms.at(0);
         Platform *platform;
@@ -174,6 +186,10 @@ void Game::addPlatform() {
                                                 lastPlatform->y() - margin - dist_min);
             else platform = new DisappearingPlatform(lastPlatform->y() - dist_max + margin ,
                                                     lastPlatform->y() - margin - dist_min);
+        }
+        else if(sectionExplodingPlatform) {
+           platform = new ExplodingPlatform(lastPlatform->y() - dist_max + margin ,
+                                                     lastPlatform->y() - margin - dist_min);
         }
         else {
             if (generateRandom() <= BREAKING_PLATFORM_PROB)
@@ -202,6 +218,8 @@ void Game::addPlatform() {
             scene->addItem(platform);
             if(dynamic_cast<DisappearingPlatform*>(platform))
                 countNbDisappearingPlatformActual++;
+            else if(dynamic_cast<ExplodingPlatform*>(platform))
+                countNbExplodingPlatformActual++;
             jumpablePlatforms = getAllJumpablePlatforms();
        }
         else

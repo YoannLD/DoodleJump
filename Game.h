@@ -30,9 +30,15 @@ private:
     int dist_min = 0;
     int dist_max = 0;
     bool isScrolling = false;
+
     bool sectionDisappearingPlatform = false;
     int countNbDisappearingPlatform;
     int countNbDisappearingPlatformActual;
+
+    bool sectionExplodingPlatform = false;
+    int countNbExplodingPlatform;
+    int countNbExplodingPlatformActual;
+
     int m_score = 0;
     Player* player;
     QGraphicsTextItem *text;
