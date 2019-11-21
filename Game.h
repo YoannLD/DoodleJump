@@ -27,9 +27,6 @@ public:
     QList<Platform *> getAllPlatforms();
 
 private:
-    int const nb_platform = 40;
-    int nb_platform_allow = nb_platform;
-    bool firstGeneration = true;
     bool isScrolling = false;
     bool sectionDisappearingPlatform = false;
     int countNbDisappearingPlatform;
@@ -45,14 +42,15 @@ private:
     void start();
     QTimer* timerMove;
     QTimer* timerJump;
-    float generateRandomPourcent();
+    static float generateRandomPourcent();
+    QList<Platform *> getAllJumpablePlatforms();
 
 public slots:
     void movePlayer();
     void jumpPlayer();
 
 
-    QList<Platform *> getAllJumpablePlatforms();
+
 };
 
 #endif //DOODLEJUMP_GAME_H

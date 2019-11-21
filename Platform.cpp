@@ -3,8 +3,6 @@
 #include <QDebug>
 #include "consts.h"
 
-float Platform::multiplier = WINDOW_HEIGHT;
-
 Platform::Platform(const QString& path) {
     auto* pixmap = new QPixmap();
     bool loaded = pixmap->load(path);
@@ -18,7 +16,7 @@ Platform::Platform(const QString& path) {
     setX(minX + (rand()% static_cast<int>(maxX-minX+1)));
 
     const float minY = -WINDOW_HEIGHT;
-    const float maxY = Platform::multiplier;
+    const float maxY = WINDOW_HEIGHT;
     setY(minY+ (rand() % static_cast<int>(maxY-minY+1)));
 
     delete pixmap;
