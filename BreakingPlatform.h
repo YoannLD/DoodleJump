@@ -7,6 +7,7 @@
 class BreakingPlatform : public Platform {
 public:
     BreakingPlatform();
+    BreakingPlatform(float minY, float maxY);
     ~BreakingPlatform();
     void launchBreak();
 

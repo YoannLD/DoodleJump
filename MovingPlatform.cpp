@@ -12,6 +12,12 @@ MovingPlatform::MovingPlatform() : Platform(":/images/movingPlatform.png") {
 
 }
 
+MovingPlatform::MovingPlatform(float yMin, float yMax) : Platform(":/images/movingPlatform.png", yMin, yMax){
+    movingTimer = new QTimer();
+    connect(movingTimer, &QTimer::timeout, this, &MovingPlatform::move);
+    movingTimer->start(15);
+}
+
 void MovingPlatform::move(){
     if(state == direction::LEFT){
         if(Platform::x() > 0){

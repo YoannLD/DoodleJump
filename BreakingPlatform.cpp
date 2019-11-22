@@ -12,6 +12,13 @@ BreakingPlatform::BreakingPlatform() : Platform(":/images/breakingPlatform/break
 
 }
 
+BreakingPlatform::BreakingPlatform(float yMin, float yMax) : Platform(":/images/breakingPlatform/breakingPlatform_1.png",yMin,yMax){
+
+    breakSound = new QMediaPlayer();
+    breakSound->setMedia(QUrl("qrc:/sounds/break.mp3"));
+    breakingTimer = new QTimer();
+    connect(breakingTimer, &QTimer::timeout, this, &BreakingPlatform::breaking);
+}
 
 
 BreakingPlatform::~BreakingPlatform() {

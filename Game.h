@@ -21,19 +21,24 @@ private:
     void addPlatform();
 
     void increaseScore();
-
-    static void quickSort(QList<QGraphicsItem *> &items, int debut, int fin);
+    static void quickSort(QList<Platform *> &items, int debut, int fin);
 
     QList<Platform *> collidingPlatforms(Platform *platform);
 
     QList<Platform *> getAllPlatforms();
 
-    int const nb_platform = 40;
-    int nb_platform_allow = nb_platform;
+    int dist_min = 0;
+    int dist_max = 0;
     bool isScrolling = false;
+
     bool sectionDisappearingPlatform = false;
     int countNbDisappearingPlatform;
     int countNbDisappearingPlatformActual;
+
+    bool sectionExplodingPlatform = false;
+    int countNbExplodingPlatform;
+    int countNbExplodingPlatformActual;
+
     int m_score = 0;
     Player *player;
     QGraphicsTextItem *text;
@@ -48,15 +53,19 @@ private:
     void setupPlayer();
 
     void start();
-
-    QTimer *timerMove;
-    QTimer *timerJump;
+    QTimer* timerMove;
+    QTimer* timerJump;
+    static float generateRandom();
+    QList<Platform *> getAllJumpablePlatforms();
 
 public slots:
 
     void movePlayer();
 
     void jumpPlayer();
+
+
+
 };
 
 #endif //DOODLEJUMP_GAME_H
