@@ -70,21 +70,32 @@ void Game::calculateNumberOfPlatform() {
     if (m_score < 500) {
         dist_min = 0;
         dist_max = 50;
+        disappearingPlatformAllow = false;
+        explodingPlatformAllow = false;
     } else if (m_score <= 1000) {
         dist_min = 10;
         dist_max = 60;
+        disappearingPlatformAllow = true;
     } else if (m_score <= 2000) {
         dist_min = 20;
         dist_max = 60;
+        explodingPlatformAllow = true;
+        disappearingPlatformAllow = true;
     } else if (m_score <= 2500) {
         dist_min = 40;
         dist_max = 60;
+        explodingPlatformAllow = true;
+        disappearingPlatformAllow = true;
     } else if (m_score <= 2700) {
         dist_min = 40;
         dist_max = 65;
+        explodingPlatformAllow = true;
+        disappearingPlatformAllow = true;
     } else if(m_score > 3000){
         dist_min = 80;
-        dist_max = 100;
+        dist_max = 90;
+        explodingPlatformAllow = true;
+        disappearingPlatformAllow = true;
     }
 
 }
@@ -116,7 +127,7 @@ QList<Platform*> Game::getAllJumpablePlatforms() {
     QList<Platform *> platforms;
     for(auto element : scene->items())
         if(auto* platform = dynamic_cast<Platform*>(element))
-            if(dynamic_cast<BasicPlatform*>(platform) || dynamic_cast<MovingPlatform*>(platform) || dynamic_cast<DisappearingPlatform*>(platform))
+            if(dynamic_cast<BasicPlatform*>(platform) || dynamic_cast<MovingPlatform*>(platform) || dynamic_cast<DisappearingPlatform*>(platform) || dynamic_cast<ExplodingPlatform*>(platform))
                 platforms.append(platform);
 
     if (!platforms.empty())
@@ -131,8 +142,6 @@ float Game::generateRandom(){
 
 void Game::addPlatform() {
 
-    qDebug("DEBUT");
-
     calculateNumberOfPlatform();
 
     QList<Platform *> jumpablePlatforms = getAllJumpablePlatforms();
@@ -146,16 +155,29 @@ void Game::addPlatform() {
         delete temp;
     }
 
+    int i = 0;
+
+    while(i < jumpablePlatforms.size()){
+        if(auto* platform = dynamic_cast<ExplodingPlatform*>(jumpablePlatforms.at(i)))
+            if(platform->y() - 100 >= player->y()){
+                platform->lauchExplosing();
+                qDebug("explose");
+            }
+
+
+        i++;
+    }
+
     while (jumpablePlatforms.at(0)->y() > -WINDOW_HEIGHT) {
 
         int probDisappearingPlatform = rand() % 100;
         int probExplodingPlatform = rand() % 100;
-        if(probDisappearingPlatform < DISAPPEARING_PLATFORM_PROB && !sectionDisappearingPlatform){
+        if(probDisappearingPlatform < DISAPPEARING_PLATFORM_PROB && !sectionDisappearingPlatform && disappearingPlatformAllow){
             sectionDisappearingPlatform = true;
             countNbDisappearingPlatform = 2 + (rand() % static_cast<int>(4+1));
             countNbDisappearingPlatformActual = 0;
         }
-        else if (probExplodingPlatform < EXPLODING_PLATFORM_PROB && !sectionExplodingPlatform){
+        else if (probExplodingPlatform < EXPLODING_PLATFORM_PROB && !sectionExplodingPlatform && explodingPlatformAllow){
                 sectionExplodingPlatform = true;
                 countNbExplodingPlatform = 2 + (rand() % static_cast<int>(6+1));
                 countNbExplodingPlatformActual = 0;
@@ -415,7 +437,6 @@ void Game::setupPlayer() {
 
     // create a player
     player = new Player();
-    qDebug() << "Lowest plat: " << lowestPlatform->y();
     player->setPos(lowestPlatform->x(), lowestPlatform->y()-player->pixmap().height());
 
     player->setFlag(QGraphicsItem::ItemIsFocusable);

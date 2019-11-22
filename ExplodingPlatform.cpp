@@ -15,7 +15,7 @@ ExplodingPlatform::ExplodingPlatform(float yMin, float yMax): Platform(":/images
 }
 
 void ExplodingPlatform::lauchExplosing(){
-    explodingTimer->start(5);
+    explodingTimer->start(80);
 }
 
 void ExplodingPlatform::exploding() {
@@ -24,7 +24,7 @@ void ExplodingPlatform::exploding() {
     }
     else{
         state++;
-        setPixmap(":/images/breakingPlatform/breakingPlatform_"+QString::number(state)+".png");
+        setPixmap(":/images/explodingPlatform/explodingPlatform_"+QString::number(state)+".png");
     }
 }
 

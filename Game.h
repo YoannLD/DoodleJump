@@ -27,6 +27,9 @@ private:
 
     QList<Platform *> getAllPlatforms();
 
+    bool disappearingPlatformAllow = false;
+    bool explodingPlatformAllow = false;
+
     int dist_min = 0;
     int dist_max = 0;
     bool isScrolling = false;
