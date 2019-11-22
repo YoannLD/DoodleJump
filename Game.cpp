@@ -34,6 +34,9 @@ Game::Game() {
 
     delete backgroundPixmap;
 
+    text = scene->addText(QString::number(m_score), QFont("Al Seana"));
+    text->setPos(10, 10);
+
     setScene(scene);
 
     fallSound = new QMediaPlayer();
@@ -128,6 +131,8 @@ float Game::generateRandom(){
 
 void Game::addPlatform() {
 
+    qDebug("DEBUT");
+
     calculateNumberOfPlatform();
 
     QList<Platform *> jumpablePlatforms = getAllJumpablePlatforms();
@@ -200,6 +205,7 @@ void Game::addPlatform() {
             } else
                 delete platform;
 
+
             delete rect;
 
         }
@@ -212,7 +218,8 @@ void Game::addPlatform() {
             jumpablePlatforms = getAllJumpablePlatforms();
        }
         else
-           delete platform;
+            delete platform;
+
 
     }
 
