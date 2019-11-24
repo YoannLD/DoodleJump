@@ -24,10 +24,6 @@ Player::Player() {
     }
     setPixmap(*m_pixmap);
 
-    // --------- Setting up sound effects -------------
-    bounceSound = new QMediaPlayer();
-    bounceSound->setMedia(QUrl("qrc:/sounds/jump.mp3"));
-
     // --------- Creating timers ---------
     m_shootTimer = new QTimer();
     m_shootingPixmapTimer = new QTimer();
@@ -65,15 +61,8 @@ void Player::updatePixmap() {
     }
 }
 
-void Player::bounce() {
-    m_velocityY = -5;
-
-    // Si le son est déjà lancé, remet à 0
-    if (bounceSound->state() == QMediaPlayer::PlayingState) {
-        bounceSound->setPosition(0);
-    } else if (bounceSound->state() == QMediaPlayer::StoppedState) {
-        bounceSound->play();
-    }
+void Player::bounce(int newVel) {
+    m_velocityY = newVel;
 }
 
 Player::~Player() {
@@ -81,7 +70,6 @@ Player::~Player() {
     delete m_shootTimer;
     delete m_shootingPixmap;
     delete m_pixmap;
-    delete bounceSound;
 }
 
 float Player::getVelocityY() {

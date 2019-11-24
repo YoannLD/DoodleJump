@@ -17,6 +17,7 @@ public:
 private:
 
     QGraphicsScene *scene;
+    QMediaPlayer* bounceSound ;
 
     void addPlatform();
 
@@ -50,6 +51,7 @@ private:
 
     QMediaPlayer *fallSound;
     QMediaPlayer *shootSound;
+    QMediaPlayer *springSound;
 
     void calculateNumberOfPlatform();
 

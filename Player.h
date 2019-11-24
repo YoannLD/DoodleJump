@@ -32,10 +32,9 @@ private:
 
     float m_velocityY = 0;
     QPixmap* m_pixmap;
-    QMediaPlayer* bounceSound ;
 public slots:
 
-    void bounce();
+    void bounce(int newVel);
     void updatePixmap();
 
 
