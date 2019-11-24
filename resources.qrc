@@ -20,12 +20,14 @@
         <file>images/bullet2.png</file>
         <file>images/doodle.png</file>
         <file>images/doodleShoot.png</file>
-        <file>images/loicMonster.png</file>
+        <file>images/monster.png</file>
         <file>images/spring/spring1.png</file>
         <file>images/spring/spring2.png</file>
         <file>sounds/jump.mp3</file>
         <file>sounds/fall.mp3</file>
         <file>sounds/spring.mp3</file>
+        <file>sounds/jumpMonster.mp3</file>
+        <file>sounds/killMonster.mp3</file>
         <file>sounds/shoot.mp3</file>
         <file>sounds/break.mp3</file>
     </qresource>

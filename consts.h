@@ -14,7 +14,7 @@ static const int WINDOW_HEIGHT = 600;
 // Game param
 
 static const int BULLET_SPEED = 1;
-static const int MONSTER_SPAWN_PROB = 2; // 2%
+static const int MONSTER_SPAWN_PROB = 1;
 static const int DISAPPEARING_PLATFORM_PROB = 2; // 2%
 static const int EXPLODING_PLATFORM_PROB = 10; // 2%
 static const int MAX_HEIGHT = WINDOW_HEIGHT/2;

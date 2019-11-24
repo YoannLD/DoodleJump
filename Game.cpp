@@ -35,9 +35,6 @@ Game::Game() {
 
     delete backgroundPixmap;
 
-    text = scene->addText(QString::number(m_score), QFont("Al Seana"));
-    text->setPos(10, 10);
-
     setScene(scene);
 
     // --------- Setting up sound effects -------------
@@ -60,6 +57,8 @@ Game::Game() {
 void Game::start() {
 
     m_score = 0;
+    text = scene->addText(QString::number(m_score), QFont("Al Seana"));
+    text->setPos(10, 10);
     isScrolling = false;
 
     // create platforms
@@ -174,15 +173,12 @@ void Game::addPlatform() {
     }
 
     while (jumpablePlatforms.at(0)->y() > -WINDOW_HEIGHT) {
-
-        int probDisappearingPlatform = rand() % 100;
-        int probExplodingPlatform = rand() % 100;
-        if(probDisappearingPlatform < DISAPPEARING_PLATFORM_PROB && !sectionDisappearingPlatform && disappearingPlatformAllow){
+        if(generateRandom() < DISAPPEARING_PLATFORM_PROB && !sectionDisappearingPlatform && disappearingPlatformAllow){
             sectionDisappearingPlatform = true;
             countNbDisappearingPlatform = 2 + (rand() % static_cast<int>(4+1));
             countNbDisappearingPlatformActual = 0;
         }
-        else if (probExplodingPlatform < EXPLODING_PLATFORM_PROB && !sectionExplodingPlatform && explodingPlatformAllow){
+        else if (generateRandom() < EXPLODING_PLATFORM_PROB && !sectionExplodingPlatform && explodingPlatformAllow){
                 sectionExplodingPlatform = true;
                 countNbExplodingPlatform = 2 + (rand() % static_cast<int>(6+1));
                 countNbExplodingPlatformActual = 0;
@@ -246,6 +242,10 @@ void Game::addPlatform() {
                 if(generateRandom() <= SPRING_PROB) {
                     auto* spring = new Spring(basicPlatform);
                     scene->addItem(spring);
+                }
+                if(generateRandom() <= MONSTER_SPAWN_PROB) {
+                    auto* monster = new Monster(basicPlatform);
+                    scene->addItem(monster);
                 }
             }
             jumpablePlatforms = getAllJumpablePlatforms();
@@ -343,6 +343,7 @@ void Game::movePlayer() {
         }
     }
     if (player->y() + player->pixmap().height()>= WINDOW_HEIGHT) { // (Perdu)
+        fallSound->play();
         loose();
     }
 }
@@ -436,6 +437,16 @@ void Game::jumpPlayer() {
 
                 }
             }
+            else if(auto* monster = dynamic_cast<Monster*>(element)) { // Monstre
+                if(player->y()+player->pixmap().height() < monster->y()+monster->pixmap().height()/2) {
+                    monster->launchKill();
+                    player->bounce(-7);
+                    increaseScore();
+                }
+                else {
+                    loose();
+                }
+            }
             else if(auto* bonus = dynamic_cast<Bonus*>(element)) { // Rebond
                 if(auto* spring = dynamic_cast<Spring*>(bonus)) {
                     if(player->y()+player->pixmap().height() < spring->y()+spring->pixmap().height()/2) {
@@ -453,16 +464,23 @@ void Game::jumpPlayer() {
             }
         }
     }
+    else {
+        // On vérifie si on touche un monstre
+        for(auto element : scene->collidingItems(player)) {
+            if (dynamic_cast<Monster*>(element)) { // Monstre
+                loose();
+            }
+        }
+    }
 }
 
 void Game::loose() {
     timerMove->stop();
     timerJump->stop();
-    fallSound->play();
     // Clear scene
     for (auto element : scene->items()) { // dynamic_cast<GameObject *>(element) ?
         if (dynamic_cast<Platform *>(element) || dynamic_cast<Monster *>(element) ||
-            dynamic_cast<Bullet *>(element) || dynamic_cast<Player *>(element) || dynamic_cast<Bonus *>(element)) {
+            dynamic_cast<Bullet *>(element) || dynamic_cast<Player *>(element) || dynamic_cast<Bonus *>(element) ||dynamic_cast<QGraphicsTextItem*>(element)) {
             scene->removeItem(element);
             delete element;
         }
