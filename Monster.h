@@ -11,6 +11,7 @@ class Monster : public QObject, public Hurts {
     Q_OBJECT
 public:
     Monster(BasicPlatform* p);
+    ~Monster();
     void kill();
     void launchKill();
     void getShot();

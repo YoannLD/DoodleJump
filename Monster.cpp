@@ -41,3 +41,9 @@ void Monster::getShot(){
 void Monster::kill() {
     setY(y()+1);
 }
+
+Monster::~Monster() {
+    delete killTimer;
+    delete jumpSound ;
+    delete dieSound ;
+}
