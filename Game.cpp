@@ -19,6 +19,7 @@
 #include "ExplodingPlatform.h"
 #include "Spring.h"
 #include "Jetpack.h"
+#include "Resources.h"
 #include <chrono>
 
 using namespace std::chrono;
@@ -37,23 +38,22 @@ Game::Game() {
     menuScene = new QGraphicsScene(this);
     menuScene->setSceneRect(0, 0, WINDOW_WIDTH, WINDOW_HEIGHT);
 
-    auto* backgroundPixmap = new QPixmap();
-    bool backgroundLoaded = backgroundPixmap->load(":/images/background.png");
-    if (!backgroundLoaded) {
-        qDebug() << "Error loading : :/images/background.png";
-    }
+    auto* hab = new QGraphicsPixmapItem();
+    hab->setPixmap(Resources::png("habillage.png"));
+    hab->setEnabled(false);
 
-    scene->setBackgroundBrush(QBrush(*backgroundPixmap));
+    scene->addItem(hab);
+    hab->setZValue(150);
+
 
     auto* menuPixmap = new QPixmap();
-    backgroundLoaded = menuPixmap->load(":/images/menu.png");
+    bool backgroundLoaded = menuPixmap->load(":/images/menu.png");
     if (!backgroundLoaded) {
         qDebug() << "Error loading : :/images/menu.png";
     }
 
     menuScene->setBackgroundBrush(QBrush(*menuPixmap));
 
-    delete backgroundPixmap;
     delete menuPixmap;
 
 
@@ -114,8 +114,9 @@ void Game::start() {
     setScene(scene);
 
     m_score = 0;
-    text = scene->addText(QString::number(m_score), QFont("Al Seana"));
-    text->setPos(10, 10);
+    text = scene->addText(QString::number(m_score), QFont("DoodleJump",40,QFont::Bold));
+    text->setPos(100, 47);
+    text->setZValue(200);
     isScrolling = false;
 
     // create platforms
@@ -212,10 +213,17 @@ void Game::addPlatform() {
     if (jumpablePlatforms.empty()) {
         auto* temp = new BasicPlatform();
         Platform *platform = new BasicPlatform(WINDOW_HEIGHT - DIST_MAX, (float)WINDOW_HEIGHT-(float)temp->pixmap().height());
-        if (scene->collidingItems(platform).empty()) {
+        QList<QGraphicsItem *> items = scene->collidingItems(platform);
+        if (items.empty()) {
             scene->addItem(platform);
             jumpablePlatforms = getAllJumpablePlatforms();
         }
+        else if(items.size() == 1)
+            if(!dynamic_cast<Platform*>(items.at(0))) {
+                scene->addItem(platform);
+                jumpablePlatforms = getAllJumpablePlatforms();
+            }
+
         delete temp;
     }
 
@@ -280,19 +288,32 @@ void Game::addPlatform() {
                                              lastPlatform->y() - margin - dist_min);
         }
 
+        QList<QGraphicsItem *> itemsColliding = scene->collidingItems(platform);
+        bool plateformColliding = collidingPlatforms(platform).empty();
+
+        // Dans le cas d'une plateforme mouvante
         if(dynamic_cast<MovingPlatform*>(platform)) {
             QGraphicsRectItem* rect = new QGraphicsRectItem(0,platform->y(),WINDOW_WIDTH,platform->pixmap().height());
-            if(scene->collidingItems(rect).empty()){
+            QList<QGraphicsItem *> items = scene->collidingItems(rect);
+            if(items.empty()){
                 scene->addItem(platform);
                 jumpablePlatforms = getAllJumpablePlatforms();
-            } else
+            } else if(items.size() == 1)
+                if(!dynamic_cast<Platform*>(items.at(0))) {
+                    scene->addItem(platform);
+                    jumpablePlatforms = getAllJumpablePlatforms();
+                }
+                else
+                    delete platform;
+            else
                 delete platform;
 
 
             delete rect;
 
         }
-        else if (scene->collidingItems(platform).empty() && collidingPlatforms(platform).empty()) {
+        else if ((itemsColliding.empty() && plateformColliding) || (itemsColliding.size() == 1 && plateformColliding &&
+                !dynamic_cast<Platform *>(itemsColliding.at(0)))) {
             scene->addItem(platform);
             if(dynamic_cast<DisappearingPlatform*>(platform))
                 countNbDisappearingPlatformActual++;
@@ -365,10 +386,10 @@ void Game::movePlayer() {
         switch(key) {
             case Qt::Key_Left :
             case Qt::Key_Q :
-                if (player->x() + (player->pixmap().width() / 2) > 290)
+                if (player->x() + (player->pixmap().width() / 2) > BORDER_LAYOUT)
                     player->setPos(player->x() - 1, player->y());
                 else
-                    player->setPos(scene->width() - 290 - (player->pixmap().width() / 2), player->y());
+                    player->setPos(scene->width() - BORDER_LAYOUT - (player->pixmap().width() / 2), player->y());
 
                 if (!player->m_facingLeft) {
                     player->m_facingLeft = true;
@@ -377,11 +398,11 @@ void Game::movePlayer() {
                 break;
             case Qt::Key_Right :
             case Qt::Key_D :
-                if (player->x() + (player->pixmap().width() / 2) < scene->width()-290) {
+                if (player->x() + (player->pixmap().width() / 2) < scene->width()-BORDER_LAYOUT) {
                     player->setX(player->x() + 1);
                 }
                 else {
-                    player->setX(-player->pixmap().width() / 2 + 290);
+                    player->setX(-player->pixmap().width() / 2 + BORDER_LAYOUT);
                 }
 
                 if (player->m_facingLeft) {

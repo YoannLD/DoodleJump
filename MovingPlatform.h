@@ -14,7 +14,7 @@ public:
 private:
     QTimer * movingTimer;
     enum direction {LEFT, RIGHT};
-    direction state = direction::LEFT;
+    direction state;
 
 public slots:
     void move();

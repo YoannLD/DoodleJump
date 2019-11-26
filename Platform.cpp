@@ -11,8 +11,8 @@ Platform::Platform(const QString& path) {
     setPixmap(Resources::png(path));
 
 
-    const float minX = pixmap->width() / 2 + 290;
-    const float maxX = WINDOW_WIDTH - pixmap->width() - 290;
+    const float minX = pixmap->width() / 2 + BORDER_LAYOUT;
+    const float maxX = WINDOW_WIDTH- BORDER_LAYOUT - pixmap->width() ;
     setX(minX + (rand()% static_cast<int>(maxX-minX+1)));
 
     const float minY = -WINDOW_HEIGHT;
@@ -31,8 +31,8 @@ Platform::Platform(const QString& path, float yMin, float yMax) : Platform(path)
     setPixmap(Resources::png(path));
 
 
-    const float minX = pixmap->width() / 2 +290 ;
-    const float maxX = WINDOW_WIDTH - pixmap->width() -290;
+    const float minX = pixmap->width() / 2 + BORDER_LAYOUT ;
+    const float maxX = WINDOW_WIDTH- BORDER_LAYOUT - pixmap->width() ;
     setX(minX + (rand()% static_cast<int>(maxX-minX+1)));
 
 

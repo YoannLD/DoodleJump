@@ -10,6 +10,7 @@ Monster::Monster(BasicPlatform* platform) {
     setPixmap(*monsterPixmap);
     delete monsterPixmap;
     setPos(platform->x() + platform->pixmap().width()/2 - pixmap().width()/2, platform->y() - pixmap().height());
+    setZValue(120);
 
     jumpSound = new QMediaPlayer();
     dieSound = new QMediaPlayer();

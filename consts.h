@@ -10,7 +10,7 @@
 static const int WINDOW_WIDTH = 1280;
 static const int WINDOW_HEIGHT = 720;
 static const int MAX_HEIGHT = WINDOW_HEIGHT/2;
-static const int BORDER_LAYOUT = 300;
+static const int BORDER_LAYOUT = 350;
 
 // Game param
 
