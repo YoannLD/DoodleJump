@@ -34,6 +34,7 @@ Game::Game() {
 
     scene = new QGraphicsScene(this);
     scene->setSceneRect(0, 0, WINDOW_WIDTH, WINDOW_HEIGHT);
+    scene->setBackgroundBrush(QBrush(QPixmap(QString(":/images/background2.png"))));
 
     menuScene = new QGraphicsScene(this);
     menuScene->setSceneRect(0, 0, WINDOW_WIDTH, WINDOW_HEIGHT);
@@ -44,7 +45,6 @@ Game::Game() {
 
     scene->addItem(hab);
     hab->setZValue(150);
-
 
     auto* menuPixmap = new QPixmap();
     bool backgroundLoaded = menuPixmap->load(":/images/menu.png");
@@ -419,7 +419,7 @@ void Game::movePlayer() {
                     bullet->setPos(player->x() + player->pixmap().width() / 2, player->y());
                     scene->addItem(bullet);
 
-                    player->setPixmap(*player->m_shootingPixmap);
+                    player->setPixmap(Resources::png("doodleShoot.png"));;
                     // Si le son est déjà lancé, remet à 0
                     if(shootSound->state() == QMediaPlayer::PlayingState) {
                         shootSound->setPosition(0);

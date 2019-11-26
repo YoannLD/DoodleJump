@@ -24,7 +24,6 @@ public:
     bool m_facingLeft = true;
     bool m_hasShot = false;
     QTimer *m_shootTimer;
-    QPixmap *m_shootingPixmap;
     QTimer *m_shootingPixmapTimer;
 
     float getVelocityY();
@@ -34,7 +33,6 @@ public:
 private:
 
     float m_velocityY = 0;
-    QPixmap *m_pixmap;
 
 public slots:
 

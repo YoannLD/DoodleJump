@@ -1,14 +1,9 @@
 #include "Monster.h"
+#include "Resources.h"
 #include <qDebug>
 
 Monster::Monster(BasicPlatform* platform) {
-    auto* monsterPixmap = new QPixmap();
-    bool monsterLoaded = monsterPixmap->load(":/images/monster.png");
-    if(!monsterLoaded) {
-        qDebug() << "Error loading : :/images/monster.png";
-    }
-    setPixmap(*monsterPixmap);
-    delete monsterPixmap;
+    setPixmap(Resources::png("monster.png"));
     setPos(platform->x() + platform->pixmap().width()/2 - pixmap().width()/2, platform->y() - pixmap().height());
     setZValue(120);
 
@@ -37,6 +32,7 @@ void Monster::getShot(){
     } else if (dieSound->state() == QMediaPlayer::StoppedState) {
         dieSound->play();
     }
+    delete this; // Sale, à faore dans bullet ou game, mais sinon on peut pas jouer le son
 }
 
 void Monster::kill() {

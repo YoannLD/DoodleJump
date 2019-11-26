@@ -1,6 +1,7 @@
 #include "Player.h"
 #include "Bullet.h"
 #include "consts.h"
+#include "Resources.h"
 #include <QGraphicsScene>
 #include <QDebug>
 #include <QKeyEvent>
@@ -8,20 +9,7 @@
 #include <QApplication>
 
 Player::Player() {
-
-    // --------- Loading pixmaps ---------
-    m_pixmap = new QPixmap();
-    bool doodleLoaded = m_pixmap->load(":/images/doodle.png");
-    if(!doodleLoaded) {
-        qDebug() << "Error loading : :/images/doodle.png";
-    }
-
-    m_shootingPixmap = new QPixmap();
-    bool shootingLoaded = m_shootingPixmap->load(":/images/doodleShoot.png");
-    if(!shootingLoaded) {
-        qDebug() << "Error loading : :/images/doodleShoot.png";
-    }
-    setPixmap(*m_pixmap);
+    setPixmap(Resources::png("doodle.png"));
 
     // --------- Creating timers ---------
     m_shootTimer = new QTimer();
@@ -54,7 +42,7 @@ void Player::keyReleaseEvent(QKeyEvent *event) {
 
 void Player::updatePixmap() {
     m_shootingPixmapTimer->stop();
-    setPixmap(*m_pixmap);
+    setPixmap(Resources::png("doodle.png"));
     if(!m_facingLeft) {
         setPixmap(pixmap().transformed(QTransform().scale(-1, 1)));
     }
@@ -67,8 +55,6 @@ void Player::bounce(int newVel) {
 Player::~Player() {
     delete m_shootingPixmapTimer;
     delete m_shootTimer;
-    delete m_shootingPixmap;
-    delete m_pixmap;
 }
 
 float Player::getVelocityY() {
