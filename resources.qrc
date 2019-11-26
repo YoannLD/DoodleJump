@@ -19,12 +19,22 @@
         <file>images/explodingPlatform/explodingPlatform_6.png</file>
         <file>images/explodingPlatform/explodingPlatform_7.png</file>
         <file>images/explodingPlatform/explodingPlatform_8.png</file>
+        <file>images/jetpack/jetpack.png</file>
+        <file>images/jetpack/jetpack1.png</file>
+        <file>images/jetpack/jetpack2.png</file>
+        <file>images/jetpack/jetpack3.png</file>
+        <file>images/jetpack/jetpack4.png</file>
+        <file>images/jetpack/jetpack5.png</file>
+        <file>images/jetpack/jetpack6.png</file>
+        <file>images/jetpack/jetpack7.png</file>
+        <file>images/jetpack/jetpack8.png</file>
+        <file>images/jetpack/jetpack9.png</file>
+        <file>images/jetpack/jetpack10.png</file>
         <file>images/bullet.png</file>
         <file>images/bullet2.png</file>
         <file>images/doodle.png</file>
         <file>images/doodleShoot.png</file>
         <file>images/monster.png</file>
-        <file>images/jetpack.png</file>
         <file>images/spring/spring1.png</file>
         <file>images/spring/spring2.png</file>
         <file>sounds/jump.mp3</file>
