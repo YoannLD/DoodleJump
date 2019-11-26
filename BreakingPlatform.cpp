@@ -3,7 +3,7 @@
 #include <QTimer>
 #include <QMediaPlayer>
 
-BreakingPlatform::BreakingPlatform() : Platform(":/images/breakingPlatform/breakingPlatform_1.png") {
+BreakingPlatform::BreakingPlatform() : Platform("breakingPlatform/breakingPlatform_1.png") {
 
     breakSound = new QMediaPlayer();
     breakSound->setMedia(QUrl("qrc:/sounds/break.mp3"));
@@ -12,7 +12,7 @@ BreakingPlatform::BreakingPlatform() : Platform(":/images/breakingPlatform/break
 
 }
 
-BreakingPlatform::BreakingPlatform(float yMin, float yMax) : Platform(":/images/breakingPlatform/breakingPlatform_1.png",yMin,yMax){
+BreakingPlatform::BreakingPlatform(float yMin, float yMax) : Platform("breakingPlatform/breakingPlatform_1.png",yMin,yMax){
 
     breakSound = new QMediaPlayer();
     breakSound->setMedia(QUrl("qrc:/sounds/break.mp3"));

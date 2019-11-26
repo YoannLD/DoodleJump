@@ -6,7 +6,6 @@
 #include <QKeyEvent>
 #include <QTimer>
 #include <QApplication>
-#include <QMediaPlayer>
 
 Player::Player() {
 

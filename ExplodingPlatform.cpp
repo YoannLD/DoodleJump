@@ -2,13 +2,13 @@
 #include <QKeyEvent>
 #include <QTimer>
 
-ExplodingPlatform::ExplodingPlatform() : Platform(":/images/explodingPlatform/explodingPlatform_1.png") {
+ExplodingPlatform::ExplodingPlatform() : Platform("explodingPlatform/explodingPlatform_1.png") {
 
     explodingTimer = new QTimer();
     connect(explodingTimer, &QTimer::timeout, this, &ExplodingPlatform::exploding);
 }
 
-ExplodingPlatform::ExplodingPlatform(float yMin, float yMax): Platform(":/images/explodingPlatform/explodingPlatform_1.png", yMin, yMax){
+ExplodingPlatform::ExplodingPlatform(float yMin, float yMax): Platform("explodingPlatform/explodingPlatform_1.png", yMin, yMax){
 
     explodingTimer = new QTimer();
     connect(explodingTimer, &QTimer::timeout, this, &ExplodingPlatform::exploding);

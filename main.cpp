@@ -9,6 +9,7 @@ int main(int argv, char **args) {
 
     QApplication app(argv, args);
 
+
     Game * game = new Game();
 
     game->show();

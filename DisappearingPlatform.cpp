@@ -1,9 +1,9 @@
 #include "DisappearingPlatform.h"
 
-DisappearingPlatform::DisappearingPlatform() : Platform(":/images/disappearingPlatform.png"){
+DisappearingPlatform::DisappearingPlatform() : Platform("disappearingPlatform.png"){
 
 }
 
-DisappearingPlatform::DisappearingPlatform(float yMin, float yMax) : Platform(":/images/disappearingPlatform.png", yMin, yMax) {
+DisappearingPlatform::DisappearingPlatform(float yMin, float yMax) : Platform("disappearingPlatform.png", yMin, yMax) {
 
 }

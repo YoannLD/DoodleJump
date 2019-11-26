@@ -8,15 +8,21 @@
 #include <QGraphicsView>
 #include "Platform.h"
 #include <QMediaPlayer>
+#include <QtWidgets/QPushButton>
 #include "Player.h"
 
-class Game : public QGraphicsView {
+class Game :  public QGraphicsView {
+    Q_OBJECT
 public:
     Game();
 
 private:
 
+    QPushButton *buttonPlay;
+    QPushButton *buttonQuit;
+
     QGraphicsScene *scene;
+    QGraphicsScene *menuScene;
     QMediaPlayer* bounceSound ;
 
     void addPlatform();
@@ -30,6 +36,8 @@ private:
 
     bool disappearingPlatformAllow = false;
     bool explodingPlatformAllow = false;
+
+    int multiplier = 50;
 
     int dist_min = 0;
     int dist_max = 0;
@@ -57,7 +65,7 @@ private:
 
     void setupPlayer();
 
-    void start();
+    void menu();
     QTimer* timerMove;
     QTimer* timerJump;
     static float generateRandom();
@@ -68,6 +76,8 @@ public slots:
     void movePlayer();
 
     void jumpPlayer();
+private slots:
+    void start();
 
 
 

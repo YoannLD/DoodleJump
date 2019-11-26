@@ -10,6 +10,7 @@ public:
     Platform(const QString& path, float yMin, float yMax);
 private:
     double frand_a_b(float a, float b);
+
 };
 
 #endif //DOODLEJUMP_PLATFORM_H

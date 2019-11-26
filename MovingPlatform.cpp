@@ -4,7 +4,7 @@
 #include <QTimer>
 #include "consts.h"
 
-MovingPlatform::MovingPlatform() : Platform(":/images/movingPlatform.png") {
+MovingPlatform::MovingPlatform() : Platform("movingPlatform.png") {
 
     movingTimer = new QTimer();
     connect(movingTimer, &QTimer::timeout, this, &MovingPlatform::move);
@@ -12,7 +12,7 @@ MovingPlatform::MovingPlatform() : Platform(":/images/movingPlatform.png") {
 
 }
 
-MovingPlatform::MovingPlatform(float yMin, float yMax) : Platform(":/images/movingPlatform.png", yMin, yMax){
+MovingPlatform::MovingPlatform(float yMin, float yMax) : Platform("movingPlatform.png", yMin, yMax){
     movingTimer = new QTimer();
     connect(movingTimer, &QTimer::timeout, this, &MovingPlatform::move);
     movingTimer->start(15);
@@ -20,7 +20,7 @@ MovingPlatform::MovingPlatform(float yMin, float yMax) : Platform(":/images/movi
 
 void MovingPlatform::move(){
     if(state == direction::LEFT){
-        if(Platform::x() > 0){
+        if(Platform::x() > 290){
             Platform::setX(Platform::x()-1);
         }
         else{
@@ -29,7 +29,7 @@ void MovingPlatform::move(){
         }
     }
     else if(state == direction::RIGHT){
-        if(Platform::x()+Platform::pixmap().width() < WINDOW_WIDTH){
+        if(Platform::x()+Platform::pixmap().width() < WINDOW_WIDTH-290){
             Platform::setX(Platform::x()+1);
         }
         else{

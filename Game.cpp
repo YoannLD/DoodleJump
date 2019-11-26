@@ -6,7 +6,9 @@
 #include "Player.h"
 #include "BasicPlatform.h"
 #include <QGraphicsScene>
+#include <QPushButton>
 #include <QDebug>
+#include <QScreen>
 #include <QApplication>
 #include "consts.h"
 #include "BreakingPlatform.h"
@@ -16,26 +18,44 @@
 #include "DisappearingPlatform.h"
 #include "ExplodingPlatform.h"
 #include "Spring.h"
+#include <chrono>
+
+using namespace std::chrono;
 
 Game::Game() {
 
     setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
     setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+
+
     setFixedSize(WINDOW_WIDTH, WINDOW_HEIGHT);
 
     scene = new QGraphicsScene(this);
     scene->setSceneRect(0, 0, WINDOW_WIDTH, WINDOW_HEIGHT);
+
+    menuScene = new QGraphicsScene(this);
+    menuScene->setSceneRect(0, 0, WINDOW_WIDTH, WINDOW_HEIGHT);
 
     auto* backgroundPixmap = new QPixmap();
     bool backgroundLoaded = backgroundPixmap->load(":/images/background.png");
     if (!backgroundLoaded) {
         qDebug() << "Error loading : :/images/background.png";
     }
+
     scene->setBackgroundBrush(QBrush(*backgroundPixmap));
 
-    delete backgroundPixmap;
+    auto* menuPixmap = new QPixmap();
+    backgroundLoaded = menuPixmap->load(":/images/menu.png");
+    if (!backgroundLoaded) {
+        qDebug() << "Error loading : :/images/menu.png";
+    }
 
-    setScene(scene);
+    menuScene->setBackgroundBrush(QBrush(*menuPixmap));
+
+    delete backgroundPixmap;
+    delete menuPixmap;
+
+
 
     // --------- Setting up sound effects -------------
     fallSound = new QMediaPlayer();
@@ -51,10 +71,44 @@ Game::Game() {
     connect(timerMove, &QTimer::timeout, this, &Game::movePlayer);
     connect(timerJump, &QTimer::timeout, this, &Game::jumpPlayer);
 
-    start();
+    menu();
+}
+
+
+void Game::menu() {
+
+    setScene(menuScene);
+
+    int weight = 200;
+
+    buttonPlay = new QPushButton("Jouer", this);
+
+    buttonPlay->setGeometry(WINDOW_WIDTH/2-weight/2,280,weight,50);
+    buttonPlay->isFlat();
+    buttonPlay->setObjectName("playButton");
+    buttonPlay->setFont(QFont("DoodleJump",45,QFont::Bold));
+    buttonPlay->setStyleSheet("QPushButton {background-color: transparent; color = black} QPushButton#playButton:hover {color: #a41101}");
+
+    buttonQuit = new QPushButton("Quitter", this);
+    buttonQuit->setGeometry(WINDOW_WIDTH/2-weight/2,400,weight,50);
+    buttonQuit->isFlat();
+    buttonQuit->setObjectName("buttonQuit");
+    buttonQuit->setFont(QFont("DoodleJump",45,QFont::Bold));
+    buttonQuit->setStyleSheet("QPushButton {background-color: transparent; color = black} QPushButton#buttonQuit:hover {color: #a41101}");
+
+    buttonPlay->setVisible(true);
+    buttonQuit->setVisible(true);
+
+    connect(buttonPlay, SIGNAL (released()),this, SLOT (start()));
+
 }
 
 void Game::start() {
+
+    buttonPlay->setVisible(false);
+    buttonQuit->setVisible(false);
+
+    setScene(scene);
 
     m_score = 0;
     text = scene->addText(QString::number(m_score), QFont("Al Seana"));
@@ -147,6 +201,8 @@ float Game::generateRandom(){
 
 void Game::addPlatform() {
 
+    auto start = high_resolution_clock::now();
+
     calculateNumberOfPlatform();
 
     QList<Platform *> jumpablePlatforms = getAllJumpablePlatforms();
@@ -172,7 +228,8 @@ void Game::addPlatform() {
         i++;
     }
 
-    while (jumpablePlatforms.at(0)->y() > -WINDOW_HEIGHT) {
+    while (jumpablePlatforms.at(0)->y() > -WINDOW_HEIGHT*multiplier) {
+        multiplier = 1;
         if(generateRandom() < DISAPPEARING_PLATFORM_PROB && !sectionDisappearingPlatform && disappearingPlatformAllow){
             sectionDisappearingPlatform = true;
             countNbDisappearingPlatform = 2 + (rand() % static_cast<int>(4+1));
@@ -255,6 +312,11 @@ void Game::addPlatform() {
 
 
     }
+    auto stop = high_resolution_clock::now();
+
+    auto duration = duration_cast<microseconds>(stop - start);
+
+    qDebug() << duration.count();
 
 
 }
@@ -296,10 +358,10 @@ void Game::movePlayer() {
         switch(key) {
             case Qt::Key_Left :
             case Qt::Key_Q :
-                if (player->x() + (player->pixmap().width() / 2) > 0)
+                if (player->x() + (player->pixmap().width() / 2) > 290)
                     player->setPos(player->x() - 1, player->y());
                 else
-                    player->setPos(scene->width() - (player->pixmap().width() / 2), player->y());
+                    player->setPos(scene->width() - 290 - (player->pixmap().width() / 2), player->y());
 
                 if (!player->m_facingLeft) {
                     player->m_facingLeft = true;
@@ -308,11 +370,11 @@ void Game::movePlayer() {
                 break;
             case Qt::Key_Right :
             case Qt::Key_D :
-                if (player->x() + (player->pixmap().width() / 2) < scene->width()) {
+                if (player->x() + (player->pixmap().width() / 2) < scene->width()-290) {
                     player->setX(player->x() + 1);
                 }
                 else {
-                    player->setX(-player->pixmap().width() / 2);
+                    player->setX(-player->pixmap().width() / 2 + 290);
                 }
 
                 if (player->m_facingLeft) {
@@ -378,6 +440,7 @@ void Game::jumpPlayer() {
     else {
         // Scrool a little more to prevent scrolling on each jump if player doesn't move
         if(isScrolling) {
+            //QFuture<void> future = ::run(addPlatform);
             addPlatform();
             isScrolling = false;
             player->setY(player->y()+1);
@@ -501,4 +564,5 @@ void Game::setupPlayer() {
 
     scene->addItem(player);
 }
+
 
