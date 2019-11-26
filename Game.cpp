@@ -18,6 +18,7 @@
 #include "DisappearingPlatform.h"
 #include "ExplodingPlatform.h"
 #include "Spring.h"
+#include "Jetpack.h"
 #include <chrono>
 
 using namespace std::chrono;
@@ -68,8 +69,10 @@ Game::Game() {
     shootSound->setMedia(QUrl("qrc:/sounds/shoot.mp3"));
     timerMove = new QTimer();
     timerJump = new QTimer();
+    jetpackTimer = new QTimer();
     connect(timerMove, &QTimer::timeout, this, &Game::movePlayer);
     connect(timerJump, &QTimer::timeout, this, &Game::jumpPlayer);
+    connect(jetpackTimer, &QTimer::timeout, this, &Game::stopJetpack);
 
     menu();
 }
@@ -296,11 +299,15 @@ void Game::addPlatform() {
             else if(dynamic_cast<ExplodingPlatform*>(platform))
                 countNbExplodingPlatformActual++;
             else if(auto* basicPlatform = dynamic_cast<BasicPlatform*>(platform)) {
-                if(generateRandom() <= SPRING_PROB) {
+                if(generateRandom() <= JETPACK_PROB && !m_jetpack) {
+                    auto* jetpack = new Jetpack(basicPlatform);
+                    scene->addItem(jetpack);
+                }
+                else if(generateRandom() <= SPRING_PROB) {
                     auto* spring = new Spring(basicPlatform);
                     scene->addItem(spring);
                 }
-                if(generateRandom() <= MONSTER_SPAWN_PROB) {
+                else if(generateRandom() <= MONSTER_SPAWN_PROB) {
                     auto* monster = new Monster(basicPlatform);
                     scene->addItem(monster);
                 }
@@ -411,9 +418,15 @@ void Game::movePlayer() {
 }
 
 void Game::jumpPlayer() {
-    player->setVelocityY(player->getVelocityY() + GRAVITY);
+    if(!m_jetpack) {
+        player->setVelocityY(player->getVelocityY() + GRAVITY);
+    }
+    else {
+        player->setVelocityY(-5);
+    }
 
     if(player->y() < MAX_HEIGHT) { // Hauteur max, scroll
+        addPlatform();
         isScrolling = true;
         increaseScore();
         player->setY(MAX_HEIGHT);
@@ -440,8 +453,6 @@ void Game::jumpPlayer() {
     else {
         // Scrool a little more to prevent scrolling on each jump if player doesn't move
         if(isScrolling) {
-            //QFuture<void> future = ::run(addPlatform);
-            addPlatform();
             isScrolling = false;
             player->setY(player->y()+1);
             for(auto element : scene->items()) {
@@ -524,14 +535,24 @@ void Game::jumpPlayer() {
                         spring->jump();
                     }
                 }
+                else if(auto* jetpack = dynamic_cast<Jetpack*>(bonus)) {
+                        scene->removeItem(jetpack);
+                        m_jetpack = true;
+                        jetpackTimer->start(JETPACK_DURATION);
+                }
             }
         }
     }
     else {
         // On vérifie si on touche un monstre
         for(auto element : scene->collidingItems(player)) {
-            if (dynamic_cast<Monster*>(element)) { // Monstre
-                loose();
+            if (dynamic_cast<Monster *>(element)) {
+                if(!m_jetpack) {
+                    loose();
+                }
+            }
+            else if(dynamic_cast<Jetpack *>(element)) {
+
             }
         }
     }
@@ -563,6 +584,10 @@ void Game::setupPlayer() {
     player->setZValue(100);
 
     scene->addItem(player);
+}
+
+void Game::stopJetpack() {
+    m_jetpack = false;
 }
 
 

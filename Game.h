@@ -71,8 +71,12 @@ private:
     static float generateRandom();
     QList<Platform *> getAllJumpablePlatforms();
 
+private:
+    bool m_jetpack = false;
+    QTimer* jetpackTimer;
 public slots:
 
+    void stopJetpack();
     void movePlayer();
 
     void jumpPlayer();

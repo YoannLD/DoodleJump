@@ -13,6 +13,7 @@ class Player : public QObject, public Moving {
 Q_OBJECT
 public:
     Player();
+
     ~Player();
 
     void keyPressEvent(QKeyEvent *event) override;
@@ -22,19 +23,23 @@ public:
     std::vector<int> m_events;
     bool m_facingLeft = true;
     bool m_hasShot = false;
-    QTimer* m_shootTimer;
-    QPixmap* m_shootingPixmap;
-    QTimer* m_shootingPixmapTimer;
+    QTimer *m_shootTimer;
+    QPixmap *m_shootingPixmap;
+    QTimer *m_shootingPixmapTimer;
+
     float getVelocityY();
+
     void setVelocityY(float newVelocity);
 
 private:
 
     float m_velocityY = 0;
-    QPixmap* m_pixmap;
+    QPixmap *m_pixmap;
+
 public slots:
 
     void bounce(int newVel);
+
     void updatePixmap();
 
 
