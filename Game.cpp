@@ -596,7 +596,7 @@ void Game::jumpPlayer() {
 
 void Game::loose() {
     timerMove->stop();
-    jumpThread->terminate();
+    jumpThread->quit();
     // Clear scene
     for (auto element : scene->items()) { // dynamic_cast<GameObject *>(element) ?
         if (dynamic_cast<Platform *>(element) || dynamic_cast<Monster *>(element) ||
