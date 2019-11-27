@@ -33,12 +33,10 @@ Game::Game() {
 
     setFixedSize(WINDOW_WIDTH, WINDOW_HEIGHT);
 
+    // ------------- SCENE DE JEU
     scene = new QGraphicsScene(this);
     scene->setSceneRect(0, 0, WINDOW_WIDTH, WINDOW_HEIGHT);
     scene->setBackgroundBrush(QBrush(QPixmap(QString(":/images/background2.png"))));
-
-    menuScene = new QGraphicsScene(this);
-    menuScene->setSceneRect(0, 0, WINDOW_WIDTH, WINDOW_HEIGHT);
 
     auto* hab = new QGraphicsPixmapItem();
     hab->setPixmap(Resources::png("habillage.png"));
@@ -47,6 +45,10 @@ Game::Game() {
     scene->addItem(hab);
     hab->setZValue(150);
 
+    // -------------- SCENE MENU
+    menuScene = new QGraphicsScene(this);
+    menuScene->setSceneRect(0, 0, WINDOW_WIDTH, WINDOW_HEIGHT);
+
     auto* menuPixmap = new QPixmap();
     bool backgroundLoaded = menuPixmap->load(":/images/menu.png");
     if (!backgroundLoaded) {
@@ -54,6 +56,19 @@ Game::Game() {
     }
 
     menuScene->setBackgroundBrush(QBrush(*menuPixmap));
+
+
+    // -------------- SCENE HIGHSCORES
+    highscoresScene = new QGraphicsScene(this);
+    highscoresScene->setSceneRect(0, 0, WINDOW_WIDTH, WINDOW_HEIGHT);
+
+    menuPixmap = new QPixmap();
+    backgroundLoaded = menuPixmap->load(":/images/menu.png");
+    if (!backgroundLoaded) {
+        qDebug() << "Error loading : :/images/menu.png";
+    }
+
+    highscoresScene->setBackgroundBrush(QBrush(*menuPixmap));
 
     delete menuPixmap;
 
@@ -88,6 +103,10 @@ Game::Game() {
     menu();
 }
 
+void Game::quit(){
+    QApplication::quit();
+}
+
 
 void Game::menu() {
 
@@ -114,6 +133,36 @@ void Game::menu() {
     buttonQuit->setVisible(true);
 
     connect(buttonPlay, SIGNAL (released()),this, SLOT (start()));
+    connect(buttonQuit, SIGNAL (released()),this, SLOT (quit()));
+
+}
+
+void Game::highscores() {
+
+    setScene(highscoresScene);
+
+    int weight = 500;
+
+    buttonPlay = new QPushButton("Recommencer", this);
+
+    buttonPlay->setGeometry(WINDOW_WIDTH/2-weight/2,280,weight,50);
+    buttonPlay->isFlat();
+    buttonPlay->setObjectName("playButton");
+    buttonPlay->setFont(QFont("DoodleJump",45,QFont::Bold));
+    buttonPlay->setStyleSheet("QPushButton {background-color: transparent; color = black} QPushButton#playButton:hover {color: #a41101}");
+
+    buttonQuit = new QPushButton("Quitter", this);
+    buttonQuit->setGeometry(WINDOW_WIDTH/2-weight/2,400,weight,50);
+    buttonQuit->isFlat();
+    buttonQuit->setObjectName("buttonQuit");
+    buttonQuit->setFont(QFont("DoodleJump",45,QFont::Bold));
+    buttonQuit->setStyleSheet("QPushButton {background-color: transparent; color = black} QPushButton#buttonQuit:hover {color: #a41101}");
+
+    buttonPlay->setVisible(true);
+    buttonQuit->setVisible(true);
+
+    connect(buttonPlay, SIGNAL (released()),this, SLOT (start()));
+    connect(buttonQuit, SIGNAL (released()),this, SLOT (quit()));
 
 }
 
@@ -588,7 +637,7 @@ void Game::loose() {
             delete element;
         }
     }
-    start();
+    highscores();
 }
 
 void Game::setupPlayer() {

@@ -9,6 +9,7 @@
 
 Bullet::Bullet(QTimer* timer) {
     setPixmap(Resources::png("bullet.png"));
+    setZValue(149);
     connect(timer,SIGNAL(timeout()),this,SLOT(move()));
 }
 

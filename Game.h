@@ -20,9 +20,12 @@ private:
 
     QPushButton *buttonPlay;
     QPushButton *buttonQuit;
+    QPushButton *buttonReplay;
 
     QGraphicsScene *scene;
     QGraphicsScene *menuScene;
+    QGraphicsScene *highscoresScene;
+
     QMediaPlayer* bounceSound ;
 
     void addPlatform();
@@ -56,6 +59,7 @@ private:
     QGraphicsTextItem *text;
 
     void loose();
+    void highscores();
 
     QMediaPlayer *fallSound;
     QMediaPlayer *shootSound;
@@ -67,6 +71,7 @@ private:
     void setupPlayer();
 
     void menu();
+
     QTimer* timerMove;
     QTimer* timerJump;
     QThread* jumpThread;
@@ -84,6 +89,7 @@ public slots:
     void jumpPlayer();
 private slots:
     void start();
+    void quit();
 
 
 
