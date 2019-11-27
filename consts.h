@@ -14,7 +14,7 @@ static const int BORDER_LAYOUT = 360;
 
 // Game param
 
-static const int BULLET_SPEED = 1;
+static const int BULLET_SPEED = 3;
 static const int MONSTER_SPAWN_PROB = 1;
 static const int DISAPPEARING_PLATFORM_PROB = 2; // 2%
 static const int EXPLODING_PLATFORM_PROB = 10; // 2%

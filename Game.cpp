@@ -454,20 +454,6 @@ void Game::jumpPlayer() {
         for(auto element : scene->items()) {
             if(dynamic_cast<Platform*>(element) || dynamic_cast<Bullet*>(element) || dynamic_cast<Monster*>(element) || dynamic_cast<Bonus*>(element)) {
                 element->setY(element->y() - player->getVelocityY());
-
-                if(dynamic_cast<Platform*>(element) || dynamic_cast<Bonus*>(element)) {
-                    if (element->y() > WINDOW_HEIGHT) { // Si plateforme ou bonus en dessous de l'écran
-                        scene->removeItem(element);
-                        delete element;
-                    }
-
-                }
-                else if(auto* bullet = dynamic_cast<Bullet*>(element)) {
-                    if (bullet->y()+bullet->pixmap().height() < 0) { // Si bullet  au dessus de l'écran
-                        scene->removeItem(bullet);
-                        delete bullet;
-                    }
-                }
             }
         }
     }
@@ -479,22 +465,35 @@ void Game::jumpPlayer() {
             for(auto element : scene->items()) {
                 if(dynamic_cast<Platform*>(element) || dynamic_cast<Bullet*>(element) || dynamic_cast<Monster*>(element) || dynamic_cast<Bonus*>(element)) {
                     element->setY(element->y() + 1);
-                    if(dynamic_cast<Platform*>(element)) {
-                        if (element->y() > WINDOW_HEIGHT) { // Si plateforme/bonus en dessous de l'écran
-                            scene->removeItem(element);
-                            delete element;
-                        }
-                    }
-                    else if(auto* bullet = dynamic_cast<Bullet*>(element)) {
-                        if (bullet->y()+bullet->pixmap().height() < 0) { // Si bullet  au dessus de l'écran
-                            scene->removeItem(bullet);
-                            delete bullet;
-                        }
-                    }
                 }
             }
         }
     }
+    for(auto element : scene->items()) {
+        if(dynamic_cast<Platform*>(element) || dynamic_cast<Bullet*>(element) || dynamic_cast<Monster*>(element) || dynamic_cast<Bonus*>(element)) {
+            if(dynamic_cast<Platform*>(element)) {
+                if (element->y() > WINDOW_HEIGHT) { // Si plateforme/bonus en dessous de l'écran
+                    scene->removeItem(element);
+                    delete element;
+                }
+            }
+            else if(auto* bullet = dynamic_cast<Bullet*>(element)) {
+                for(auto element : scene->collidingItems(bullet)) {
+                    if (auto* monster = dynamic_cast<Monster*>(element)) { // Monstre
+                        monster->getShot();
+                        //scene()->removeItem(monster);
+                        //delete monster; ( Laisse pas le temps de jouer le son)
+                        delete bullet; // Sale mais si on veut faire mieux faut vérifier dans game, constamment, si une des balles touche un monstre
+                    }
+                }
+                if (bullet->y()+bullet->pixmap().height() < 0) { // Si bullet  au dessus de l'écran
+                    scene->removeItem(bullet);
+                    delete bullet;
+                }
+            }
+        }
+    }
+
     player->setY(player->y() + player->getVelocityY());
 
     if (player->getVelocityY() > 0) {
