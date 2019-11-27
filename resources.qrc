@@ -32,8 +32,11 @@
         <file>images/jetpack/jetpack10.png</file>
         <file>images/bullet.png</file>
         <file>images/doodle.png</file>
+        <file>images/doodleUp.png</file>
+        <file>images/doodleFall.png</file>
         <file>images/doodleShoot.png</file>
-        <file>images/monster.png</file>
+        <file>images/monster_1.png</file>
+        <file>images/monster_2.png</file>
         <file>images/spring/spring1.png</file>
         <file>images/spring/spring2.png</file>
         <file>sounds/jump.mp3</file>

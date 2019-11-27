@@ -539,6 +539,8 @@ void Game::jumpPlayer() {
     player->moveVertical(player->y() + player->getVelocityY());
 
     if (player->getVelocityY() > 0) {
+        player->setPixmap(Resources::png("doodleFall.png"));
+        player->setPixmapFacing();
         // On vérifie si on touche une plateforme
         for(auto element : scene->collidingItems(player)) {
             if(auto* platform = dynamic_cast<Platform*>(element)) { // Rebond
@@ -549,6 +551,8 @@ void Game::jumpPlayer() {
                         breaking->launchBreak();
                     }
                     else if(dynamic_cast<DisappearingPlatform*>(platform)){
+                        player->setPixmap(Resources::png("doodleUp.png"));
+                        player->setPixmapFacing();
                         player->bounce(-5);
                         scene->removeItem(platform);
                         delete platform;
@@ -561,6 +565,8 @@ void Game::jumpPlayer() {
                         }
                     }
                     else{
+                        player->setPixmap(Resources::png("doodleUp.png"));
+                        player->setPixmapFacing();
                         player->bounce(-5);
 
                         // Si le son est déjà lancé, remet à 0
@@ -576,6 +582,8 @@ void Game::jumpPlayer() {
             else if(auto* monster = dynamic_cast<Monster*>(element)) { // Monstre
                 if(player->y()+player->pixmap().height() < monster->y()+monster->pixmap().height()/2) {
                     monster->launchKill();
+                    player->setPixmap(Resources::png("doodleUp.png"));
+                    player->setPixmapFacing();
                     player->bounce(-7);
                     increaseScore();
                 }
@@ -586,6 +594,8 @@ void Game::jumpPlayer() {
             else if(auto* bonus = dynamic_cast<Bonus*>(element)) { // Rebond
                 if(auto* spring = dynamic_cast<Spring*>(bonus)) {
                     if(player->y()+player->pixmap().height() < spring->y()+spring->pixmap().height()/2.) {
+                        player->setPixmap(Resources::png("doodleUp.png"));
+                        player->setPixmapFacing();
                         player->bounce(-10);
 
                         // Si le son est déjà lancé, remet à 0
@@ -598,16 +608,19 @@ void Game::jumpPlayer() {
                     }
                 }
                 else if(auto* jetpack = dynamic_cast<Jetpack*>(bonus)) {
-                        scene->removeItem(jetpack);
-                        player->setJetpack();
-                        m_jetpack = true;
-                        jetpackTimer->start(JETPACK_DURATION);
-                        // Si le son est déjà lancé, remet à 0
-                        if (jetpackSound->state() == QMediaPlayer::PlayingState) {
-                            jetpackSound->setPosition(0);
-                        } else if (jetpackSound->state() == QMediaPlayer::StoppedState) {
-                            jetpackSound->play();
-                        }
+
+                    player->setPixmap(Resources::png("doodleUp.png"));
+                    player->setPixmapFacing();
+                    scene->removeItem(jetpack);
+                    player->setJetpack();
+                    m_jetpack = true;
+                    jetpackTimer->start(JETPACK_DURATION);
+                    // Si le son est déjà lancé, remet à 0
+                    if (jetpackSound->state() == QMediaPlayer::PlayingState) {
+                        jetpackSound->setPosition(0);
+                    } else if (jetpackSound->state() == QMediaPlayer::StoppedState) {
+                        jetpackSound->play();
+                    }
                 }
             }
         }

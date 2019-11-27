@@ -57,6 +57,7 @@ public slots:
     void jetpackFall();
 
 
+    void setPixmapFacing();
 };
 
 #endif //DOODLEJUMP_PLAYER_H

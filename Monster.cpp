@@ -3,7 +3,7 @@
 #include <qDebug>
 
 Monster::Monster(BasicPlatform* platform) {
-    setPixmap(Resources::png("monster.png"));
+    setPixmap(Resources::png("monster_1.png"));
     setPos(platform->x() + platform->pixmap().width()/2 - pixmap().width()/2, platform->y() - pixmap().height());
     setZValue(120);
 
@@ -11,8 +11,12 @@ Monster::Monster(BasicPlatform* platform) {
     dieSound = new QMediaPlayer();
     dieSound->setMedia(QUrl("qrc:/sounds/killMonster.mp3"));
     jumpSound->setMedia(QUrl("qrc:/sounds/jumpMonster.mp3"));
+    animationTimer = new QTimer();
     killTimer = new QTimer();
+    connect(animationTimer, &QTimer::timeout, this, &Monster::animation);
     connect(killTimer, &QTimer::timeout, this, &Monster::kill);
+
+    //animationTimer->start(250);
 }
 
 void Monster::launchKill(){
@@ -39,7 +43,20 @@ void Monster::kill() {
     setY(y()+1);
 }
 
+void Monster::animation() {
+    if(animation_state == 1){
+        setPixmap(Resources::png("monster_2.png"));
+        animation_state = 2;
+    }
+    else if(animation_state == 2){
+        setPixmap(Resources::png("monster_1.png"));
+        animation_state = 1;
+    }
+
+}
+
 Monster::~Monster() {
+    delete animationTimer;
     delete killTimer;
     delete jumpSound ;
     delete dieSound ;

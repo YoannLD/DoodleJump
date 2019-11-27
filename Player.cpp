@@ -58,6 +58,7 @@ void Player::updatePixmap() {
     }
 }
 
+
 void Player::bounce(float newVel) {
     m_velocityY = newVel;
 }
@@ -147,6 +148,12 @@ void Player::moveRight() {
             jetpack->setX(x() - jetpack->pixmap().width() + JETPACK_LAYOUT + DOODLE_LAYOUT);
             jetpack->setPixmap(jetpack->pixmap().transformed(QTransform().scale(-1, 1)));
         }
+    }
+}
+
+void Player::setPixmapFacing(){
+    if(!m_facingLeft){
+        setPixmap(pixmap().transformed(QTransform().scale(-1, 1)));
     }
 }
 

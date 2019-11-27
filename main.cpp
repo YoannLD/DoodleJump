@@ -7,7 +7,6 @@ using namespace std;
 
 int main(int argv, char **args) {
 
-    qDebug("test");
 
     QApplication app(argv, args);
 

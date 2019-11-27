@@ -12,13 +12,19 @@ class Monster : public QObject, public Hurts {
 public:
     Monster(BasicPlatform* p);
     ~Monster();
+
     void kill();
     void launchKill();
     void getShot();
+
+public slots:
+    void animation();
 private:
     QTimer* killTimer;
+    QTimer* animationTimer;
     QMediaPlayer* jumpSound ;
     QMediaPlayer* dieSound ;
+    int animation_state = 1;
 };
 
 #endif //DOODLEJUMP_MONSTER_H
