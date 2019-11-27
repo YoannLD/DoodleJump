@@ -85,7 +85,9 @@ void Player::setJetpack() {
     else {
         jetpack->setPos(x() - jetpack->pixmap().width() + JETPACK_LAYOUT + DOODLE_LAYOUT, y() + DOODLE_LAYOUT);
     }
-    scene()->addItem(jetpack);
+    if(!scene()->items().contains(jetpack)) {
+        scene()->addItem(jetpack);
+    }
     m_jetpack = true;
     m_jetpackState = 1;
     m_jetpackUpdateTimer->start(50);
@@ -248,6 +250,9 @@ void Player::jetpackFall() {
     }
     else {
         m_jetpackFallTimer->stop();
+        m_rotationJetpack = 0;
+        jetpack->setRotation(m_rotationJetpack);
+        scene()->removeItem(jetpack);
     }
 }
 

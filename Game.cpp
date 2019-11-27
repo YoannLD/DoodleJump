@@ -91,6 +91,7 @@ Game::Game() {
     timerMove = new QTimer();
     timerJump = new QTimer();
     jetpackTimer = new QTimer();
+    jetpackTimer->setSingleShot(true);
     jumpThread = new QThread(this);
     timerJump->moveToThread(jumpThread);
     timerJump->setInterval(8);
@@ -480,11 +481,11 @@ void Game::movePlayer() {
 }
 
 void Game::jumpPlayer() {
-    if(!m_jetpack) {
-        player->setVelocityY(player->getVelocityY() + GRAVITY);
+    if(m_jetpack) {
+        player->setVelocityY(-5);
     }
     else {
-        player->setVelocityY(-5);
+        player->setVelocityY(player->getVelocityY() + GRAVITY);
     }
 
     if(player->y() < MAX_HEIGHT) { // Hauteur max, scroll
@@ -620,7 +621,16 @@ void Game::jumpPlayer() {
                 }
             }
             else if(dynamic_cast<Jetpack *>(element)) {
-
+                scene->removeItem(element);
+                player->setJetpack();
+                m_jetpack = true;
+                jetpackTimer->start(JETPACK_DURATION);
+                // Si le son est déjà lancé, remet à 0
+                if (jetpackSound->state() == QMediaPlayer::PlayingState) {
+                    jetpackSound->setPosition(0);
+                } else if (jetpackSound->state() == QMediaPlayer::StoppedState) {
+                    jetpackSound->play();
+                }
             }
         }
     }
