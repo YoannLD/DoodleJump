@@ -25,6 +25,8 @@ public:
     bool m_hasShot = false;
     QTimer *m_shootTimer;
     QTimer *m_shootingPixmapTimer;
+    QTimer *m_jetpackUpdateTimer;
+    QTimer *m_jetpackFallTimer;
 
     float getVelocityY();
 
@@ -40,12 +42,19 @@ private:
     float m_velocityY = 0;
     QGraphicsPixmapItem* jetpack{};
     bool m_jetpack;
+    int m_jetpackState;
+    int m_jetpackCpt;
+    float m_rotationJetpack;
 
 public slots:
 
     void bounce(float newVel);
 
     void updatePixmap();
+
+    void updateJetpackPixmap();
+
+    void jetpackFall();
 
 
 };

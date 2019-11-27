@@ -13,10 +13,17 @@ Player::Player() {
 
     // --------- Creating timers ---------
     m_shootTimer = new QTimer();
+    m_jetpackUpdateTimer = new QTimer();
+    m_jetpackFallTimer = new QTimer();
     m_shootingPixmapTimer = new QTimer();
     connect(m_shootingPixmapTimer,SIGNAL(timeout()),this,SLOT(updatePixmap()));
+    connect(m_jetpackUpdateTimer,SIGNAL(timeout()),this,SLOT(updateJetpackPixmap()));
+    connect(m_jetpackFallTimer,SIGNAL(timeout()),this,SLOT(jetpackFall()));
     m_shootTimer->start(BULLET_SPEED);
     m_jetpack = false;
+    m_jetpackState = 0;
+    m_jetpackCpt = 0;
+    m_rotationJetpack = 0;
     jetpack = new QGraphicsPixmapItem();
     jetpack->setPixmap(Resources::png("jetpack/jetpack1.png"));
 }
@@ -57,6 +64,8 @@ void Player::bounce(float newVel) {
 
 Player::~Player() {
     delete m_shootingPixmapTimer;
+    delete m_jetpackUpdateTimer;
+    delete m_jetpackFallTimer;
     delete m_shootTimer;
     delete jetpack;
 }
@@ -78,11 +87,17 @@ void Player::setJetpack() {
     }
     scene()->addItem(jetpack);
     m_jetpack = true;
+    m_jetpackState = 1;
+    m_jetpackUpdateTimer->start(50);
 }
 
 void Player::removeJetpack() {
-    scene()->removeItem(jetpack);
     m_jetpack = false;
+    m_jetpackUpdateTimer->stop();
+    jetpack->setPixmap(Resources::png("jetpack/jetpack10.png"));
+    m_rotationJetpack = 0;
+    m_jetpackFallTimer->start(2);
+    m_jetpackState = 0;
 }
 
 void Player::moveLeft() {
@@ -142,6 +157,97 @@ void Player::moveVertical(int newY) {
     setY(newY);
     if(isOnJetpack()) {
         jetpack->setY(jetpack->y() + newY-oldY);
+    }
+}
+
+void Player::updateJetpackPixmap() {
+    switch(m_jetpackState) {
+        case 0:
+            if(m_jetpackCpt > 5) {
+                m_jetpackState = 1;
+            }
+            else {
+                if (jetpack->pixmap() == Resources::png("jetpack/jetpack1.png")) {
+                    jetpack->setPixmap(Resources::png("jetpack/jetpack2.png"));
+                } else {
+                    jetpack->setPixmap(Resources::png("jetpack/jetpack1.png"));
+                }
+            }
+            break;
+        case 1:
+            if(m_jetpackCpt > 10) {
+                m_jetpackState = 2;
+            }
+            else {
+                if (jetpack->pixmap() == Resources::png("jetpack/jetpack2.png")) {
+                    jetpack->setPixmap(Resources::png("jetpack/jetpack3.png"));
+                } else {
+                    jetpack->setPixmap(Resources::png("jetpack/jetpack2.png"));
+                }
+            }
+            break;
+        case 2:
+            if(m_jetpackCpt > 15) {
+                m_jetpackState = 3;
+            }
+            else {
+                if (jetpack->pixmap() == Resources::png("jetpack/jetpack4.png")) {
+                    jetpack->setPixmap(Resources::png("jetpack/jetpack5.png"));
+                } else {
+                    jetpack->setPixmap(Resources::png("jetpack/jetpack4.png"));
+                }
+            }
+            break;
+        case 3:
+            if(m_jetpackCpt > 40) {
+                m_jetpackState = 4;
+            }
+            else {
+                if (jetpack->pixmap() == Resources::png("jetpack/jetpack5.png")) {
+                    jetpack->setPixmap(Resources::png("jetpack/jetpack6.png"));
+                } else {
+                    jetpack->setPixmap(Resources::png("jetpack/jetpack5.png"));
+                }
+            }
+            break;
+        case 4:
+            if(m_jetpackCpt > 50) {
+                m_jetpackState = 5;
+            }
+            else {
+                if (jetpack->pixmap() == Resources::png("jetpack/jetpack7.png")) {
+                    jetpack->setPixmap(Resources::png("jetpack/jetpack8.png"));
+                } else {
+                    jetpack->setPixmap(Resources::png("jetpack/jetpack7.png"));
+                }
+            }
+            break;
+        case 5:
+            if (jetpack->pixmap() == Resources::png("jetpack/jetpack9.png")) {
+                jetpack->setPixmap(Resources::png("jetpack/jetpack10.png"));
+            }
+            else {
+                jetpack->setPixmap(Resources::png("jetpack/jetpack9.png"));
+            }
+            break;
+        default:
+            qDebug() << "erreur";
+            break;
+    }
+    if (!m_facingLeft) {
+        jetpack->setPixmap(jetpack->pixmap().transformed(QTransform().scale(-1, 1)));
+    }
+    m_jetpackCpt++;
+}
+
+void Player::jetpackFall() {
+    if(jetpack->y() <= WINDOW_HEIGHT) {
+        jetpack->setY(jetpack->y() + 1);
+        jetpack->setRotation(m_rotationJetpack);
+        m_rotationJetpack += 0.2;
+    }
+    else {
+        m_jetpackFallTimer->stop();
     }
 }
 
