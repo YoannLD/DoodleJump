@@ -37,6 +37,8 @@ public:
     void moveRight();
     void moveVertical(int newY);
     bool isOnJetpack();
+    void setFalling(bool f);
+    bool isFacingLeft();
 private:
 
     float m_velocityY = 0;
@@ -45,6 +47,7 @@ private:
     int m_jetpackState;
     int m_jetpackCpt;
     float m_rotationJetpack;
+    bool m_falling;
 
 public slots:
 
@@ -55,9 +58,6 @@ public slots:
     void updateJetpackPixmap();
 
     void jetpackFall();
-
-
-    void setPixmapFacing();
 };
 
 #endif //DOODLEJUMP_PLAYER_H

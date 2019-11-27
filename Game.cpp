@@ -461,7 +461,10 @@ void Game::movePlayer() {
                     bullet->setPos(player->x() + player->pixmap().width() / 2, player->y());
                     scene->addItem(bullet);
 
-                    player->setPixmap(Resources::png("doodleShoot.png"));;
+                    player->setPixmap(Resources::png("doodleShoot.png"));
+                    if(!player->isFacingLeft()) {
+                        player->setPixmap(player->pixmap().transformed(QTransform().scale(-1, 1)));
+                    }
                     // Si le son est déjà lancé, remet à 0
                     if(shootSound->state() == QMediaPlayer::PlayingState) {
                         shootSound->setPosition(0);
@@ -523,9 +526,8 @@ void Game::jumpPlayer() {
                 for(auto element : scene->collidingItems(bullet)) {
                     if (auto* monster = dynamic_cast<Monster*>(element)) { // Monstre
                         monster->getShot();
-                        //scene()->removeItem(monster);
-                        //delete monster; ( Laisse pas le temps de jouer le son)
-                        delete bullet; // Sale mais si on veut faire mieux faut vérifier dans game, constamment, si une des balles touche un monstre
+                        scene->removeItem(monster);
+                        delete bullet;
                     }
                 }
                 if (bullet->y()+bullet->pixmap().height() < 0) { // Si bullet  au dessus de l'écran
@@ -539,8 +541,7 @@ void Game::jumpPlayer() {
     player->moveVertical(player->y() + player->getVelocityY());
 
     if (player->getVelocityY() > 0) {
-        player->setPixmap(Resources::png("doodleFall.png"));
-        player->setPixmapFacing();
+        player->setFalling(true);
         // On vérifie si on touche une plateforme
         for(auto element : scene->collidingItems(player)) {
             if(auto* platform = dynamic_cast<Platform*>(element)) { // Rebond
@@ -551,8 +552,6 @@ void Game::jumpPlayer() {
                         breaking->launchBreak();
                     }
                     else if(dynamic_cast<DisappearingPlatform*>(platform)){
-                        player->setPixmap(Resources::png("doodleUp.png"));
-                        player->setPixmapFacing();
                         player->bounce(-5);
                         scene->removeItem(platform);
                         delete platform;
@@ -565,8 +564,6 @@ void Game::jumpPlayer() {
                         }
                     }
                     else{
-                        player->setPixmap(Resources::png("doodleUp.png"));
-                        player->setPixmapFacing();
                         player->bounce(-5);
 
                         // Si le son est déjà lancé, remet à 0
@@ -582,8 +579,6 @@ void Game::jumpPlayer() {
             else if(auto* monster = dynamic_cast<Monster*>(element)) { // Monstre
                 if(player->y()+player->pixmap().height() < monster->y()+monster->pixmap().height()/2) {
                     monster->launchKill();
-                    player->setPixmap(Resources::png("doodleUp.png"));
-                    player->setPixmapFacing();
                     player->bounce(-7);
                     increaseScore();
                 }
@@ -594,8 +589,6 @@ void Game::jumpPlayer() {
             else if(auto* bonus = dynamic_cast<Bonus*>(element)) { // Rebond
                 if(auto* spring = dynamic_cast<Spring*>(bonus)) {
                     if(player->y()+player->pixmap().height() < spring->y()+spring->pixmap().height()/2.) {
-                        player->setPixmap(Resources::png("doodleUp.png"));
-                        player->setPixmapFacing();
                         player->bounce(-10);
 
                         // Si le son est déjà lancé, remet à 0
@@ -608,9 +601,6 @@ void Game::jumpPlayer() {
                     }
                 }
                 else if(auto* jetpack = dynamic_cast<Jetpack*>(bonus)) {
-
-                    player->setPixmap(Resources::png("doodleUp.png"));
-                    player->setPixmapFacing();
                     scene->removeItem(jetpack);
                     player->setJetpack();
                     m_jetpack = true;
@@ -626,6 +616,7 @@ void Game::jumpPlayer() {
         }
     }
     else {
+        player->setFalling(false);
         // On vérifie si on touche un monstre
         for(auto element : scene->collidingItems(player)) {
             if (dynamic_cast<Monster *>(element)) {
@@ -647,6 +638,7 @@ void Game::jumpPlayer() {
             }
         }
     }
+    player->updatePixmap();
 }
 
 void Game::loose() {

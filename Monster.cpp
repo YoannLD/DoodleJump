@@ -36,7 +36,6 @@ void Monster::getShot(){
     } else if (dieSound->state() == QMediaPlayer::StoppedState) {
         dieSound->play();
     }
-    delete this; // Sale, à faore dans bullet ou game, mais sinon on peut pas jouer le son
 }
 
 void Monster::kill() {

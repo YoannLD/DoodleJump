@@ -16,6 +16,7 @@ Player::Player() {
     m_jetpackUpdateTimer = new QTimer();
     m_jetpackFallTimer = new QTimer();
     m_shootingPixmapTimer = new QTimer();
+    m_shootingPixmapTimer->setSingleShot(true);
     connect(m_shootingPixmapTimer,SIGNAL(timeout()),this,SLOT(updatePixmap()));
     connect(m_jetpackUpdateTimer,SIGNAL(timeout()),this,SLOT(updateJetpackPixmap()));
     connect(m_jetpackFallTimer,SIGNAL(timeout()),this,SLOT(jetpackFall()));
@@ -24,6 +25,7 @@ Player::Player() {
     m_jetpackState = 0;
     m_jetpackCpt = 0;
     m_rotationJetpack = 0;
+    m_falling = false;
     jetpack = new QGraphicsPixmapItem();
     jetpack->setPixmap(Resources::png("jetpack/jetpack1.png"));
 }
@@ -51,10 +53,15 @@ void Player::keyReleaseEvent(QKeyEvent *event) {
 
 
 void Player::updatePixmap() {
-    m_shootingPixmapTimer->stop();
-    setPixmap(Resources::png("doodle.png"));
-    if(!m_facingLeft) {
-        setPixmap(pixmap().transformed(QTransform().scale(-1, 1)));
+    if(!m_shootingPixmapTimer->isActive()) {
+        if (m_falling) {
+            setPixmap(Resources::png("doodleFall.png"));
+        } else {
+            setPixmap(Resources::png("doodleUp.png"));
+        }
+        if (!m_facingLeft) {
+            setPixmap(pixmap().transformed(QTransform().scale(-1, 1)));
+        }
     }
 }
 
@@ -148,12 +155,6 @@ void Player::moveRight() {
             jetpack->setX(x() - jetpack->pixmap().width() + JETPACK_LAYOUT + DOODLE_LAYOUT);
             jetpack->setPixmap(jetpack->pixmap().transformed(QTransform().scale(-1, 1)));
         }
-    }
-}
-
-void Player::setPixmapFacing(){
-    if(!m_facingLeft){
-        setPixmap(pixmap().transformed(QTransform().scale(-1, 1)));
     }
 }
 
@@ -261,6 +262,14 @@ void Player::jetpackFall() {
         jetpack->setRotation(m_rotationJetpack);
         scene()->removeItem(jetpack);
     }
+}
+
+void Player::setFalling(bool f) {
+    m_falling = f;
+}
+
+bool Player::isFacingLeft() {
+    return m_facingLeft;
 }
 
 
