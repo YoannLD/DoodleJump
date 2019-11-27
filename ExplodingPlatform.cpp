@@ -15,7 +15,7 @@ ExplodingPlatform::ExplodingPlatform(float yMin, float yMax): Platform("explodin
 }
 
 void ExplodingPlatform::lauchExplosing(){
-    explodingTimer->start(80);
+    explodingTimer->start(120);
 }
 
 void ExplodingPlatform::exploding() {
