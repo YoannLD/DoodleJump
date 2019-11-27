@@ -24,9 +24,9 @@ static const float DIST_MAX = 110.0;
 static const int BREAKING_PLATFORM_PROB = 15; // 25%
 static const int MOVING_PLATFORM_PROB   = 15; // 15%
 static const int SPRING_PROB = 2;
-static const int JETPACK_PROB = 0.1;
+static const float JETPACK_PROB = 0.1;
 static const int JETPACK_DURATION = 3000;
 static const int JETPACK_LAYOUT = 9;
-static const int DOODLE_LAYOUT = 16;
+static const int DOODLE_LAYOUT = 8;
 
 #endif //DOODLEJUMP_CONSTS_H

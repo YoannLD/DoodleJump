@@ -39,6 +39,7 @@ void BreakingPlatform::launchBreak(){
 
 void BreakingPlatform::breaking(){
     if(state == 4){
+        breakingTimer->setInterval(1);
         setY(y()+1);
     }
     else{

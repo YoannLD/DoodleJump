@@ -380,7 +380,7 @@ void Game::addPlatform() {
             else if(dynamic_cast<ExplodingPlatform*>(platform))
                 countNbExplodingPlatformActual++;
             else if(auto* basicPlatform = dynamic_cast<BasicPlatform*>(platform)) {
-                if(generateRandom() <= JETPACK_PROB && !m_jetpack) {
+                if(generateRandom() <= JETPACK_PROB && !player->isOnJetpack()) {
                     auto* jetpack = new Jetpack(basicPlatform);
                     scene->addItem(jetpack);
                 }
@@ -480,11 +480,12 @@ void Game::movePlayer() {
     if (player->y() + player->pixmap().height()>= WINDOW_HEIGHT) { // (Perdu)
         fallSound->play();
         loose();
+        return;
     }
 }
 
 void Game::jumpPlayer() {
-    if(m_jetpack) {
+    if(player->isOnJetpack()) {
         player->setVelocityY(-10);
     }
     else {
@@ -584,6 +585,7 @@ void Game::jumpPlayer() {
                 }
                 else {
                     loose();
+                    return;
                 }
             }
             else if(auto* bonus = dynamic_cast<Bonus*>(element)) { // Rebond
@@ -603,7 +605,6 @@ void Game::jumpPlayer() {
                 else if(auto* jetpack = dynamic_cast<Jetpack*>(bonus)) {
                     scene->removeItem(jetpack);
                     player->setJetpack();
-                    m_jetpack = true;
                     jetpackTimer->start(JETPACK_DURATION);
                     // Si le son est déjà lancé, remet à 0
                     if (jetpackSound->state() == QMediaPlayer::PlayingState) {
@@ -620,14 +621,14 @@ void Game::jumpPlayer() {
         // On vérifie si on touche un monstre
         for(auto element : scene->collidingItems(player)) {
             if (dynamic_cast<Monster *>(element)) {
-                if(!m_jetpack) {
+                if(!player->isOnJetpack()) {
                     loose();
+                    return;
                 }
             }
             else if(dynamic_cast<Jetpack *>(element)) {
                 scene->removeItem(element);
                 player->setJetpack();
-                m_jetpack = true;
                 jetpackTimer->start(JETPACK_DURATION);
                 // Si le son est déjà lancé, remet à 0
                 if (jetpackSound->state() == QMediaPlayer::PlayingState) {
@@ -670,7 +671,6 @@ void Game::setupPlayer() {
 }
 
 void Game::stopJetpack() {
-    m_jetpack = false;
     player->removeJetpack();
 }
 

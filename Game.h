@@ -79,7 +79,6 @@ private:
     QList<Platform *> getAllJumpablePlatforms();
 
 private:
-    bool m_jetpack = false;
     QTimer* jetpackTimer;
 public slots:
 
