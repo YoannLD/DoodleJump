@@ -16,6 +16,9 @@ Player::Player() {
     m_shootingPixmapTimer = new QTimer();
     connect(m_shootingPixmapTimer,SIGNAL(timeout()),this,SLOT(updatePixmap()));
     m_shootTimer->start(BULLET_SPEED);
+    m_jetpack = false;
+    jetpack = new QGraphicsPixmapItem();
+    jetpack->setPixmap(Resources::png("jetpack/jetpack1.png"));
 }
 
 void Player::keyPressEvent(QKeyEvent *event) {
@@ -48,13 +51,14 @@ void Player::updatePixmap() {
     }
 }
 
-void Player::bounce(int newVel) {
+void Player::bounce(float newVel) {
     m_velocityY = newVel;
 }
 
 Player::~Player() {
     delete m_shootingPixmapTimer;
     delete m_shootTimer;
+    delete jetpack;
 }
 
 float Player::getVelocityY() {
@@ -63,6 +67,82 @@ float Player::getVelocityY() {
 
 void Player::setVelocityY(float newVelocity) {
     m_velocityY = newVelocity;
+}
+
+void Player::setJetpack() {
+    if(m_facingLeft) {
+        jetpack->setPos(x() + pixmap().width() - JETPACK_LAYOUT - DOODLE_LAYOUT, y() + DOODLE_LAYOUT);
+    }
+    else {
+        jetpack->setPos(x() - jetpack->pixmap().width() + JETPACK_LAYOUT + DOODLE_LAYOUT, y() + DOODLE_LAYOUT);
+    }
+    scene()->addItem(jetpack);
+    m_jetpack = true;
+}
+
+void Player::removeJetpack() {
+    scene()->removeItem(jetpack);
+    m_jetpack = false;
+}
+
+void Player::moveLeft() {
+    if (x() + (pixmap().width() / 2.) > BORDER_LAYOUT) {
+        setX(x() - 1);
+        if (isOnJetpack()) {
+            jetpack->setX(jetpack->x() - 1);
+        }
+    }
+    else {
+        setX(scene()->width() - BORDER_LAYOUT - (pixmap().width() / 2.));
+        if (isOnJetpack()) {
+            jetpack->setX(scene()->width() - BORDER_LAYOUT + (pixmap().width() / 2.));
+        }
+    }
+
+    if (!m_facingLeft) {
+        m_facingLeft = true;
+        setPixmap(pixmap().transformed(QTransform().scale(-1, 1)));
+        if (isOnJetpack()) {
+            jetpack->setX(x() + pixmap().width() - JETPACK_LAYOUT - DOODLE_LAYOUT);
+            jetpack->setPixmap(jetpack->pixmap().transformed(QTransform().scale(-1, 1)));
+        }
+    }
+}
+
+void Player::moveRight() {
+    if (x() + (pixmap().width() / 2.) < scene()->width()-BORDER_LAYOUT) {
+        setX(x() + 1);
+        if (isOnJetpack()) {
+            jetpack->setX(jetpack->x() + 1);
+        }
+    }
+    else {
+        setX(-pixmap().width() / 2. + BORDER_LAYOUT);
+        if (isOnJetpack()) {
+            jetpack->setX(-pixmap().width()+ BORDER_LAYOUT);
+        }
+    }
+
+    if (m_facingLeft) {
+        m_facingLeft = false;
+        setPixmap(pixmap().transformed(QTransform().scale(-1, 1)));
+        if (isOnJetpack()) {
+            jetpack->setX(x() - jetpack->pixmap().width() + JETPACK_LAYOUT + DOODLE_LAYOUT);
+            jetpack->setPixmap(jetpack->pixmap().transformed(QTransform().scale(-1, 1)));
+        }
+    }
+}
+
+bool Player::isOnJetpack() {
+    return m_jetpack;
+}
+
+void Player::moveVertical(int newY) {
+    int oldY = y();
+    setY(newY);
+    if(isOnJetpack()) {
+        jetpack->setY(jetpack->y() + newY-oldY);
+    }
 }
 
 

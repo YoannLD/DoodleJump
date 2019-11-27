@@ -396,34 +396,16 @@ void Game::movePlayer() {
         switch(key) {
             case Qt::Key_Left :
             case Qt::Key_Q :
-                if (player->x() + (player->pixmap().width() / 2) > BORDER_LAYOUT)
-                    player->setPos(player->x() - 1, player->y());
-                else
-                    player->setPos(scene->width() - BORDER_LAYOUT - (player->pixmap().width() / 2), player->y());
-
-                if (!player->m_facingLeft) {
-                    player->m_facingLeft = true;
-                    player->setPixmap(player->pixmap().transformed(QTransform().scale(-1, 1)));
-                }
+                player->moveLeft();
                 break;
             case Qt::Key_Right :
             case Qt::Key_D :
-                if (player->x() + (player->pixmap().width() / 2) < scene->width()-BORDER_LAYOUT) {
-                    player->setX(player->x() + 1);
-                }
-                else {
-                    player->setX(-player->pixmap().width() / 2 + BORDER_LAYOUT);
-                }
-
-                if (player->m_facingLeft) {
-                    player->m_facingLeft = false;
-                    player->setPixmap(player->pixmap().transformed(QTransform().scale(-1, 1)));
-                }
+                player->moveRight();
                 break;
             case Qt::Key_Space:
             case Qt::Key_Up:
             case Qt::Key_Z :
-                if(!player->m_hasShot) {
+                if(!player->m_hasShot && !player->isOnJetpack()) {
                     player->m_hasShot = true;
                     auto *bullet = new Bullet(player->m_shootTimer);
                     bullet->setPos(player->x() + player->pixmap().width() / 2, player->y());
@@ -460,7 +442,7 @@ void Game::jumpPlayer() {
         addPlatform();
         isScrolling = true;
         increaseScore();
-        player->setY(MAX_HEIGHT);
+        player->moveVertical(MAX_HEIGHT);
         for(auto element : scene->items()) {
             if(dynamic_cast<Platform*>(element) || dynamic_cast<Bullet*>(element) || dynamic_cast<Monster*>(element) || dynamic_cast<Bonus*>(element)) {
                 element->setY(element->y() - player->getVelocityY());
@@ -471,7 +453,7 @@ void Game::jumpPlayer() {
         // Scrool a little more to prevent scrolling on each jump if player doesn't move
         if(isScrolling) {
             isScrolling = false;
-            player->setY(player->y()+1);
+            player->moveVertical(player->y()+1);
             for(auto element : scene->items()) {
                 if(dynamic_cast<Platform*>(element) || dynamic_cast<Bullet*>(element) || dynamic_cast<Monster*>(element) || dynamic_cast<Bonus*>(element)) {
                     element->setY(element->y() + 1);
@@ -504,7 +486,7 @@ void Game::jumpPlayer() {
         }
     }
 
-    player->setY(player->y() + player->getVelocityY());
+    player->moveVertical(player->y() + player->getVelocityY());
 
     if (player->getVelocityY() > 0) {
         // On vérifie si on touche une plateforme
@@ -567,6 +549,7 @@ void Game::jumpPlayer() {
                 }
                 else if(auto* jetpack = dynamic_cast<Jetpack*>(bonus)) {
                         scene->removeItem(jetpack);
+                        player->setJetpack();
                         m_jetpack = true;
                         jetpackTimer->start(JETPACK_DURATION);
                         // Si le son est déjà lancé, remet à 0
@@ -624,6 +607,7 @@ void Game::setupPlayer() {
 
 void Game::stopJetpack() {
     m_jetpack = false;
+    player->removeJetpack();
 }
 
 

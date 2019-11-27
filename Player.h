@@ -29,14 +29,21 @@ public:
     float getVelocityY();
 
     void setVelocityY(float newVelocity);
-
+    void setJetpack();
+    void removeJetpack();
+    void moveLeft();
+    void moveRight();
+    void moveVertical(int newY);
+    bool isOnJetpack();
 private:
 
     float m_velocityY = 0;
+    QGraphicsPixmapItem* jetpack{};
+    bool m_jetpack;
 
 public slots:
 
-    void bounce(int newVel);
+    void bounce(float newVel);
 
     void updatePixmap();
 
