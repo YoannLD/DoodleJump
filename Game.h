@@ -60,6 +60,7 @@ private:
     QMediaPlayer *fallSound;
     QMediaPlayer *shootSound;
     QMediaPlayer *springSound;
+    QMediaPlayer *jetpackSound;
 
     void calculateNumberOfPlatform();
 
@@ -68,6 +69,7 @@ private:
     void menu();
     QTimer* timerMove;
     QTimer* timerJump;
+    QThread* jumpThread;
     static float generateRandom();
     QList<Platform *> getAllJumpablePlatforms();
 

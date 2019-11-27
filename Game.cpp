@@ -8,6 +8,7 @@
 #include <QGraphicsScene>
 #include <QPushButton>
 #include <QDebug>
+#include <QThread>
 #include <QScreen>
 #include <QApplication>
 #include "consts.h"
@@ -63,13 +64,23 @@ Game::Game() {
     shootSound = new QMediaPlayer();
     bounceSound = new QMediaPlayer();
     springSound = new QMediaPlayer();
+    jetpackSound = new QMediaPlayer();
+    jetpackSound->setMedia(QUrl("qrc:/sounds/jetpack.mp3"));
     springSound->setMedia(QUrl("qrc:/sounds/spring.mp3"));
     bounceSound->setMedia(QUrl("qrc:/sounds/jump.mp3"));
     fallSound->setMedia(QUrl("qrc:/sounds/fall.mp3"));
     shootSound->setMedia(QUrl("qrc:/sounds/shoot.mp3"));
+
+
+
     timerMove = new QTimer();
     timerJump = new QTimer();
     jetpackTimer = new QTimer();
+    jumpThread = new QThread(this);
+    timerJump->moveToThread(jumpThread);
+    timerJump->setInterval(8);
+    connect(jumpThread, SIGNAL(started()), timerJump, SLOT(start()));
+    connect(jumpThread, SIGNAL(finished()), timerJump, SLOT(stop()));
     connect(timerMove, &QTimer::timeout, this, &Game::movePlayer);
     connect(timerJump, &QTimer::timeout, this, &Game::jumpPlayer);
     connect(jetpackTimer, &QTimer::timeout, this, &Game::stopJetpack);
@@ -126,7 +137,7 @@ void Game::start() {
     setupPlayer();
 
     timerMove->start(4);
-    timerJump->start(8);
+    jumpThread->start();
 }
 
 void Game::calculateNumberOfPlatform() {
@@ -204,7 +215,6 @@ float Game::generateRandom(){
 }
 
 void Game::addPlatform() {
-
     auto start = high_resolution_clock::now();
 
     calculateNumberOfPlatform();
@@ -344,7 +354,7 @@ void Game::addPlatform() {
 
     auto duration = duration_cast<microseconds>(stop - start);
 
-    qDebug() << duration.count();
+    //qDebug() << duration.count();
 
 
 }
@@ -559,6 +569,12 @@ void Game::jumpPlayer() {
                         scene->removeItem(jetpack);
                         m_jetpack = true;
                         jetpackTimer->start(JETPACK_DURATION);
+                        // Si le son est déjà lancé, remet à 0
+                        if (jetpackSound->state() == QMediaPlayer::PlayingState) {
+                            jetpackSound->setPosition(0);
+                        } else if (jetpackSound->state() == QMediaPlayer::StoppedState) {
+                            jetpackSound->play();
+                        }
                 }
             }
         }
@@ -580,7 +596,7 @@ void Game::jumpPlayer() {
 
 void Game::loose() {
     timerMove->stop();
-    timerJump->stop();
+    jumpThread->terminate();
     // Clear scene
     for (auto element : scene->items()) { // dynamic_cast<GameObject *>(element) ?
         if (dynamic_cast<Platform *>(element) || dynamic_cast<Monster *>(element) ||

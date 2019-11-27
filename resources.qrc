@@ -38,6 +38,7 @@
         <file>images/spring/spring1.png</file>
         <file>images/spring/spring2.png</file>
         <file>sounds/jump.mp3</file>
+        <file>sounds/jetpack.mp3</file>
         <file>sounds/fall.mp3</file>
         <file>sounds/spring.mp3</file>
         <file>sounds/jumpMonster.mp3</file>
