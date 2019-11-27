@@ -482,7 +482,7 @@ void Game::movePlayer() {
 
 void Game::jumpPlayer() {
     if(m_jetpack) {
-        player->setVelocityY(-5);
+        player->setVelocityY(-10);
     }
     else {
         player->setVelocityY(player->getVelocityY() + GRAVITY);
@@ -585,7 +585,7 @@ void Game::jumpPlayer() {
             }
             else if(auto* bonus = dynamic_cast<Bonus*>(element)) { // Rebond
                 if(auto* spring = dynamic_cast<Spring*>(bonus)) {
-                    if(player->y()+player->pixmap().height() < spring->y()+spring->pixmap().height()/2) {
+                    if(player->y()+player->pixmap().height() < spring->y()+spring->pixmap().height()/2.) {
                         player->bounce(-10);
 
                         // Si le son est déjà lancé, remet à 0
