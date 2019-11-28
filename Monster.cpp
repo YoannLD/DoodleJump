@@ -16,7 +16,7 @@ Monster::Monster(BasicPlatform* platform) {
     connect(animationTimer, &QTimer::timeout, this, &Monster::animation);
     connect(killTimer, &QTimer::timeout, this, &Monster::kill);
 
-    //animationTimer->start(250);
+    animationTimer->start(250);
 }
 
 void Monster::launchKill(){

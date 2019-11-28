@@ -9,6 +9,7 @@
 #include <QPushButton>
 #include <QDebug>
 #include <QThread>
+#include <QElapsedTimer>
 #include <QScreen>
 #include <QApplication>
 #include "consts.h"
@@ -104,10 +105,6 @@ Game::Game() {
     menu();
 }
 
-void Game::quit(){
-    QApplication::quit();
-}
-
 
 void Game::menu() {
 
@@ -134,7 +131,7 @@ void Game::menu() {
     buttonQuit->setVisible(true);
 
     connect(buttonPlay, SIGNAL (released()),this, SLOT (start()));
-    connect(buttonQuit, SIGNAL (released()),this, SLOT (quit()));
+    connect(buttonQuit, SIGNAL (released()),qApp, SLOT (quit()));
 
 }
 
@@ -163,7 +160,7 @@ void Game::highscores() {
     buttonQuit->setVisible(true);
 
     connect(buttonPlay, SIGNAL (released()),this, SLOT (start()));
-    connect(buttonQuit, SIGNAL (released()),this, SLOT (quit()));
+    connect(buttonQuit, SIGNAL (released()),qApp, SLOT (quit()));
 
 }
 
@@ -484,124 +481,139 @@ void Game::movePlayer() {
 }
 
 void Game::jumpPlayer() {
-    if(player->isOnJetpack()) {
-        player->setVelocityY(-10);
-    }
-    else {
-        player->setVelocityY(player->getVelocityY() + GRAVITY);
-    }
+    if(jumpThread->isRunning()) {
 
-    if(player->y() < MAX_HEIGHT) { // Hauteur max, scroll
-        addPlatform();
-        isScrolling = true;
-        increaseScore();
-        player->moveVertical(MAX_HEIGHT);
-        for(auto element : scene->items()) {
-            if(dynamic_cast<Platform*>(element) || dynamic_cast<Bullet*>(element) || dynamic_cast<Monster*>(element) || dynamic_cast<Bonus*>(element)) {
-                element->setY(element->y() - player->getVelocityY());
-            }
+        if (player->isOnJetpack()) {
+            player->setVelocityY(-10);
+        } else {
+            player->setVelocityY(player->getVelocityY() + GRAVITY);
         }
-    }
-    else {
-        // Scrool a little more to prevent scrolling on each jump if player doesn't move
-        if(isScrolling) {
-            isScrolling = false;
-            player->moveVertical(player->y()+1);
-            for(auto element : scene->items()) {
-                if(dynamic_cast<Platform*>(element) || dynamic_cast<Bullet*>(element) || dynamic_cast<Monster*>(element) || dynamic_cast<Bonus*>(element)) {
-                    element->setY(element->y() + 1);
+
+        if (player->y() < MAX_HEIGHT) { // Hauteur max, scroll
+            addPlatform();
+            isScrolling = true;
+            increaseScore();
+            player->moveVertical(MAX_HEIGHT);
+            for (auto element : scene->items()) {
+                if (dynamic_cast<Platform *>(element) || dynamic_cast<Bullet *>(element) ||
+                    dynamic_cast<Monster *>(element) || dynamic_cast<Bonus *>(element)) {
+                    element->setY(element->y() - player->getVelocityY());
+                }
+            }
+        } else {
+            // Scrool a little more to prevent scrolling on each jump if player doesn't move
+            if (isScrolling) {
+                isScrolling = false;
+                player->moveVertical(player->y() + 1);
+                for (auto element : scene->items()) {
+                    if (dynamic_cast<Platform *>(element) || dynamic_cast<Bullet *>(element) ||
+                        dynamic_cast<Monster *>(element) || dynamic_cast<Bonus *>(element)) {
+                        element->setY(element->y() + 1);
+                    }
                 }
             }
         }
-    }
-    for(auto element : scene->items()) {
-        if(dynamic_cast<Platform*>(element) || dynamic_cast<Bullet*>(element) || dynamic_cast<Monster*>(element) || dynamic_cast<Bonus*>(element)) {
-            if(dynamic_cast<Platform*>(element)) {
+        for (auto element : scene->items()) {
+            if (dynamic_cast<Platform *>(element)) {
                 if (element->y() > WINDOW_HEIGHT) { // Si plateforme/bonus en dessous de l'écran
                     scene->removeItem(element);
                     delete element;
                 }
-            }
-            else if(auto* bullet = dynamic_cast<Bullet*>(element)) {
-                for(auto element : scene->collidingItems(bullet)) {
-                    if (auto* monster = dynamic_cast<Monster*>(element)) { // Monstre
+            } else if (auto *bullet = dynamic_cast<Bullet *>(element)) {
+                for (auto element2 : scene->collidingItems(bullet)) {
+                    if (auto *monster = dynamic_cast<Monster *>(element2)) { // Monstre
                         monster->getShot();
                         scene->removeItem(monster);
                         delete bullet;
                     }
                 }
-                if (bullet->y()+bullet->pixmap().height() < 0) { // Si bullet  au dessus de l'écran
+                if (bullet->y() + bullet->pixmap().height() < 0) { // Si bullet  au dessus de l'écran
                     scene->removeItem(bullet);
                     delete bullet;
                 }
             }
         }
-    }
+        player->moveVertical(player->y() + player->getVelocityY());
 
-    player->moveVertical(player->y() + player->getVelocityY());
+        if (player->getVelocityY() > 0) {
+            player->setFalling(true);
+            // On vérifie si on touche une plateforme
+            for (auto element : scene->collidingItems(player)) {
+                if (auto *platform = dynamic_cast<Platform *>(element)) { // Rebond
+                    // Si les pieds atteignent la moitié supérieure de la plateforme
+                    if (player->y() + player->pixmap().height()-DOODLE_LAYOUT < platform->y() + platform->pixmap().height() / 2) {
+                        if (dynamic_cast<BreakingPlatform *>(platform)) {
+                            auto *breaking = dynamic_cast<BreakingPlatform *>(platform);
+                            breaking->launchBreak();
+                        } else if (dynamic_cast<DisappearingPlatform *>(platform)) {
+                            player->bounce(-5);
+                            scene->removeItem(platform);
+                            delete platform;
 
-    if (player->getVelocityY() > 0) {
-        player->setFalling(true);
-        // On vérifie si on touche une plateforme
-        for(auto element : scene->collidingItems(player)) {
-            if(auto* platform = dynamic_cast<Platform*>(element)) { // Rebond
-                // Si les pieds atteignent la moitié supérieure de la plateforme
-                if(player->y()+player->pixmap().height() < platform->y()+platform->pixmap().height()/2) {
-                    if(dynamic_cast<BreakingPlatform*>(platform)){
-                        auto * breaking = dynamic_cast<BreakingPlatform*>(platform);
-                        breaking->launchBreak();
+                            // Si le son est déjà lancé, remet à 0
+                            if (bounceSound->state() == QMediaPlayer::PlayingState) {
+                                bounceSound->setPosition(0);
+                            } else if (bounceSound->state() == QMediaPlayer::StoppedState) {
+                                bounceSound->play();
+                            }
+                        } else {
+                            player->bounce(-5);
+
+                            // Si le son est déjà lancé, remet à 0
+                            if (bounceSound->state() == QMediaPlayer::PlayingState) {
+                                bounceSound->setPosition(0);
+                            } else if (bounceSound->state() == QMediaPlayer::StoppedState) {
+                                bounceSound->play();
+                            }
+                        }
+
                     }
-                    else if(dynamic_cast<DisappearingPlatform*>(platform)){
-                        player->bounce(-5);
-                        scene->removeItem(platform);
-                        delete platform;
+                } else if (auto *monster = dynamic_cast<Monster *>(element)) { // Monstre
+                    if (player->y() + player->pixmap().height() < monster->y() + monster->pixmap().height() / 2) {
+                        monster->launchKill();
+                        player->bounce(-7);
+                        increaseScore();
+                    } else {
+                        loose();
+                        break;
+                    }
+                } else if (auto *bonus = dynamic_cast<Bonus *>(element)) { // Rebond
+                    if (auto *spring = dynamic_cast<Spring *>(bonus)) {
+                        if (player->y() + player->pixmap().height() < spring->y() + spring->pixmap().height() / 2.) {
+                            player->bounce(-10);
 
+                            // Si le son est déjà lancé, remet à 0
+                            if (springSound->state() == QMediaPlayer::PlayingState) {
+                                springSound->setPosition(0);
+                            } else if (springSound->state() == QMediaPlayer::StoppedState) {
+                                springSound->play();
+                            }
+                            spring->jump();
+                        }
+                    } else if (auto *jetpack = dynamic_cast<Jetpack *>(bonus)) {
+                        scene->removeItem(jetpack);
+                        player->setJetpack();
+                        jetpackTimer->start(JETPACK_DURATION);
                         // Si le son est déjà lancé, remet à 0
-                        if (bounceSound->state() == QMediaPlayer::PlayingState) {
-                            bounceSound->setPosition(0);
-                        } else if (bounceSound->state() == QMediaPlayer::StoppedState) {
-                            bounceSound->play();
+                        if (jetpackSound->state() == QMediaPlayer::PlayingState) {
+                            jetpackSound->setPosition(0);
+                        } else if (jetpackSound->state() == QMediaPlayer::StoppedState) {
+                            jetpackSound->play();
                         }
                     }
-                    else{
-                        player->bounce(-5);
-
-                        // Si le son est déjà lancé, remet à 0
-                        if (bounceSound->state() == QMediaPlayer::PlayingState) {
-                            bounceSound->setPosition(0);
-                        } else if (bounceSound->state() == QMediaPlayer::StoppedState) {
-                            bounceSound->play();
-                        }
-                    }
-
                 }
             }
-            else if(auto* monster = dynamic_cast<Monster*>(element)) { // Monstre
-                if(player->y()+player->pixmap().height() < monster->y()+monster->pixmap().height()/2) {
-                    monster->launchKill();
-                    player->bounce(-7);
-                    increaseScore();
-                }
-                else {
-                    loose();
-                }
-            }
-            else if(auto* bonus = dynamic_cast<Bonus*>(element)) { // Rebond
-                if(auto* spring = dynamic_cast<Spring*>(bonus)) {
-                    if(player->y()+player->pixmap().height() < spring->y()+spring->pixmap().height()/2.) {
-                        player->bounce(-10);
-
-                        // Si le son est déjà lancé, remet à 0
-                        if (springSound->state() == QMediaPlayer::PlayingState) {
-                            springSound->setPosition(0);
-                        } else if (springSound->state() == QMediaPlayer::StoppedState) {
-                            springSound->play();
-                        }
-                        spring->jump();
+        } else {
+            player->setFalling(false);
+            // On vérifie si on touche un monstre
+            for (auto element : scene->collidingItems(player)) {
+                if (dynamic_cast<Monster *>(element)) {
+                    if (!player->isOnJetpack()) {
+                        loose();
+                        break;
                     }
-                }
-                else if(auto* jetpack = dynamic_cast<Jetpack*>(bonus)) {
-                    scene->removeItem(jetpack);
+                } else if (dynamic_cast<Jetpack *>(element)) {
+                    scene->removeItem(element);
                     player->setJetpack();
                     jetpackTimer->start(JETPACK_DURATION);
                     // Si le son est déjà lancé, remet à 0
@@ -613,30 +625,10 @@ void Game::jumpPlayer() {
                 }
             }
         }
-    }
-    else {
-        player->setFalling(false);
-        // On vérifie si on touche un monstre
-        for(auto element : scene->collidingItems(player)) {
-            if (dynamic_cast<Monster *>(element)) {
-                if(!player->isOnJetpack()) {
-                    loose();
-                }
-            }
-            else if(dynamic_cast<Jetpack *>(element)) {
-                scene->removeItem(element);
-                player->setJetpack();
-                jetpackTimer->start(JETPACK_DURATION);
-                // Si le son est déjà lancé, remet à 0
-                if (jetpackSound->state() == QMediaPlayer::PlayingState) {
-                    jetpackSound->setPosition(0);
-                } else if (jetpackSound->state() == QMediaPlayer::StoppedState) {
-                    jetpackSound->play();
-                }
-            }
+        if (jumpThread->isRunning()) {
+            player->updatePixmap();
         }
     }
-    player->updatePixmap();
 }
 
 void Game::loose() {

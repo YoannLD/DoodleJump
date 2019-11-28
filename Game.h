@@ -88,7 +88,6 @@ public slots:
     void jumpPlayer();
 private slots:
     void start();
-    void quit();
 
 
 
