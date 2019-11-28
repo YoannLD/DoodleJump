@@ -480,7 +480,6 @@ void Game::movePlayer() {
     if (player->y() + player->pixmap().height()>= WINDOW_HEIGHT) { // (Perdu)
         fallSound->play();
         loose();
-        return;
     }
 }
 
@@ -585,7 +584,6 @@ void Game::jumpPlayer() {
                 }
                 else {
                     loose();
-                    return;
                 }
             }
             else if(auto* bonus = dynamic_cast<Bonus*>(element)) { // Rebond
@@ -623,7 +621,6 @@ void Game::jumpPlayer() {
             if (dynamic_cast<Monster *>(element)) {
                 if(!player->isOnJetpack()) {
                     loose();
-                    return;
                 }
             }
             else if(dynamic_cast<Jetpack *>(element)) {
@@ -645,6 +642,7 @@ void Game::jumpPlayer() {
 void Game::loose() {
     timerMove->stop();
     jumpThread->quit();
+    jumpThread->wait();
     // Clear scene
     for (auto element : scene->items()) { // dynamic_cast<GameObject *>(element) ?
         if (dynamic_cast<Platform *>(element) || dynamic_cast<Monster *>(element) ||
