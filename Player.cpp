@@ -115,6 +115,7 @@ void Player::removeJetpack() {
     m_rotationJetpack = 0;
     m_jetpackFallTimer->start(2);
     m_jetpackState = 0;
+    m_jetpackCpt = 0;
 }
 
 void Player::moveLeft() {

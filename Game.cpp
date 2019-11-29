@@ -546,15 +546,15 @@ void Game::jumpPlayer() { // Todo : séparer mort/vivant + appeler fonctions pou
             }
         }
         for (auto element : scene->items()) {
-            if (dynamic_cast<Platform *>(element) || dynamic_cast<Bonus *>(element) ) {
+            if (dynamic_cast<Platform *>(element) || dynamic_cast<Bonus *>(element) || dynamic_cast<Monster *>(element) ) {
                 if(m_lost) {
-                    if (element->y() < 0) { // Si plateforme/bonus au dessus de l'écran
+                    if (element->y() < 0) { // Si plateforme/bonus/monstre au dessus de l'écran
                         scene->removeItem(element);
                         delete element;
                     }
                 }
                 else {
-                    if (element->y() > WINDOW_HEIGHT) { // Si plateforme/bonus en dessous de l'écran
+                    if (element->y() > WINDOW_HEIGHT + 100) { // Si plateforme/bonus/monstre en dessous de l'écran
                         scene->removeItem(element);
                         delete element;
                     }
@@ -612,18 +612,19 @@ void Game::jumpPlayer() { // Todo : séparer mort/vivant + appeler fonctions pou
 
                         }
                     } else if (auto *monster = dynamic_cast<Monster *>(element)) { // Monstre
-                        if (player->y() + player->pixmap().height() < monster->y() + monster->pixmap().height() / 2) {
+                        if (player->y() + player->pixmap().height() < monster->y() + monster->pixmap().height() / 2 + DOODLE_LAYOUT) {
                             monster->launchKill();
                             player->bounce(-7);
                             increaseScore();
                         } else {
                             player->setHit(true);
+                            player->setVelocityY(0);
                             break;
                         }
                     } else if (auto *bonus = dynamic_cast<Bonus *>(element)) { // Rebond
                         if (auto *spring = dynamic_cast<Spring *>(bonus)) {
                             if (player->y() + player->pixmap().height() <
-                                spring->y() + spring->pixmap().height() / 2.) {
+                                spring->y() + spring->pixmap().height() / 2. + DOODLE_LAYOUT) {
                                 player->bounce(-10);
 
                                 // Si le son est déjà lancé, remet à 0
@@ -655,17 +656,20 @@ void Game::jumpPlayer() { // Todo : séparer mort/vivant + appeler fonctions pou
                 if (dynamic_cast<Monster *>(element)) {
                     if (!player->isOnJetpack()) {
                        player->setHit(true);
+                       player->setVelocityY(0);
                         break;
                     }
                 } else if (dynamic_cast<Jetpack *>(element)) {
-                    scene->removeItem(element);
-                    player->setJetpack();
-                    jetpackTimer->start(JETPACK_DURATION);
-                    // Si le son est déjà lancé, remet à 0
-                    if (jetpackSound->state() == QMediaPlayer::PlayingState) {
-                        jetpackSound->setPosition(0);
-                    } else if (jetpackSound->state() == QMediaPlayer::StoppedState) {
-                        jetpackSound->play();
+                    if(!player->isOnJetpack()) {
+                        scene->removeItem(element);
+                        player->setJetpack();
+                        jetpackTimer->start(JETPACK_DURATION);
+                        // Si le son est déjà lancé, remet à 0
+                        if (jetpackSound->state() == QMediaPlayer::PlayingState) {
+                            jetpackSound->setPosition(0);
+                        } else if (jetpackSound->state() == QMediaPlayer::StoppedState) {
+                            jetpackSound->play();
+                        }
                     }
                 }
             }

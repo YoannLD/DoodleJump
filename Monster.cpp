@@ -21,7 +21,7 @@ Monster::Monster(Platform* platform) {
 }
 
 void Monster::launchKill(){
-    killTimer->start(2);
+    killTimer->start(3);
     // Si le son est déjà lancé, remet à 0
     if (jumpSound->state() == QMediaPlayer::PlayingState) {
         jumpSound->setPosition(0);
