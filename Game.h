@@ -58,7 +58,6 @@ private:
     Player *player;
     QGraphicsTextItem *text;
 
-    void loose();
     void highscores();
 
     QMediaPlayer *fallSound;
@@ -74,12 +73,14 @@ private:
 
     QTimer* timerMove;
     QTimer* timerJump;
+    QTimer* timerEndGame;
     QThread* jumpThread;
     static float generateRandom();
     QList<Platform *> getAllJumpablePlatforms();
 
 private:
     QTimer* jetpackTimer;
+    bool m_lost = false;
 public slots:
 
     void stopJetpack();
@@ -88,6 +89,7 @@ public slots:
     void jumpPlayer();
 private slots:
     void start();
+    void loose();
 
 
 

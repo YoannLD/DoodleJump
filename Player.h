@@ -39,6 +39,8 @@ public:
     bool isOnJetpack();
     void setFalling(bool f);
     bool isFacingLeft();
+    bool isHit();
+    void setHit(bool hit);
 private:
 
     float m_velocityY = 0;
@@ -48,6 +50,7 @@ private:
     int m_jetpackCpt;
     float m_rotationJetpack;
     bool m_falling;
+    bool m_isHit;
 
 public slots:
 

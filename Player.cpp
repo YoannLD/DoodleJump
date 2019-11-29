@@ -26,6 +26,7 @@ Player::Player() {
     m_jetpackCpt = 0;
     m_rotationJetpack = 0;
     m_falling = false;
+    m_isHit = false;
     jetpack = new QGraphicsPixmapItem();
     jetpack->setPixmap(Resources::png("jetpack/jetpack1.png"));
 }
@@ -54,10 +55,16 @@ void Player::keyReleaseEvent(QKeyEvent *event) {
 
 void Player::updatePixmap() {
     if(!m_shootingPixmapTimer->isActive()) {
-        if (m_falling) {
-            setPixmap(Resources::png("doodleFall.png"));
-        } else {
-            setPixmap(Resources::png("doodleUp.png"));
+        if(isHit()) {
+            setPixmap(Resources::png("doodleHit.png"));
+        }
+        else {
+            if (m_falling) {
+                setPixmap(Resources::png("doodleFall.png"));
+            } else {
+                setPixmap(Resources::png("doodleUp.png"));
+            }
+
         }
         if (!m_facingLeft) {
             setPixmap(pixmap().transformed(QTransform().scale(-1, 1)));
@@ -270,6 +277,14 @@ void Player::setFalling(bool f) {
 
 bool Player::isFacingLeft() {
     return m_facingLeft;
+}
+
+bool Player::isHit() {
+    return m_isHit;
+}
+
+void Player::setHit(bool hit) {
+    m_isHit = hit;
 }
 
 
