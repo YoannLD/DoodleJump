@@ -2,7 +2,8 @@
 #include "Resources.h"
 #include <qDebug>
 
-Monster::Monster(BasicPlatform* platform) {
+Monster::Monster(Platform* platform) {
+    m_platform = platform;
     setPixmap(Resources::png("monster_1.png"));
     setPos(platform->x() + platform->pixmap().width()/2 - pixmap().width()/2, platform->y() - pixmap().height());
     setZValue(120);
@@ -59,4 +60,8 @@ Monster::~Monster() {
     delete killTimer;
     delete jumpSound ;
     delete dieSound ;
+}
+
+Platform *Monster::getPlatform() {
+    return m_platform;
 }

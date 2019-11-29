@@ -376,24 +376,34 @@ void Game::addPlatform() {
                 countNbDisappearingPlatformActual++;
             else if(dynamic_cast<ExplodingPlatform*>(platform))
                 countNbExplodingPlatformActual++;
-            else if(auto* basicPlatform = dynamic_cast<BasicPlatform*>(platform)) {
-                if(generateRandom() <= JETPACK_PROB && !player->isOnJetpack()) {
-                    auto* jetpack = new Jetpack(basicPlatform);
-                    scene->addItem(jetpack);
-                }
-                else if(generateRandom() <= SPRING_PROB) {
-                    auto* spring = new Spring(basicPlatform);
-                    scene->addItem(spring);
-                }
-                else if(generateRandom() <= MONSTER_SPAWN_PROB) {
-                    auto* monster = new Monster(basicPlatform);
-                    scene->addItem(monster);
-                }
-            }
             jumpablePlatforms = getAllJumpablePlatforms();
        }
         else
             delete platform;
+
+        if(dynamic_cast<BasicPlatform*>(platform) || dynamic_cast<MovingPlatform*>(platform)) {
+            if(generateRandom() <= JETPACK_PROB && !player->isOnJetpack()) {
+                auto* jetpack = new Jetpack(platform);
+                scene->addItem(jetpack);
+                if(auto* movingPlatform = dynamic_cast<MovingPlatform*>(platform)) {
+                    movingPlatform->addAssociatedItem(jetpack);
+                }
+            }
+            else if(generateRandom() <= SPRING_PROB) {
+                auto* spring = new Spring(platform);
+                scene->addItem(spring);
+                if(auto* movingPlatform = dynamic_cast<MovingPlatform*>(platform)) {
+                    movingPlatform->addAssociatedItem(spring);
+                }
+            }
+            else if(generateRandom() <= MONSTER_SPAWN_PROB) {
+                auto* monster = new Monster(platform);
+                scene->addItem(monster);
+                if(auto* movingPlatform = dynamic_cast<MovingPlatform*>(platform)) {
+                    movingPlatform->addAssociatedItem(monster);
+                }
+            }
+        }
 
 
     }
@@ -455,7 +465,7 @@ void Game::movePlayer() {
                 if(!player->m_hasShot && !player->isOnJetpack()) {
                     player->m_hasShot = true;
                     auto *bullet = new Bullet(player->m_shootTimer);
-                    bullet->setPos(player->x() + player->pixmap().width() / 2, player->y());
+                    bullet->setPos(player->x() + player->pixmap().width() / 2., player->y());
                     scene->addItem(bullet);
 
                     player->setPixmap(Resources::png("doodleShoot.png"));
@@ -471,6 +481,8 @@ void Game::movePlayer() {
                     }
                     player->m_shootingPixmapTimer->start(300);
                 }
+                break;
+            default:
                 break;
         }
     }

@@ -6,13 +6,11 @@
 #define DOODLEJUMP_SPRING_H
 
 #include "Bonus.h"
-#include "BasicPlatform.h"
+#include "Platform.h"
 
 class Spring : public Bonus {
 public:
-    Spring(BasicPlatform* p);
+    Spring(Platform* p);
     void jump();
-private:
-    BasicPlatform* m_platform;
 };
 #endif //DOODLEJUMP_SPRING_H

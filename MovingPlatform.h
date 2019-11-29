@@ -9,12 +9,14 @@ public:
     MovingPlatform();
 
     MovingPlatform(float yMin, float yMax);
+    void addAssociatedItem(GameObject* item);
 
     ~MovingPlatform();
 private:
     QTimer * movingTimer;
     enum direction {LEFT, RIGHT};
     direction state;
+    QList<GameObject*> associatedItems;
 
 public slots:
     void move();

@@ -2,15 +2,14 @@
 #include "Resources.h"
 #include <qDebug>
 
-Spring::Spring(BasicPlatform* platform) {
-    m_platform = platform;
+Spring::Spring(Platform* platform) : Bonus(platform){
     setPixmap(Resources::png("spring/spring1.png"));
-    setPos(platform->x() + platform->pixmap().width()/2 - pixmap().width()/2, m_platform->y() - pixmap().height());
+    setPos(getPlatform()->x() + getPlatform()->pixmap().width()/2. - pixmap().width()/2., getPlatform()->y() - pixmap().height());
     setZValue(99);
 }
 
 void Spring::jump() {
     setPixmap(Resources::png("spring/spring2.png"));
-    setY(m_platform->y() - pixmap().height());
+    setY(getPlatform()->y() - pixmap().height());
     setZValue(99);
 }

@@ -6,13 +6,11 @@
 #define DOODLEJUMP_JETPACK_H
 
 #include "Bonus.h"
-#include "BasicPlatform.h"
+#include "Platform.h"
 
 class Jetpack : public Bonus {
 public:
-    Jetpack(BasicPlatform* p);
-private:
-    BasicPlatform* m_platform;
+    Jetpack(Platform* p);
 };
 
 #endif //DOODLEJUMP_JETPACK_H

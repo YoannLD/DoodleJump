@@ -5,17 +5,18 @@
 #include <QTimer>
 #include "Hurts.h"
 #include "Moving.h"
-#include "BasicPlatform.h"
+#include "Platform.h"
 
 class Monster : public QObject, public Hurts {
     Q_OBJECT
 public:
-    Monster(BasicPlatform* p);
+    Monster(Platform* p);
     ~Monster();
 
     void kill();
     void launchKill();
     void getShot();
+    Platform* getPlatform();
 
 public slots:
     void animation();
@@ -24,6 +25,7 @@ private:
     QTimer* animationTimer;
     QMediaPlayer* jumpSound ;
     QMediaPlayer* dieSound ;
+    Platform* m_platform;
     int animation_state = 1;
 };
 
