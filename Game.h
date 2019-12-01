@@ -9,6 +9,7 @@
 #include "Platform.h"
 #include <QMediaPlayer>
 #include <QtWidgets/QPushButton>
+#include <QtWidgets/QTableWidget>
 #include "Player.h"
 
 class Game :  public QGraphicsView {
@@ -20,7 +21,6 @@ private:
 
     QPushButton *buttonPlay;
     QPushButton *buttonQuit;
-    QPushButton *buttonReplay;
 
     QGraphicsScene *scene;
     QGraphicsScene *menuScene;
@@ -57,6 +57,9 @@ private:
     int m_score = 0;
     Player *player;
     QGraphicsTextItem *text;
+    QString temp = "";
+
+    QGraphicsTextItem *tableHighScore;
 
     void highscores();
 
@@ -92,7 +95,8 @@ private slots:
     void loose();
 
 
-
+    void saveScores(QString scores);
+    std::list<int> getHighScore();
 };
 
 #endif //DOODLEJUMP_GAME_H

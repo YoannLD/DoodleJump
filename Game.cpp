@@ -12,6 +12,8 @@
 #include <QElapsedTimer>
 #include <QScreen>
 #include <QApplication>
+#include <QFile>
+#include <QTextStream>
 #include "consts.h"
 #include "BreakingPlatform.h"
 #include "MovingPlatform.h"
@@ -23,8 +25,8 @@
 #include "Jetpack.h"
 #include "Resources.h"
 #include <chrono>
-
-using namespace std::chrono;
+#include <functional>
+#include <list>
 
 Game::Game() {
 
@@ -70,6 +72,8 @@ Game::Game() {
     }
 
     highscoresScene->setBackgroundBrush(QBrush(*menuPixmap));
+    tableHighScore = new QGraphicsTextItem();
+    tableHighScore = highscoresScene->addText(temp);
 
     delete menuPixmap;
 
@@ -140,23 +144,45 @@ void Game::menu() {
 
 void Game::highscores() {
 
+    std::list<int> scores = getHighScore();
+
+
+    // On regarde si le score actuel fait partie des meilleurs scores
+    if(scores.back() < m_score){
+        scores.push_back(m_score);
+        scores.sort(std::greater<int>());
+        scores.pop_back();
+    }
+
+    temp = "";
+    for(int score : scores)
+        temp.append(QString::number(score).append("\r\n"));
+
+    Game::saveScores(temp);
+
+
+    tableHighScore->setFont(QFont("DoodleJump",40,QFont::Bold));
+    tableHighScore->setPos(570,245);
+    tableHighScore->setPlainText(temp);
+
+
+
     setScene(highscoresScene);
 
-    int weight = 500;
 
     buttonPlay = new QPushButton("Recommencer", this);
 
-    buttonPlay->setGeometry(WINDOW_WIDTH/2-weight/2,280,weight,50);
+    buttonPlay->setGeometry(550,550,200,40);
     buttonPlay->isFlat();
     buttonPlay->setObjectName("playButton");
-    buttonPlay->setFont(QFont("DoodleJump",45,QFont::Bold));
+    buttonPlay->setFont(QFont("DoodleJump",30,QFont::Bold));
     buttonPlay->setStyleSheet("QPushButton {background-color: transparent; color = black} QPushButton#playButton:hover {color: #a41101}");
 
     buttonQuit = new QPushButton("Quitter", this);
-    buttonQuit->setGeometry(WINDOW_WIDTH/2-weight/2,400,weight,50);
+    buttonQuit->setGeometry(445,630,120,40);
     buttonQuit->isFlat();
     buttonQuit->setObjectName("buttonQuit");
-    buttonQuit->setFont(QFont("DoodleJump",45,QFont::Bold));
+    buttonQuit->setFont(QFont("DoodleJump",30,QFont::Bold));
     buttonQuit->setStyleSheet("QPushButton {background-color: transparent; color = black} QPushButton#buttonQuit:hover {color: #a41101}");
 
     buttonPlay->setVisible(true);
@@ -266,7 +292,7 @@ float Game::generateRandom(){
 }
 
 void Game::addPlatform() {
-    auto start = high_resolution_clock::now();
+    auto start = std::chrono::high_resolution_clock::now();
 
     calculateNumberOfPlatform();
 
@@ -411,14 +437,55 @@ void Game::addPlatform() {
 
 
     }
-    auto stop = high_resolution_clock::now();
+    auto stop = std::chrono::high_resolution_clock::now();
 
-    auto duration = duration_cast<microseconds>(stop - start);
+    auto duration = std::chrono::duration_cast<std::chrono::microseconds>(stop - start);
 
     //qDebug() << duration.count();
 
+}
+
+std::list<int> Game::getHighScore(){
+
+    std::list<int> listOfScores;
+    QString data;
+    QString fileName(":/highscores.txt");
+
+    QFile file(fileName);
+    if(!file.open(QIODevice::ReadOnly)) {
+        qDebug()<<"file not opened"<<endl;
+    }
+    else
+    {
+        while(! file.atEnd())
+        {
+            data = file.readLine();
+            data.remove("\r\n");
+            bool ok;
+            int number = data.toInt(&ok, 10);
+            listOfScores.push_back(number);
+        }
+    }
+
+    file.close();
+
+    return listOfScores;
+}
+
+void Game::saveScores(QString scores){
+
+    QString data;
+    QString fileName(":/highscores.txt");
+
+    QFile *outFile = new QFile(fileName);
+    if (outFile->open(QIODevice::WriteOnly)) {
+        outFile->write("test");
+        outFile->close();
+    }
+    delete outFile;
 
 }
+
 
 void Game::increaseScore() {
     m_score++;
