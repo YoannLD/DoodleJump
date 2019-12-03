@@ -44,6 +44,8 @@ private:
 
     int dist_min = 0;
     int dist_max = 0;
+    int disappearing_max = 0;
+    int exploding_max = 0;
     bool isScrolling = false;
 
     bool sectionDisappearingPlatform = false;

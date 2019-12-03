@@ -28,6 +28,8 @@
 #include <functional>
 #include <list>
 
+
+
 Game::Game() {
 
     setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
@@ -218,33 +220,42 @@ void Game::start() {
 }
 
 void Game::calculateNumberOfPlatform() {
-    if (m_score < 500) {
+    if (m_score < 3000) {
         dist_min = 0;
         dist_max = 50;
         disappearingPlatformAllow = false;
         explodingPlatformAllow = false;
-    } else if (m_score <= 1000) {
+    } else if (m_score <= 5000) {
         dist_min = 10;
         dist_max = 60;
+        disappearing_max = 4;
         disappearingPlatformAllow = true;
-    } else if (m_score <= 2000) {
+    } else if (m_score <= 10000) {
         dist_min = 20;
         dist_max = 60;
+        disappearing_max = 5;
+        exploding_max = 2;
         explodingPlatformAllow = true;
         disappearingPlatformAllow = true;
-    } else if (m_score <= 2500) {
+    } else if (m_score <= 11000) {
         dist_min = 40;
         dist_max = 60;
+        disappearing_max = 5;
+        exploding_max = 3;
         explodingPlatformAllow = true;
         disappearingPlatformAllow = true;
-    } else if (m_score <= 2700) {
+    } else if (m_score <= 12000) {
         dist_min = 40;
         dist_max = 65;
+        disappearing_max = 5;
+        exploding_max = 6;
         explodingPlatformAllow = true;
         disappearingPlatformAllow = true;
-    } else if(m_score > 3000){
+    } else if(m_score > 14000){
         dist_min = 80;
-        dist_max = 90;
+        dist_max = 85;
+        disappearing_max = 6;
+        exploding_max = 8;
         explodingPlatformAllow = true;
         disappearingPlatformAllow = true;
     }
@@ -330,12 +341,12 @@ void Game::addPlatform() {
         multiplier = 1;
         if(generateRandom() < DISAPPEARING_PLATFORM_PROB && !sectionDisappearingPlatform && disappearingPlatformAllow){
             sectionDisappearingPlatform = true;
-            countNbDisappearingPlatform = 2 + (rand() % static_cast<int>(4+1));
+            countNbDisappearingPlatform = (rand() % static_cast<int>(disappearing_max+1));
             countNbDisappearingPlatformActual = 0;
         }
         else if (generateRandom() < EXPLODING_PLATFORM_PROB && !sectionExplodingPlatform && explodingPlatformAllow){
                 sectionExplodingPlatform = true;
-                countNbExplodingPlatform = 2 + (rand() % static_cast<int>(6+1));
+                countNbExplodingPlatform = (rand() % static_cast<int>(exploding_max+1));
                 countNbExplodingPlatformActual = 0;
         }
 
@@ -449,7 +460,7 @@ std::list<int> Game::getHighScore(){
 
     std::list<int> listOfScores;
     QString data;
-    QString fileName(":/highscores.txt");
+    QString fileName("highscores.txt");
 
     QFile file(fileName);
     if(!file.open(QIODevice::ReadOnly)) {
@@ -465,9 +476,11 @@ std::list<int> Game::getHighScore(){
             int number = data.toInt(&ok, 10);
             listOfScores.push_back(number);
         }
+
+        file.close();
     }
 
-    file.close();
+
 
     return listOfScores;
 }
@@ -475,14 +488,29 @@ std::list<int> Game::getHighScore(){
 void Game::saveScores(QString scores){
 
     QString data;
-    QString fileName(":/highscores.txt");
+    QString fileName("highscores.txt");
 
-    QFile *outFile = new QFile(fileName);
-    if (outFile->open(QIODevice::WriteOnly)) {
-        outFile->write("test");
-        outFile->close();
+    QFile file(fileName);
+    file.close();
+
+
+    if(!file.exists()){
+        qDebug() << file.fileName() << "does not exists";
     }
-    delete outFile;
+
+    if(file.open(QIODevice::ReadWrite)){
+        QTextStream txtStream(&file);
+
+        txtStream << scores;
+        file.close();
+
+    }
+    else{
+        qDebug() << file.openMode();
+        qDebug() << file.error();
+        qDebug() << "Could not open the file";
+    }
+
 
 }
 
