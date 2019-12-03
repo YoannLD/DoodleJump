@@ -1,7 +1,3 @@
-//
-// Created by Yoann on 24/11/2019.
-//
-
 #ifndef DOODLEJUMP_SPRING_H
 #define DOODLEJUMP_SPRING_H
 
