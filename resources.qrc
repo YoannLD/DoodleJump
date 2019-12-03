@@ -19,6 +19,7 @@
         <file>images/explodingPlatform/explodingPlatform_6.png</file>
         <file>images/explodingPlatform/explodingPlatform_7.png</file>
         <file>images/explodingPlatform/explodingPlatform_8.png</file>
+        <file>images/coin/coin0.png</file>
         <file>images/coin/coin1.png</file>
         <file>images/coin/coin2.png</file>
         <file>images/coin/coin3.png</file>
@@ -26,7 +27,6 @@
         <file>images/coin/coin5.png</file>
         <file>images/coin/coin6.png</file>
         <file>images/coin/coin7.png</file>
-        <file>images/coin/coin8.png</file>
         <file>images/jetpack/jetpack.png</file>
         <file>images/jetpack/jetpack1.png</file>
         <file>images/jetpack/jetpack2.png</file>
@@ -52,6 +52,7 @@
         <file>sounds/jetpack.mp3</file>
         <file>sounds/fall.mp3</file>
         <file>sounds/spring.mp3</file>
+        <file>sounds/coin.mp3</file>
         <file>sounds/jumpMonster.mp3</file>
         <file>sounds/killMonster.mp3</file>
         <file>sounds/shoot.mp3</file>

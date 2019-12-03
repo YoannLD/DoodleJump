@@ -30,7 +30,7 @@ private:
 
     void addPlatform();
 
-    void increaseScore(int addedScore = 100);
+    void increaseScore(int addedScore = 1);
     static void quickSort(QList<Platform *> &items, int debut, int fin);
 
     QList<Platform *> collidingPlatforms(Platform *platform);
@@ -69,6 +69,9 @@ private:
     QMediaPlayer *shootSound;
     QMediaPlayer *springSound;
     QMediaPlayer *jetpackSound;
+    QMediaPlayer *coinSound;
+    QMediaPlayer *jumpOnMonsterSound;
+    QMediaPlayer *shootMonsterSound;
 
     void calculateNumberOfPlatform();
 

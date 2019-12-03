@@ -86,11 +86,17 @@ Game::Game() {
     fallSound = new QMediaPlayer();
     shootSound = new QMediaPlayer();
     bounceSound = new QMediaPlayer();
+    coinSound = new QMediaPlayer();
     springSound = new QMediaPlayer();
     jetpackSound = new QMediaPlayer();
+    jumpOnMonsterSound = new QMediaPlayer();
+    shootMonsterSound = new QMediaPlayer();
+    shootMonsterSound->setMedia(QUrl("qrc:/sounds/killMonster.mp3"));
+    jumpOnMonsterSound->setMedia(QUrl("qrc:/sounds/jumpMonster.mp3"));
     jetpackSound->setMedia(QUrl("qrc:/sounds/jetpack.mp3"));
     springSound->setMedia(QUrl("qrc:/sounds/spring.mp3"));
     bounceSound->setMedia(QUrl("qrc:/sounds/jump.mp3"));
+    coinSound->setMedia(QUrl("qrc:/sounds/coin.mp3"));
     fallSound->setMedia(QUrl("qrc:/sounds/fall.mp3"));
     shootSound->setMedia(QUrl("qrc:/sounds/shoot.mp3"));
 
@@ -546,8 +552,8 @@ void Game::quickSort(QList<Platform *> &items, int low, int high) {
             j--;
         }
         if (i <= j) {
-            //items.swapItemsAt(i,j);
-            items.swap(i,j);
+            items.swapItemsAt(i,j);
+            //items.swap(i,j);
             i++;
             j--;
         }
@@ -661,7 +667,7 @@ void Game::jumpPlayer() { // Todo : séparer mort/vivant + appeler fonctions pou
                     }
                 }
                 else {
-                    if (element->y() > WINDOW_HEIGHT + 100) { // Si plateforme/bonus/monstre en dessous de l'écran
+                    if (element->y() > WINDOW_HEIGHT) { // Si plateforme/bonus/monstre en dessous de l'écran
                         scene->removeItem(element);
                         delete element;
                     }
@@ -670,9 +676,14 @@ void Game::jumpPlayer() { // Todo : séparer mort/vivant + appeler fonctions pou
                 if(!m_lost) {
                     for (auto element2 : scene->collidingItems(bullet)) {
                         if (auto *monster = dynamic_cast<Monster *>(element2)) { // Monstre
-                            monster->getShot();
                             scene->removeItem(monster);
+                            increaseScore(200);
                             delete bullet;
+                            if (shootMonsterSound->state() == QMediaPlayer::PlayingState) {
+                                shootMonsterSound->setPosition(0);
+                            } else if (shootMonsterSound->state() == QMediaPlayer::StoppedState) {
+                                shootMonsterSound->play();
+                            }
                         }
                     }
                 }
@@ -722,7 +733,13 @@ void Game::jumpPlayer() { // Todo : séparer mort/vivant + appeler fonctions pou
                         if (player->y() + player->pixmap().height() < monster->y() + monster->pixmap().height() / 2 + DOODLE_LAYOUT) {
                             monster->launchKill();
                             player->bounce(-7);
-                            increaseScore();
+                            increaseScore(200);
+
+                            if (jumpOnMonsterSound->state() == QMediaPlayer::PlayingState) {
+                                jumpOnMonsterSound->setPosition(0);
+                            } else if (jumpOnMonsterSound->state() == QMediaPlayer::StoppedState) {
+                                jumpOnMonsterSound->play();
+                            }
                         } else {
                             player->setHit(true);
                             player->setVelocityY(0);
@@ -755,7 +772,8 @@ void Game::jumpPlayer() { // Todo : séparer mort/vivant + appeler fonctions pou
                         }
                         else if (auto *coin = dynamic_cast<Coin *>(bonus)) {
                             scene->removeItem(coin);
-                           increaseScore(SCORE_COINS);
+                            increaseScore(SCORE_COINS);
+                            coinSound->play();
                         }
                     }
                 }
@@ -786,6 +804,11 @@ void Game::jumpPlayer() { // Todo : séparer mort/vivant + appeler fonctions pou
                 else if (dynamic_cast<Coin *>(element)) {
                     scene->removeItem(element);
                     increaseScore(SCORE_COINS);
+                    if (coinSound->state() == QMediaPlayer::PlayingState) {
+                        coinSound->setPosition(0);
+                    } else if (coinSound->state() == QMediaPlayer::StoppedState) {
+                        coinSound->play();
+                    }
                 }
             }
         }

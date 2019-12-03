@@ -15,17 +15,12 @@ public:
 
     void kill();
     void launchKill();
-    void getShot();
-    Platform* getPlatform();
 
 public slots:
     void animation();
 private:
     QTimer* killTimer;
     QTimer* animationTimer;
-    QMediaPlayer* jumpSound ;
-    QMediaPlayer* dieSound ;
-    Platform* m_platform;
     int animation_state = 1;
 };
 
