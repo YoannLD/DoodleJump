@@ -30,7 +30,7 @@ private:
 
     void addPlatform();
 
-    void increaseScore();
+    void increaseScore(int addedScore = 100);
     static void quickSort(QList<Platform *> &items, int debut, int fin);
 
     QList<Platform *> collidingPlatforms(Platform *platform);

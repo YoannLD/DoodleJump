@@ -24,10 +24,11 @@
 #include "Spring.h"
 #include "Jetpack.h"
 #include "Resources.h"
+#include "coin.h"
 #include <chrono>
 #include <functional>
 #include <list>
-
+#include <QRandomGenerator>
 
 
 Game::Game() {
@@ -299,7 +300,7 @@ QList<Platform*> Game::getAllJumpablePlatforms() {
 }
 
 float Game::generateRandom(){
-    return rand() % 100;
+    return QRandomGenerator::global()->bounded((double) 100);
 }
 
 void Game::addPlatform() {
@@ -449,6 +450,13 @@ void Game::addPlatform() {
                     movingPlatform->addAssociatedItem(monster);
                 }
             }
+            else if(generateRandom() <= COIN_PROB) {
+                auto* coin = new Coin(platform);
+                scene->addItem(coin);
+                if(auto* movingPlatform = dynamic_cast<MovingPlatform*>(platform)) {
+                    movingPlatform->addAssociatedItem(coin);
+                }
+            }
         }
 
 
@@ -519,8 +527,8 @@ void Game::saveScores(QString scores){
 }
 
 
-void Game::increaseScore() {
-    m_score++;
+void Game::increaseScore(int addedScore) {
+    m_score += addedScore;
     text->setPlainText(QString::number(m_score));
 }
 
@@ -538,8 +546,8 @@ void Game::quickSort(QList<Platform *> &items, int low, int high) {
             j--;
         }
         if (i <= j) {
-            items.swapItemsAt(i,j);
-            //items.swap(i,j);
+            //items.swapItemsAt(i,j);
+            items.swap(i,j);
             i++;
             j--;
         }
@@ -745,6 +753,10 @@ void Game::jumpPlayer() { // Todo : séparer mort/vivant + appeler fonctions pou
                                 jetpackSound->play();
                             }
                         }
+                        else if (auto *coin = dynamic_cast<Coin *>(bonus)) {
+                            scene->removeItem(coin);
+                           increaseScore(SCORE_COINS);
+                        }
                     }
                 }
             }
@@ -770,6 +782,10 @@ void Game::jumpPlayer() { // Todo : séparer mort/vivant + appeler fonctions pou
                             jetpackSound->play();
                         }
                     }
+                }
+                else if (dynamic_cast<Coin *>(element)) {
+                    scene->removeItem(element);
+                    increaseScore(SCORE_COINS);
                 }
             }
         }
