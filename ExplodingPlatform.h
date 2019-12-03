@@ -17,6 +17,7 @@ private:
 
 public slots:
     void exploding();
+    void startTimer();
 };
 
 #endif //DOODLEJUMP_EXPLODINGPLATFORM_H

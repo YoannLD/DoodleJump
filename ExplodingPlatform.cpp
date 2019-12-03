@@ -14,7 +14,11 @@ ExplodingPlatform::ExplodingPlatform(float yMin, float yMax): Platform("explodin
     connect(explodingTimer, &QTimer::timeout, this, &ExplodingPlatform::exploding);
 }
 
-void ExplodingPlatform::lauchExplosing(){
+void ExplodingPlatform::lauchExplosing() {
+    QTimer::singleShot(1000, this, &ExplodingPlatform::startTimer);
+}
+
+void ExplodingPlatform::startTimer(){
     explodingTimer->start(120);
 }
 

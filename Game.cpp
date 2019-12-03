@@ -220,17 +220,17 @@ void Game::start() {
 }
 
 void Game::calculateNumberOfPlatform() {
-    if (m_score < 3000) {
+    if (m_score < 300) {
         dist_min = 0;
         dist_max = 50;
         disappearingPlatformAllow = false;
         explodingPlatformAllow = false;
-    } else if (m_score <= 5000) {
+    } else if (m_score <= 500) {
         dist_min = 10;
         dist_max = 60;
         disappearing_max = 4;
         disappearingPlatformAllow = true;
-    } else if (m_score <= 10000) {
+    } else if (m_score <= 1000) {
         dist_min = 20;
         dist_max = 60;
         disappearing_max = 5;
@@ -328,10 +328,15 @@ void Game::addPlatform() {
     int i = 0;
 
     while(i < jumpablePlatforms.size()){
-        if(auto* platform = dynamic_cast<ExplodingPlatform*>(jumpablePlatforms.at(i)))
-            if(platform->y() - 100 >= player->y()){
+        if(auto* platform = dynamic_cast<ExplodingPlatform*>(jumpablePlatforms.at(i))){
+            auto* plat = dynamic_cast<GameObject*>(jumpablePlatforms.at(i));
+            auto* play = dynamic_cast<GameObject*>(player);
+            if(plat->operator<(play)){
                 platform->lauchExplosing();
             }
+
+        }
+
 
 
         i++;
@@ -506,7 +511,6 @@ void Game::saveScores(QString scores){
 
     }
     else{
-        qDebug() << file.openMode();
         qDebug() << file.error();
         qDebug() << "Could not open the file";
     }

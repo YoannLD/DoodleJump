@@ -5,6 +5,12 @@
 
 class GameObject : public QGraphicsPixmapItem {
 
+public:
+
+    bool operator< (GameObject* a);
+
 };
+
+
 
 #endif //DOODLEJUMP_GAMEOBJECT_H
