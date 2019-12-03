@@ -9,6 +9,7 @@ int main(int argv, char **args) {
 
 
     QApplication app(argv, args);
+    app.setWindowIcon(QIcon(":/favicon.ico"));
 
 
     Game * game = new Game();
