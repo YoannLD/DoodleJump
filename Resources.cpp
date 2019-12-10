@@ -3,8 +3,9 @@
 //
 
 #include <QtGui/QPixmap>
+#include <iostream>
 #include "Resources.h"
-
+using namespace std;
 
 Resources* Resources::m_instance = nullptr;
 
@@ -20,9 +21,17 @@ QPixmap Resources::png(const QString &name) {
     if (find != m_instance->cache.end()) {
         return find->second;
     } else {
-        QPixmap pix(":/images/" + name);
-        m_instance->cache[key] = pix;
-        return pix;
+        try {
+            QPixmap pix;
+            if(!pix.load(":/images/" + name)) {
+                throw QString(name + " n'existe pas !");
+            }
+            m_instance->cache[key] = pix;
+            return pix;
+        }
+        catch(QString e) {
+            cerr << e.toStdString() << endl;
+        }
     }
 
 }

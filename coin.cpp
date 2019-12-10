@@ -12,7 +12,7 @@ Coin::Coin(Platform* platform) : Bonus(platform){
     setZValue(99);
     animationTimer = new QTimer();
     connect(animationTimer, &QTimer::timeout, this, &Coin::animation);
-    animationTimer->start(100);
+    animationTimer->start(50);
 }
 
 Coin::~Coin() {
