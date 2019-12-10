@@ -1,5 +1,5 @@
-#ifndef DOODLEJUMP_PLATFORM_H
-#define DOODLEJUMP_PLATFORM_H
+#ifndef CROCROJUMP_PLATFORM_H
+#define CROCROJUMP_PLATFORM_H
 
 #include "GameObject.h"
 
@@ -13,4 +13,4 @@ private:
 
 };
 
-#endif //DOODLEJUMP_PLATFORM_H
+#endif //CROCROJUMP_PLATFORM_H

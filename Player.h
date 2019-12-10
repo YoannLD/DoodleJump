@@ -1,5 +1,5 @@
-#ifndef DOODLEJUMP_PLAYER_H
-#define DOODLEJUMP_PLAYER_H
+#ifndef CROCROJUMP_PLAYER_H
+#define CROCROJUMP_PLAYER_H
 
 #include "Moving.h"
 #include "consts.h"
@@ -63,4 +63,4 @@ public slots:
     void jetpackFall();
 };
 
-#endif //DOODLEJUMP_PLAYER_H
+#endif //CROCROJUMP_PLAYER_H

@@ -1,7 +1,3 @@
-//
-// Created by Benoît on 21/10/2019.
-//
-
 #include "Game.h"
 #include "Player.h"
 #include "BasicPlatform.h"
@@ -227,17 +223,17 @@ void Game::start() {
 }
 
 void Game::calculateNumberOfPlatform() {
-    if (m_score < 300) {
+    if (m_score < 3000) {
         dist_min = 0;
         dist_max = 50;
         disappearingPlatformAllow = false;
         explodingPlatformAllow = false;
-    } else if (m_score <= 500) {
+    } else if (m_score <= 5000) {
         dist_min = 10;
         dist_max = 60;
         disappearing_max = 4;
         disappearingPlatformAllow = true;
-    } else if (m_score <= 1000) {
+    } else if (m_score <= 10000) {
         dist_min = 20;
         dist_max = 60;
         disappearing_max = 5;
@@ -339,7 +335,7 @@ void Game::addPlatform() {
             auto* plat = dynamic_cast<GameObject*>(jumpablePlatforms.at(i));
             auto* play = dynamic_cast<GameObject*>(player);
             if(plat->operator<(play)){
-                platform->lauchExplosing();
+                platform->launchExplosing();
             }
 
         }

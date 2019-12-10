@@ -2,8 +2,8 @@
 // Created by Benoît on 21/10/2019.
 //
 
-#ifndef DOODLEJUMP_GAME_H
-#define DOODLEJUMP_GAME_H
+#ifndef CROCROJUMP_GAME_H
+#define CROCROJUMP_GAME_H
 
 #include <QGraphicsView>
 #include "Platform.h"
@@ -104,4 +104,4 @@ private slots:
     std::list<int> getHighScore();
 };
 
-#endif //DOODLEJUMP_GAME_H
+#endif //CROCROJUMP_GAME_H

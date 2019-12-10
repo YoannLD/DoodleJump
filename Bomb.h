@@ -1,5 +1,5 @@
-#ifndef DOODLEJUMP_BOMB_H
-#define DOODLEJUMP_BOMB_H
+#ifndef CROCROJUMP_BOMB_H
+#define CROCROJUMP_BOMB_H
 
 #include "Hurts.h"
 
@@ -7,4 +7,4 @@ class Bomb : public Hurts {
 
 };
 
-#endif //DOODLEJUMP_BOMB_H
+#endif //CROCROJUMP_BOMB_H

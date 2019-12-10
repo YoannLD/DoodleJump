@@ -1,5 +1,5 @@
-#ifndef DOODLEJUMP_MOVING_H
-#define DOODLEJUMP_MOVING_H
+#ifndef CROCROJUMP_MOVING_H
+#define CROCROJUMP_MOVING_H
 
 #include "GameObject.h"
 
@@ -10,4 +10,4 @@ public:
     }
 };
 
-#endif //DOODLEJUMP_MOVING_H
+#endif //CROCROJUMP_MOVING_H
