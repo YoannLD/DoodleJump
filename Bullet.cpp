@@ -16,3 +16,6 @@ Bullet::Bullet(QTimer* timer) {
 void Bullet::move(){
     setY(y()-3);
 }
+
+void Bullet::moveRight() {};
+void Bullet::moveLeft() {};

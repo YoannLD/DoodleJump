@@ -2,7 +2,6 @@
     <qresource prefix="/">
         <file>favicon.ico</file>
         <file>images/background.png</file>
-        <file>images/background2.png</file>
         <file>images/habillage.png</file>
         <file>images/menu.png</file>
         <file>images/basicPlatform.png</file>

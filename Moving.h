@@ -3,11 +3,17 @@
 
 #include "GameObject.h"
 
+/*!
+ * Class Moving.
+ * This class manage the moving object of the game.
+ * @author Yoann Le Dréan
+ * @author Benoît Martel
+ */
 class Moving : public GameObject {
 public:
-    virtual void updatePosition(float deltaTime){
-        (void) &deltaTime;
-    }
+
+    virtual void moveLeft() = 0;
+    virtual void moveRight() = 0;
 };
 
 #endif //CROCROJUMP_MOVING_H

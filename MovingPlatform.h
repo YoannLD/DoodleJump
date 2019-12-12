@@ -18,6 +18,9 @@ private:
     direction state;
     QList<GameObject*> associatedItems;
 
+    void moveLeft();
+    void moveRight();
+
 public slots:
     void move();
 };

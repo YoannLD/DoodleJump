@@ -38,7 +38,7 @@ Game::Game() {
     // ------------- SCENE DE JEU
     scene = new QGraphicsScene(this);
     scene->setSceneRect(0, 0, WINDOW_WIDTH, WINDOW_HEIGHT);
-    scene->setBackgroundBrush(QBrush(QPixmap(QString(":/images/background2.png"))));
+    scene->setBackgroundBrush(QBrush(QPixmap(QString(":/images/background.png"))));
 
     auto* hab = new QGraphicsPixmapItem();
     hab->setPixmap(Resources::png("habillage.png"));

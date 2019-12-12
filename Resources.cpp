@@ -1,6 +1,7 @@
 #include <QtGui/QPixmap>
 #include <iostream>
 #include "Resources.h"
+
 using namespace std;
 
 Resources* Resources::m_instance = nullptr;

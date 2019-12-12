@@ -18,6 +18,10 @@ public:
      * @param timer that triggers the bullet movement
      */
     Bullet(QTimer* timer);
+
+private:
+    void moveLeft();
+    void moveRight();
 public slots:
 
     /**
