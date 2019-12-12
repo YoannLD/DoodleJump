@@ -12,7 +12,14 @@
 class Moving : public GameObject {
 public:
 
+    /*!
+     * Method that moves an object to the left.
+     */
     virtual void moveLeft() = 0;
+
+    /*!
+     * Method that moves an object to the right.
+     */
     virtual void moveRight() = 0;
 };
 
