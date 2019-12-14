@@ -28,6 +28,14 @@ public:
      */
     Platform(const QString& path, float yMin, float yMax);
 
+    /*!
+     * Method which allows to generate a random between two digits passed in parameter.
+     * @param a the first parameter.
+     * @param b the second parameter.
+     * @return the random number
+     */
+    double frand_a_b(float a, float b);
+
 };
 
 #endif //CROCROJUMP_PLATFORM_H

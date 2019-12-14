@@ -1,0 +1,85 @@
+\hypertarget{class_platform}{}\doxysection{Platform Class Reference}
+\label{class_platform}\index{Platform@{Platform}}
+
+
+{\ttfamily \#include $<$Platform.\+h$>$}
+
+
+
+Inheritance diagram for Platform\+:
+% FIG 0
+
+
+Collaboration diagram for Platform\+:
+% FIG 1
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{class_platform_a85164cada518caca2cdf089944436635}{Platform}} (const Q\+String \&path)
+\item 
+\mbox{\hyperlink{class_platform_a1b8558fab584b43031ac67f4fd5392eb}{Platform}} (const Q\+String \&path, float y\+Min, float y\+Max)
+\item 
+double \mbox{\hyperlink{class_platform_aa8632172de8f96d6eeec3d15aece8f95}{frand\+\_\+a\+\_\+b}} (float a, float b)
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+\mbox{\hyperlink{class_platform}{Platform}} class. This class is used to create a platform based on the type of platform requested. \begin{DoxyAuthor}{Author}
+Yoann Le Dréan 
+
+Benoît Martel 
+\end{DoxyAuthor}
+
+
+\doxysubsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{class_platform_a85164cada518caca2cdf089944436635}\label{class_platform_a85164cada518caca2cdf089944436635}} 
+\index{Platform@{Platform}!Platform@{Platform}}
+\index{Platform@{Platform}!Platform@{Platform}}
+\doxysubsubsection{\texorpdfstring{Platform()}{Platform()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily Platform\+::\+Platform (\begin{DoxyParamCaption}\item[{const Q\+String \&}]{path }\end{DoxyParamCaption})}
+
+Create a platform with the path of the image. That of the desired platform. 
+\begin{DoxyParams}{Parameters}
+{\em path} & the path of the platform image \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{class_platform_a1b8558fab584b43031ac67f4fd5392eb}\label{class_platform_a1b8558fab584b43031ac67f4fd5392eb}} 
+\index{Platform@{Platform}!Platform@{Platform}}
+\index{Platform@{Platform}!Platform@{Platform}}
+\doxysubsubsection{\texorpdfstring{Platform()}{Platform()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily Platform\+::\+Platform (\begin{DoxyParamCaption}\item[{const Q\+String \&}]{path,  }\item[{float}]{y\+Min,  }\item[{float}]{y\+Max }\end{DoxyParamCaption})}
+
+Create a platform by specifying the limits within which it must be in the scene. The position of the platform is random. 
+\begin{DoxyParams}{Parameters}
+{\em path} & the path of the platform image \\
+\hline
+{\em y\+Min} & the y min position of the platform \\
+\hline
+{\em y\+Max} & the y max position of the platform. \\
+\hline
+\end{DoxyParams}
+
+
+\doxysubsection{Member Function Documentation}
+\mbox{\Hypertarget{class_platform_aa8632172de8f96d6eeec3d15aece8f95}\label{class_platform_aa8632172de8f96d6eeec3d15aece8f95}} 
+\index{Platform@{Platform}!frand\_a\_b@{frand\_a\_b}}
+\index{frand\_a\_b@{frand\_a\_b}!Platform@{Platform}}
+\doxysubsubsection{\texorpdfstring{frand\_a\_b()}{frand\_a\_b()}}
+{\footnotesize\ttfamily double Platform\+::frand\+\_\+a\+\_\+b (\begin{DoxyParamCaption}\item[{float}]{a,  }\item[{float}]{b }\end{DoxyParamCaption})}
+
+Method which allows to generate a random between two digits passed in parameter. 
+\begin{DoxyParams}{Parameters}
+{\em a} & the first parameter. \\
+\hline
+{\em b} & the second parameter. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+the random number 
+\end{DoxyReturn}
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+D\+:/\+Benoit/\+Documents/\+Dropbox/\+E\+N\+S\+I\+B\+S\+\_\+1/\+S\+E\+M\+E\+S\+T\+R\+E\+\_\+3/\+C++/\+Doodle\+Jump/Platform.\+h\item 
+D\+:/\+Benoit/\+Documents/\+Dropbox/\+E\+N\+S\+I\+B\+S\+\_\+1/\+S\+E\+M\+E\+S\+T\+R\+E\+\_\+3/\+C++/\+Doodle\+Jump/Platform.\+cpp\end{DoxyCompactItemize}

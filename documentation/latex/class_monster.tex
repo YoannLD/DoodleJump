@@ -1,0 +1,85 @@
+\hypertarget{class_monster}{}\doxysection{Monster Class Reference}
+\label{class_monster}\index{Monster@{Monster}}
+
+
+{\ttfamily \#include $<$Monster.\+h$>$}
+
+
+
+Inheritance diagram for Monster\+:
+% FIG 0
+
+
+Collaboration diagram for Monster\+:
+% FIG 1
+\doxysubsection*{Public Slots}
+\begin{DoxyCompactItemize}
+\item 
+void \mbox{\hyperlink{class_monster_a4912b84063a6017a0d9b2f2ca7ed3421}{animation}} ()
+\end{DoxyCompactItemize}
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{class_monster_aa7e50c3274f74217b1cd8a0625c095cf}{Monster}} (\mbox{\hyperlink{class_platform}{Platform}} $\ast$p)
+\item 
+\mbox{\hyperlink{class_monster_a21619ba1759b910cd2fd50d858aab338}{$\sim$\+Monster}} ()
+\item 
+void \mbox{\hyperlink{class_monster_a1c16df0d2452cbeb7ad6cd9139cc3a96}{kill}} ()
+\item 
+void \mbox{\hyperlink{class_monster_a54604055078d976a479750f7a225c8d9}{launch\+Kill}} ()
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Class monster. This class creates a monster object. This monster is on a platform. To kill him we can use the bullets or jump on his head. \begin{DoxyAuthor}{Author}
+Yoann Le Dréan 
+
+Benoît Martel 
+\end{DoxyAuthor}
+
+
+\doxysubsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{class_monster_aa7e50c3274f74217b1cd8a0625c095cf}\label{class_monster_aa7e50c3274f74217b1cd8a0625c095cf}} 
+\index{Monster@{Monster}!Monster@{Monster}}
+\index{Monster@{Monster}!Monster@{Monster}}
+\doxysubsubsection{\texorpdfstring{Monster()}{Monster()}}
+{\footnotesize\ttfamily Monster\+::\+Monster (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{class_platform}{Platform}} $\ast$}]{p }\end{DoxyParamCaption})}
+
+Constructor of the monster class. 
+\begin{DoxyParams}{Parameters}
+{\em p} & the platform on which the monster is linked \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{class_monster_a21619ba1759b910cd2fd50d858aab338}\label{class_monster_a21619ba1759b910cd2fd50d858aab338}} 
+\index{Monster@{Monster}!````~Monster@{$\sim$Monster}}
+\index{````~Monster@{$\sim$Monster}!Monster@{Monster}}
+\doxysubsubsection{\texorpdfstring{$\sim$Monster()}{~Monster()}}
+{\footnotesize\ttfamily Monster\+::$\sim$\+Monster (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+Destructor. Also delete the two timers corresponding to his animation and his death. 
+
+\doxysubsection{Member Function Documentation}
+\mbox{\Hypertarget{class_monster_a4912b84063a6017a0d9b2f2ca7ed3421}\label{class_monster_a4912b84063a6017a0d9b2f2ca7ed3421}} 
+\index{Monster@{Monster}!animation@{animation}}
+\index{animation@{animation}!Monster@{Monster}}
+\doxysubsubsection{\texorpdfstring{animation}{animation}}
+{\footnotesize\ttfamily void Monster\+::animation (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [slot]}}
+
+Method to change the image of the monster to have an animation. \mbox{\Hypertarget{class_monster_a1c16df0d2452cbeb7ad6cd9139cc3a96}\label{class_monster_a1c16df0d2452cbeb7ad6cd9139cc3a96}} 
+\index{Monster@{Monster}!kill@{kill}}
+\index{kill@{kill}!Monster@{Monster}}
+\doxysubsubsection{\texorpdfstring{kill()}{kill()}}
+{\footnotesize\ttfamily void Monster\+::kill (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+Method that has each call made the monster go down (it dies). \mbox{\Hypertarget{class_monster_a54604055078d976a479750f7a225c8d9}\label{class_monster_a54604055078d976a479750f7a225c8d9}} 
+\index{Monster@{Monster}!launchKill@{launchKill}}
+\index{launchKill@{launchKill}!Monster@{Monster}}
+\doxysubsubsection{\texorpdfstring{launchKill()}{launchKill()}}
+{\footnotesize\ttfamily void Monster\+::launch\+Kill (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+Method to launch the timer that animates the death of the monster. 
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+D\+:/\+Benoit/\+Documents/\+Dropbox/\+E\+N\+S\+I\+B\+S\+\_\+1/\+S\+E\+M\+E\+S\+T\+R\+E\+\_\+3/\+C++/\+Doodle\+Jump/Monster.\+h\item 
+D\+:/\+Benoit/\+Documents/\+Dropbox/\+E\+N\+S\+I\+B\+S\+\_\+1/\+S\+E\+M\+E\+S\+T\+R\+E\+\_\+3/\+C++/\+Doodle\+Jump/Monster.\+cpp\end{DoxyCompactItemize}

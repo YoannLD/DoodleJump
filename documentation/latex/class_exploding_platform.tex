@@ -1,0 +1,95 @@
+\hypertarget{class_exploding_platform}{}\doxysection{Exploding\+Platform Class Reference}
+\label{class_exploding_platform}\index{ExplodingPlatform@{ExplodingPlatform}}
+
+
+{\ttfamily \#include $<$Exploding\+Platform.\+h$>$}
+
+
+
+Inheritance diagram for Exploding\+Platform\+:
+% FIG 0
+
+
+Collaboration diagram for Exploding\+Platform\+:
+% FIG 1
+\doxysubsection*{Public Slots}
+\begin{DoxyCompactItemize}
+\item 
+void \mbox{\hyperlink{class_exploding_platform_a276b6d0cbaa72de30908357bbbf82a48}{exploding}} ()
+\item 
+void \mbox{\hyperlink{class_exploding_platform_a31c869743b3896d27acb386552a43319}{start\+Timer}} ()
+\end{DoxyCompactItemize}
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{class_exploding_platform_a28860f2f9d2eaa82845c33d21d2a219b}{Exploding\+Platform}} ()
+\item 
+\mbox{\hyperlink{class_exploding_platform_a23f860da60e4d53a36b2f9296b789457}{Exploding\+Platform}} (float y\+Min, float y\+Max)
+\item 
+void \mbox{\hyperlink{class_exploding_platform_afa2d31f872413c9cbaf0f533c204bf93}{launch\+Explosing}} ()
+\item 
+\mbox{\hyperlink{class_exploding_platform_aa7a57c503ca4b44f9f2a406073d3a7e6}{$\sim$\+Exploding\+Platform}} ()
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Class \mbox{\hyperlink{class_exploding_platform}{Exploding\+Platform}}. Manage exploding platforms. \mbox{\hyperlink{class_exploding_platform}{Exploding\+Platform}} is a subclass of \mbox{\hyperlink{class_platform}{Platform}}. This platform explodes after going over. This platform is yellow then red and then black \begin{DoxyAuthor}{Author}
+Yoann Le Dréan 
+
+Benoît Martel 
+\end{DoxyAuthor}
+
+
+\doxysubsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{class_exploding_platform_a28860f2f9d2eaa82845c33d21d2a219b}\label{class_exploding_platform_a28860f2f9d2eaa82845c33d21d2a219b}} 
+\index{ExplodingPlatform@{ExplodingPlatform}!ExplodingPlatform@{ExplodingPlatform}}
+\index{ExplodingPlatform@{ExplodingPlatform}!ExplodingPlatform@{ExplodingPlatform}}
+\doxysubsubsection{\texorpdfstring{ExplodingPlatform()}{ExplodingPlatform()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily Exploding\+Platform\+::\+Exploding\+Platform (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+Constructor of the \mbox{\hyperlink{class_exploding_platform}{Exploding\+Platform}} class. Create a exploding platform which explodes after going over. We call the super platform builder to create the platform. \mbox{\Hypertarget{class_exploding_platform_a23f860da60e4d53a36b2f9296b789457}\label{class_exploding_platform_a23f860da60e4d53a36b2f9296b789457}} 
+\index{ExplodingPlatform@{ExplodingPlatform}!ExplodingPlatform@{ExplodingPlatform}}
+\index{ExplodingPlatform@{ExplodingPlatform}!ExplodingPlatform@{ExplodingPlatform}}
+\doxysubsubsection{\texorpdfstring{ExplodingPlatform()}{ExplodingPlatform()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily Exploding\+Platform\+::\+Exploding\+Platform (\begin{DoxyParamCaption}\item[{float}]{y\+Min,  }\item[{float}]{y\+Max }\end{DoxyParamCaption})}
+
+Constructor of the \mbox{\hyperlink{class_exploding_platform}{Exploding\+Platform}} class. Create a exploding platform which explodes after going over. We call the super platform builder to create the platform. 
+\begin{DoxyParams}{Parameters}
+{\em y\+Min} & the minimum y position to which the platform should be positioned. \\
+\hline
+{\em y\+Max} & the minimum y position to which the platform should be positioned. \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{class_exploding_platform_aa7a57c503ca4b44f9f2a406073d3a7e6}\label{class_exploding_platform_aa7a57c503ca4b44f9f2a406073d3a7e6}} 
+\index{ExplodingPlatform@{ExplodingPlatform}!````~ExplodingPlatform@{$\sim$ExplodingPlatform}}
+\index{````~ExplodingPlatform@{$\sim$ExplodingPlatform}!ExplodingPlatform@{ExplodingPlatform}}
+\doxysubsubsection{\texorpdfstring{$\sim$ExplodingPlatform()}{~ExplodingPlatform()}}
+{\footnotesize\ttfamily Exploding\+Platform\+::$\sim$\+Exploding\+Platform (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+Destructor of the \mbox{\hyperlink{class_exploding_platform}{Exploding\+Platform}} class. It also removes the timer used to explode the platform. 
+
+\doxysubsection{Member Function Documentation}
+\mbox{\Hypertarget{class_exploding_platform_a276b6d0cbaa72de30908357bbbf82a48}\label{class_exploding_platform_a276b6d0cbaa72de30908357bbbf82a48}} 
+\index{ExplodingPlatform@{ExplodingPlatform}!exploding@{exploding}}
+\index{exploding@{exploding}!ExplodingPlatform@{ExplodingPlatform}}
+\doxysubsubsection{\texorpdfstring{exploding}{exploding}}
+{\footnotesize\ttfamily void Exploding\+Platform\+::exploding (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [slot]}}
+
+Method to change the image of the exploding platform to have an animation. \mbox{\Hypertarget{class_exploding_platform_afa2d31f872413c9cbaf0f533c204bf93}\label{class_exploding_platform_afa2d31f872413c9cbaf0f533c204bf93}} 
+\index{ExplodingPlatform@{ExplodingPlatform}!launchExplosing@{launchExplosing}}
+\index{launchExplosing@{launchExplosing}!ExplodingPlatform@{ExplodingPlatform}}
+\doxysubsubsection{\texorpdfstring{launchExplosing()}{launchExplosing()}}
+{\footnotesize\ttfamily void Exploding\+Platform\+::launch\+Explosing (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+Method that starts the timer that will start the timer with delay to explode the platform. \mbox{\Hypertarget{class_exploding_platform_a31c869743b3896d27acb386552a43319}\label{class_exploding_platform_a31c869743b3896d27acb386552a43319}} 
+\index{ExplodingPlatform@{ExplodingPlatform}!startTimer@{startTimer}}
+\index{startTimer@{startTimer}!ExplodingPlatform@{ExplodingPlatform}}
+\doxysubsubsection{\texorpdfstring{startTimer}{startTimer}}
+{\footnotesize\ttfamily void Exploding\+Platform\+::start\+Timer (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [slot]}}
+
+Method that starts the timer that will explode the platform. 
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+D\+:/\+Benoit/\+Documents/\+Dropbox/\+E\+N\+S\+I\+B\+S\+\_\+1/\+S\+E\+M\+E\+S\+T\+R\+E\+\_\+3/\+C++/\+Doodle\+Jump/Exploding\+Platform.\+h\item 
+D\+:/\+Benoit/\+Documents/\+Dropbox/\+E\+N\+S\+I\+B\+S\+\_\+1/\+S\+E\+M\+E\+S\+T\+R\+E\+\_\+3/\+C++/\+Doodle\+Jump/Exploding\+Platform.\+cpp\end{DoxyCompactItemize}

@@ -1,0 +1,87 @@
+\hypertarget{class_breaking_platform}{}\doxysection{Breaking\+Platform Class Reference}
+\label{class_breaking_platform}\index{BreakingPlatform@{BreakingPlatform}}
+
+
+{\ttfamily \#include $<$Breaking\+Platform.\+h$>$}
+
+
+
+Inheritance diagram for Breaking\+Platform\+:
+% FIG 0
+
+
+Collaboration diagram for Breaking\+Platform\+:
+% FIG 1
+\doxysubsection*{Public Slots}
+\begin{DoxyCompactItemize}
+\item 
+void \mbox{\hyperlink{class_breaking_platform_af22b8d8f32e632ef4cb60718a49d265e}{breaking}} ()
+\end{DoxyCompactItemize}
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{class_breaking_platform_a957de97b95fc57bf743c94ba956593f0}{Breaking\+Platform}} ()
+\item 
+\mbox{\hyperlink{class_breaking_platform_a190de60056c0dcd5327b1dcd74c7b84e}{Breaking\+Platform}} (float minY, float maxY)
+\item 
+\mbox{\hyperlink{class_breaking_platform_a144a43d45d21e92cac856ccef8b8a1d5}{$\sim$\+Breaking\+Platform}} ()
+\item 
+void \mbox{\hyperlink{class_breaking_platform_a0a2491cb93d0e2e87e66b7f2079edd0e}{launch\+Break}} ()
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Class \mbox{\hyperlink{class_breaking_platform}{Breaking\+Platform}}. Manage breaking platforms. \mbox{\hyperlink{class_breaking_platform}{Breaking\+Platform}} is a subclass of \mbox{\hyperlink{class_platform}{Platform}}. \begin{DoxyAuthor}{Author}
+Yoann Le Dréan 
+
+Benoît Martel 
+\end{DoxyAuthor}
+
+
+\doxysubsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{class_breaking_platform_a957de97b95fc57bf743c94ba956593f0}\label{class_breaking_platform_a957de97b95fc57bf743c94ba956593f0}} 
+\index{BreakingPlatform@{BreakingPlatform}!BreakingPlatform@{BreakingPlatform}}
+\index{BreakingPlatform@{BreakingPlatform}!BreakingPlatform@{BreakingPlatform}}
+\doxysubsubsection{\texorpdfstring{BreakingPlatform()}{BreakingPlatform()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily Breaking\+Platform\+::\+Breaking\+Platform (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+Constructor of the \mbox{\hyperlink{class_breaking_platform}{Breaking\+Platform}} class. Create a breaking platform which breaks as soon as we jump on it. We call the super platform builder to create the platform. \mbox{\Hypertarget{class_breaking_platform_a190de60056c0dcd5327b1dcd74c7b84e}\label{class_breaking_platform_a190de60056c0dcd5327b1dcd74c7b84e}} 
+\index{BreakingPlatform@{BreakingPlatform}!BreakingPlatform@{BreakingPlatform}}
+\index{BreakingPlatform@{BreakingPlatform}!BreakingPlatform@{BreakingPlatform}}
+\doxysubsubsection{\texorpdfstring{BreakingPlatform()}{BreakingPlatform()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily Breaking\+Platform\+::\+Breaking\+Platform (\begin{DoxyParamCaption}\item[{float}]{minY,  }\item[{float}]{maxY }\end{DoxyParamCaption})}
+
+Constructor of the \mbox{\hyperlink{class_breaking_platform}{Breaking\+Platform}} class. Create a breaking platform which breaks as soon as we jump on it. We call the super platform builder to create the platform. 
+\begin{DoxyParams}{Parameters}
+{\em minY} & the minimum y position to which the platform should be positioned. \\
+\hline
+{\em maxY} & the maximum y position to which the platform should be positioned. \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{class_breaking_platform_a144a43d45d21e92cac856ccef8b8a1d5}\label{class_breaking_platform_a144a43d45d21e92cac856ccef8b8a1d5}} 
+\index{BreakingPlatform@{BreakingPlatform}!````~BreakingPlatform@{$\sim$BreakingPlatform}}
+\index{````~BreakingPlatform@{$\sim$BreakingPlatform}!BreakingPlatform@{BreakingPlatform}}
+\doxysubsubsection{\texorpdfstring{$\sim$BreakingPlatform()}{~BreakingPlatform()}}
+{\footnotesize\ttfamily Breaking\+Platform\+::$\sim$\+Breaking\+Platform (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+The destructor. 
+
+\doxysubsection{Member Function Documentation}
+\mbox{\Hypertarget{class_breaking_platform_af22b8d8f32e632ef4cb60718a49d265e}\label{class_breaking_platform_af22b8d8f32e632ef4cb60718a49d265e}} 
+\index{BreakingPlatform@{BreakingPlatform}!breaking@{breaking}}
+\index{breaking@{breaking}!BreakingPlatform@{BreakingPlatform}}
+\doxysubsubsection{\texorpdfstring{breaking}{breaking}}
+{\footnotesize\ttfamily void Breaking\+Platform\+::breaking (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [slot]}}
+
+Method that is called at each timer ticks to break the platform. \mbox{\Hypertarget{class_breaking_platform_a0a2491cb93d0e2e87e66b7f2079edd0e}\label{class_breaking_platform_a0a2491cb93d0e2e87e66b7f2079edd0e}} 
+\index{BreakingPlatform@{BreakingPlatform}!launchBreak@{launchBreak}}
+\index{launchBreak@{launchBreak}!BreakingPlatform@{BreakingPlatform}}
+\doxysubsubsection{\texorpdfstring{launchBreak()}{launchBreak()}}
+{\footnotesize\ttfamily void Breaking\+Platform\+::launch\+Break (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+Method that starts the timer that will break the platform. 
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+D\+:/\+Benoit/\+Documents/\+Dropbox/\+E\+N\+S\+I\+B\+S\+\_\+1/\+S\+E\+M\+E\+S\+T\+R\+E\+\_\+3/\+C++/\+Doodle\+Jump/Breaking\+Platform.\+h\item 
+D\+:/\+Benoit/\+Documents/\+Dropbox/\+E\+N\+S\+I\+B\+S\+\_\+1/\+S\+E\+M\+E\+S\+T\+R\+E\+\_\+3/\+C++/\+Doodle\+Jump/Breaking\+Platform.\+cpp\end{DoxyCompactItemize}
