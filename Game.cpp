@@ -25,6 +25,7 @@
 #include <functional>
 #include <list>
 #include <QRandomGenerator>
+#include <QtGui/QFontDatabase>
 
 
 Game::Game() {
@@ -76,7 +77,7 @@ Game::Game() {
 
     delete menuPixmap;
 
-
+    QFontDatabase::addApplicationFont(":/fonts/al-seana.ttf");
 
     // --------- Setting up sound effects -------------
     fallSound = new QMediaPlayer();
@@ -87,6 +88,7 @@ Game::Game() {
     jetpackSound = new QMediaPlayer();
     jumpOnMonsterSound = new QMediaPlayer();
     shootMonsterSound = new QMediaPlayer();
+
     shootMonsterSound->setMedia(QUrl("qrc:/sounds/killMonster.mp3"));
     jumpOnMonsterSound->setMedia(QUrl("qrc:/sounds/jumpMonster.mp3"));
     jetpackSound->setMedia(QUrl("qrc:/sounds/jetpack.mp3"));
@@ -129,14 +131,14 @@ void Game::menu() {
     buttonPlay->setGeometry(WINDOW_WIDTH/2-weight/2,280,weight,50);
     buttonPlay->isFlat();
     buttonPlay->setObjectName("playButton");
-    buttonPlay->setFont(QFont("DoodleJump",45,QFont::Bold));
+    buttonPlay->setFont(QFont("Al-seana",45,QFont::Bold));
     buttonPlay->setStyleSheet("QPushButton {background-color: transparent; color = black} QPushButton#playButton:hover {color: #a41101}");
 
     buttonQuit = new QPushButton("Quitter", this);
     buttonQuit->setGeometry(WINDOW_WIDTH/2-weight/2,400,weight,50);
     buttonQuit->isFlat();
     buttonQuit->setObjectName("buttonQuit");
-    buttonQuit->setFont(QFont("DoodleJump",45,QFont::Bold));
+    buttonQuit->setFont(QFont("Al-seana",45,QFont::Bold));
     buttonQuit->setStyleSheet("QPushButton {background-color: transparent; color = black} QPushButton#buttonQuit:hover {color: #a41101}");
 
     buttonPlay->setVisible(true);
@@ -166,8 +168,8 @@ void Game::highscores() {
     Game::saveScores(temp);
 
 
-    tableHighScore->setFont(QFont("DoodleJump",40,QFont::Bold));
-    tableHighScore->setPos(570,245);
+    tableHighScore->setFont(QFont("Al-seana",40,QFont::Bold));
+    tableHighScore->setPos(580,245);
     tableHighScore->setPlainText(temp);
 
 
@@ -177,17 +179,17 @@ void Game::highscores() {
 
     buttonPlay = new QPushButton("Recommencer", this);
 
-    buttonPlay->setGeometry(550,550,200,40);
+    buttonPlay->setGeometry(550,550,200,45);
     buttonPlay->isFlat();
     buttonPlay->setObjectName("playButton");
-    buttonPlay->setFont(QFont("DoodleJump",30,QFont::Bold));
+    buttonPlay->setFont(QFont("Al-seana",25,QFont::Bold));
     buttonPlay->setStyleSheet("QPushButton {background-color: transparent; color = black} QPushButton#playButton:hover {color: #a41101}");
 
     buttonQuit = new QPushButton("Quitter", this);
-    buttonQuit->setGeometry(445,630,120,40);
+    buttonQuit->setGeometry(445,630,120,45);
     buttonQuit->isFlat();
     buttonQuit->setObjectName("buttonQuit");
-    buttonQuit->setFont(QFont("DoodleJump",30,QFont::Bold));
+    buttonQuit->setFont(QFont("Al-seana",25,QFont::Bold));
     buttonQuit->setStyleSheet("QPushButton {background-color: transparent; color = black} QPushButton#buttonQuit:hover {color: #a41101}");
 
     buttonPlay->setVisible(true);
@@ -207,8 +209,8 @@ void Game::start() {
 
     m_score = 0;
     m_lost = false;
-    text = scene->addText(QString::number(m_score), QFont("DoodleJump",40,QFont::Bold));
-    text->setPos(100, 47);
+    text = scene->addText(QString::number(m_score), QFont("Al-seana",30,QFont::Bold));
+    text->setPos(100, 60);
     text->setZValue(200);
     isScrolling = false;
 

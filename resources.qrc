@@ -57,5 +57,6 @@
         <file>sounds/killMonster.mp3</file>
         <file>sounds/shoot.mp3</file>
         <file>sounds/break.mp3</file>
+        <file>fonts/al-seana.ttf</file>
     </qresource>
 </RCC>
