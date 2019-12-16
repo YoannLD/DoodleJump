@@ -4,7 +4,7 @@
 ## Installation 
 
 Pour installer Crocro Jump sur votre ordinateur il est nécessaire de posséder un système d'exploitation Windows.
-Puis une cliquer sur l'installateur fournis. 
+Puis cliquer sur l'installateur fourni. 
 
 ## Compilation 
 
@@ -18,7 +18,7 @@ Pour compiler le code source vous devez posséder l'outil qt creator ainsi que l
 
 ## Documentation
 
-La documentation, du code a été générée et se trouve dans le dossier "doc".
+La documentation du code a été générée et se trouve dans le dossier "doc".
 
 ## Trailer 
 
