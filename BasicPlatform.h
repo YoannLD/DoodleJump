@@ -21,8 +21,8 @@ public:
     /*!
      * Constructor of the BasicPlatform class.
      * Create a basic (green) platform that has no properties. We call the super platform builder to create the platform.
-     * @param yMin the minimum y position to which the platform should be positioned.
-     * @param yMax the maximum y position to which the platform should be positioned.
+     * @param minY the minimum y position to which the platform should be positioned.
+     * @param maxY the maximum y position to which the platform should be positioned.
      */
     BasicPlatform(float minY, float maxY);
 };
