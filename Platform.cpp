@@ -33,4 +33,3 @@ Platform::Platform(const QString& path, float yMin, float yMax) : Platform(path)
 double Platform::frand_a_b(float a, float b){
     return ( rand()/(double)RAND_MAX) * (b-a) + a;
 }
-

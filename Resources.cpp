@@ -1,10 +1,7 @@
-//
-// Created by Benoît on 26/11/2019.
-//
-
 #include <QtGui/QPixmap>
 #include <iostream>
 #include "Resources.h"
+
 using namespace std;
 
 Resources* Resources::m_instance = nullptr;

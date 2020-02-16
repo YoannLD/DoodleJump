@@ -1,9 +1,5 @@
-//
-// Created by Benoît on 21/10/2019.
-//
-
-#ifndef DOODLEJUMP_CONSTS_H
-#define DOODLEJUMP_CONSTS_H
+#ifndef CROCROJUMP_CONSTS_H
+#define CROCROJUMP_CONSTS_H
 
 #include <QPixmap>
 
@@ -31,4 +27,4 @@ static const int JETPACK_LAYOUT = 9;
 static const int DOODLE_LAYOUT = 8;
 static const int SCORE_COINS = 100;
 
-#endif //DOODLEJUMP_CONSTS_H
+#endif //CROCROJUMP_CONSTS_H

@@ -1,5 +1,5 @@
-#ifndef DOODLEJUMP_MOVINGPLATFORM_H
-#define DOODLEJUMP_MOVINGPLATFORM_H
+#ifndef CROCROJUMP_MOVINGPLATFORM_H
+#define CROCROJUMP_MOVINGPLATFORM_H
 
 #include "Platform.h"
 #include "Moving.h"
@@ -18,8 +18,11 @@ private:
     direction state;
     QList<GameObject*> associatedItems;
 
+    void moveLeft();
+    void moveRight();
+
 public slots:
     void move();
 };
 
-#endif //DOODLEJUMP_MOVINGPLATFORM_H
+#endif //CROCROJUMP_MOVINGPLATFORM_H

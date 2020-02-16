@@ -1,7 +1,3 @@
-//
-// Created by Yoann on 03/12/2019.
-//
-
 #include "coin.h"
 #include "Resources.h"
 #include <QDebug>

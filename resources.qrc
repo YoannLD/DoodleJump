@@ -2,7 +2,6 @@
     <qresource prefix="/">
         <file>favicon.ico</file>
         <file>images/background.png</file>
-        <file>images/background2.png</file>
         <file>images/habillage.png</file>
         <file>images/menuG.png</file>
         <file>images/basicPlatform.png</file>
@@ -61,5 +60,6 @@
         <file>sounds/killMonster.mp3</file>
         <file>sounds/shoot.mp3</file>
         <file>sounds/break.mp3</file>
+        <file>fonts/al-seana.ttf</file>
     </qresource>
 </RCC>

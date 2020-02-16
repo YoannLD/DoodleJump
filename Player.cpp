@@ -3,7 +3,6 @@
 #include "consts.h"
 #include "Resources.h"
 #include <QGraphicsScene>
-#include <QDebug>
 #include <QKeyEvent>
 #include <QTimer>
 #include <QApplication>

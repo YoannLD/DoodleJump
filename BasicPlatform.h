@@ -1,5 +1,5 @@
-#ifndef DOODLEJUMP_BASICPLATFORM_H
-#define DOODLEJUMP_BASICPLATFORM_H
+#ifndef CROCROJUMP_BASICPLATFORM_H
+#define CROCROJUMP_BASICPLATFORM_H
 
 #include "Platform.h"
 
@@ -21,11 +21,11 @@ public:
     /*!
      * Constructor of the BasicPlatform class.
      * Create a basic (green) platform that has no properties. We call the super platform builder to create the platform.
-     * @param yMin the minimum y position to which the platform should be positioned.
-     * @param yMax the maximum y position to which the platform should be positioned.
+     * @param minY the minimum y position to which the platform should be positioned.
+     * @param maxY the maximum y position to which the platform should be positioned.
      */
     BasicPlatform(float minY, float maxY);
 };
 
 
-#endif //DOODLEJUMP_BASICPLATFORM_H
+#endif //CROCROJUMP_BASICPLATFORM_H

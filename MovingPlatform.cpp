@@ -38,37 +38,42 @@ MovingPlatform::MovingPlatform(float yMin, float yMax) : Platform("movingPlatfor
 }
 
 void MovingPlatform::move(){
-    if(state == direction::LEFT){
-        if(Platform::x() > BORDER_LAYOUT){
-            Platform::setX(Platform::x()-1);
-            for(auto* element : associatedItems) {
-                element->setX(element->x()-1);
-            }
-        }
-        else{
-            Platform::setX(Platform::x()+1);
-            state = direction ::RIGHT;
-            for(auto* element : associatedItems) {
-                element->setX(element->x()+1);
-            }
-        }
-    }
-    else if(state == direction::RIGHT){
-        if(Platform::x()+Platform::pixmap().width() < WINDOW_WIDTH-BORDER_LAYOUT){
-            Platform::setX(Platform::x()+1);
-            for(auto* element : associatedItems) {
-                element->setX(element->x()+1);
-            }
-        }
-        else{
-            Platform::setX(Platform::x()-1);
-            state = direction ::LEFT;
-            for(auto* element : associatedItems) {
-                element->setX(element->x()-1);
-            }
-        }
-    }
+    if(state == direction::LEFT)
+       moveLeft();
+    else if(state == direction::RIGHT)
+       moveRight();
+}
 
+void MovingPlatform::moveLeft() {
+    if(Platform::x() > BORDER_LAYOUT){
+        Platform::setX(Platform::x()-1);
+        for(auto* element : associatedItems) {
+            element->setX(element->x()-1);
+        }
+    }
+    else{
+        Platform::setX(Platform::x()+1);
+        state = direction ::RIGHT;
+        for(auto* element : associatedItems) {
+            element->setX(element->x()+1);
+        }
+    }
+}
+
+void MovingPlatform::moveRight() {
+    if(Platform::x()+Platform::pixmap().width() < WINDOW_WIDTH-BORDER_LAYOUT){
+        Platform::setX(Platform::x()+1);
+        for(auto* element : associatedItems) {
+            element->setX(element->x()+1);
+        }
+    }
+    else{
+        Platform::setX(Platform::x()-1);
+        state = direction ::LEFT;
+        for(auto* element : associatedItems) {
+            element->setX(element->x()-1);
+        }
+    }
 }
 
 MovingPlatform::~MovingPlatform() {

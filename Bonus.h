@@ -1,5 +1,5 @@
-#ifndef DOODLEJUMP_BONUS_H
-#define DOODLEJUMP_BONUS_H
+#ifndef CROCROJUMP_BONUS_H
+#define CROCROJUMP_BONUS_H
 
 #include "GameObject.h"
 #include "Platform.h"
@@ -34,4 +34,4 @@ class Bonus : public GameObject {
         Platform* m_platform;
 };
 
-#endif //DOODLEJUMP_BONUS_H
+#endif //CROCROJUMP_BONUS_H
