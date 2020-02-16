@@ -66,6 +66,7 @@ private:
     void highscores();
 
     QMediaPlayer *fallSound;
+    QMediaPlayer *rageSound;
     QMediaPlayer *shootSound;
     QMediaPlayer *springSound;
     QMediaPlayer *jetpackSound;

@@ -56,9 +56,9 @@ Game::Game() {
     menuScene->setSceneRect(0, 0, WINDOW_WIDTH, WINDOW_HEIGHT);
 
     auto* menuPixmap = new QPixmap();
-    bool backgroundLoaded = menuPixmap->load(":/images/menu.png");
+    bool backgroundLoaded = menuPixmap->load(":/images/menuG.png");
     if (!backgroundLoaded) {
-        qDebug() << "Error loading : :/images/menu.png";
+        qDebug() << "Error loading : :/images/menuG.png";
     }
 
     menuScene->setBackgroundBrush(QBrush(*menuPixmap));
@@ -69,9 +69,9 @@ Game::Game() {
     highscoresScene->setSceneRect(0, 0, WINDOW_WIDTH, WINDOW_HEIGHT);
 
     menuPixmap = new QPixmap();
-    backgroundLoaded = menuPixmap->load(":/images/menu.png");
+    backgroundLoaded = menuPixmap->load(":/images/menuG.png");
     if (!backgroundLoaded) {
-        qDebug() << "Error loading : :/images/menu.png";
+        qDebug() << "Error loading : :/images/menuG.png";
     }
 
     highscoresScene->setBackgroundBrush(QBrush(*menuPixmap));
@@ -84,6 +84,7 @@ Game::Game() {
 
     // --------- Setting up sound effects -------------
     fallSound = new QMediaPlayer();
+    rageSound = new QMediaPlayer();
     shootSound = new QMediaPlayer();
     bounceSound = new QMediaPlayer();
     coinSound = new QMediaPlayer();
@@ -98,6 +99,7 @@ Game::Game() {
     bounceSound->setMedia(QUrl("qrc:/sounds/jump.mp3"));
     coinSound->setMedia(QUrl("qrc:/sounds/coin.mp3"));
     fallSound->setMedia(QUrl("qrc:/sounds/fall.mp3"));
+    rageSound->setMedia(QUrl("qrc:/sounds/putain.mp3"));
     shootSound->setMedia(QUrl("qrc:/sounds/shoot.mp3"));
 
 
@@ -552,8 +554,8 @@ void Game::quickSort(QList<Platform *> &items, int low, int high) {
             j--;
         }
         if (i <= j) {
-            items.swapItemsAt(i,j);
-            //items.swap(i,j);
+            //items.swapItemsAt(i,j);
+            items.swap(i,j);
             i++;
             j--;
         }
@@ -585,7 +587,7 @@ void Game::movePlayer() {
                     bullet->setPos(player->x() + player->pixmap().width() / 2., player->y());
                     scene->addItem(bullet);
 
-                    player->setPixmap(Resources::png("doodleShoot.png"));
+                    player->setPixmap(Resources::png("doodleShootG.png"));
                     if(!player->isFacingLeft()) {
                         player->setPixmap(player->pixmap().transformed(QTransform().scale(-1, 1)));
                     }
@@ -605,6 +607,7 @@ void Game::movePlayer() {
     }
     if (player->y() + player->pixmap().height()>= WINDOW_HEIGHT) { // (Perdu)
         fallSound->play();
+        rageSound->play();
         m_lost = true;
         timerEndGame->start(2000);
     }

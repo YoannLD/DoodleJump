@@ -3,7 +3,7 @@
 #include <qDebug>
 
 Monster::Monster(Platform* platform) {
-    setPixmap(Resources::png("monster_1.png"));
+    setPixmap(Resources::png("monster_1L.png"));
     setPos(platform->x() + platform->pixmap().width()/2 - pixmap().width()/2, platform->y() - pixmap().height());
     setZValue(120);
     animationTimer = new QTimer();
@@ -24,11 +24,11 @@ void Monster::kill() {
 
 void Monster::animation() {
     if(animation_state == 1){
-        setPixmap(Resources::png("monster_2.png"));
+        setPixmap(Resources::png("monster_2L.png"));
         animation_state = 2;
     }
     else if(animation_state == 2){
-        setPixmap(Resources::png("monster_1.png"));
+        setPixmap(Resources::png("monster_1L.png"));
         animation_state = 1;
     }
 

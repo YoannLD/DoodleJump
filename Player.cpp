@@ -9,7 +9,7 @@
 #include <QApplication>
 
 Player::Player() {
-    setPixmap(Resources::png("doodle.png"));
+    setPixmap(Resources::png("doodleG.png"));
 
     // --------- Creating timers ---------
     m_shootTimer = new QTimer();
@@ -56,13 +56,13 @@ void Player::keyReleaseEvent(QKeyEvent *event) {
 void Player::updatePixmap() {
     if(!m_shootingPixmapTimer->isActive()) {
         if(isHit()) {
-            setPixmap(Resources::png("doodleHit.png"));
+            setPixmap(Resources::png("doodleHitG.png"));
         }
         else {
             if (m_falling) {
-                setPixmap(Resources::png("doodleFall.png"));
+                setPixmap(Resources::png("doodleFallG.png"));
             } else {
-                setPixmap(Resources::png("doodleUp.png"));
+                setPixmap(Resources::png("doodleUpG.png"));
             }
 
         }

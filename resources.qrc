@@ -4,7 +4,7 @@
         <file>images/background.png</file>
         <file>images/background2.png</file>
         <file>images/habillage.png</file>
-        <file>images/menu.png</file>
+        <file>images/menuG.png</file>
         <file>images/basicPlatform.png</file>
         <file>images/movingPlatform.png</file>
         <file>images/disappearingPlatform.png</file>
@@ -40,18 +40,21 @@
         <file>images/jetpack/jetpack9.png</file>
         <file>images/jetpack/jetpack10.png</file>
         <file>images/bullet.png</file>
-        <file>images/doodle.png</file>
-        <file>images/doodleUp.png</file>
-        <file>images/doodleFall.png</file>
-        <file>images/doodleShoot.png</file>
-        <file>images/doodleHit.png</file>
+        <file>images/doodleG.png</file>
+        <file>images/doodleUpG.png</file>
+        <file>images/doodleFallG.png</file>
+        <file>images/doodleShootG.png</file>
+        <file>images/doodleHitG.png</file>
         <file>images/monster_1.png</file>
+        <file>images/monster_1L.png</file>
         <file>images/monster_2.png</file>
+        <file>images/monster_2L.png</file>
         <file>images/spring/spring1.png</file>
         <file>images/spring/spring2.png</file>
         <file>sounds/jump.mp3</file>
         <file>sounds/jetpack.mp3</file>
         <file>sounds/fall.mp3</file>
+        <file>sounds/putain.mp3</file>
         <file>sounds/spring.mp3</file>
         <file>sounds/coin.mp3</file>
         <file>sounds/jumpMonster.mp3</file>
